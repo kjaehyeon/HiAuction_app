@@ -11,16 +11,26 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.cookandroid.hiauction.ChatRoomActivity
-import org.cookandroid.hiauction.MainActivity
-import org.cookandroid.hiauction.R
-import org.cookandroid.hiauction.RoomData
+import org.cookandroid.hiauction.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class NaviRoomListFragment : Fragment() {
     lateinit var chatroomadapter: ChatRoomAdapter
-    val datas = mutableListOf<RoomData>()
+    var datas = mutableListOf<RoomData>()
     lateinit var mainActivity: MainActivity
     lateinit var rv_roomlist : RecyclerView
+
+    val BASE_URL= "http://192.168.0.17:4000/"
+    val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val api = retrofit.create(ChatAPI::class.java)
+    val id :String? = LoginActivity.prefs.getString("id", null)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +42,7 @@ class NaviRoomListFragment : Fragment() {
         mainActivity = context as MainActivity
         rv_roomlist = view.findViewById(R.id.rv_roomlist)
 
+
         initRecycler()
         return view
     }
@@ -39,15 +50,31 @@ class NaviRoomListFragment : Fragment() {
         chatroomadapter = ChatRoomAdapter(mainActivity)
         rv_roomlist.adapter = chatroomadapter
 
-        datas.apply {
-            add(RoomData(Username = "옥션이1", Room_id = 1, It_id = 1, It_name = "노트북",Reg_data = "11월 26일",
-            Content = "안녕하세요", Address_name = "동인동",Avg_score = 4.8f, Item_img_url = "url"))
-            add(RoomData(Username = "옥션이1", Room_id = 1, It_id = 1, It_name = "노트북",Reg_data = "11월 26일",
-                Content = "안녕하세요", Address_name = "동인동",Avg_score = 4.8f, Item_img_url = "url"))
+        val callGetChatRooms = api.getChatRooms(id=id!!)
+        callGetChatRooms.enqueue(object : Callback<List<RoomData>> {
+            override fun onResponse(
+                call: Call<List<RoomData>>,
+                response: Response<List<RoomData>>
+            ) {
+                if(response.code() == 200){
+                    var iterator : Iterator<RoomData> = response.body()!!.iterator()
+                    while(iterator.hasNext()){
+                        var data = iterator.next()
+                        datas.apply {
+                            add(RoomData(other_id=data.other_id, other_name = data.other_name, room_id = data.room_id,
+                                item_id = data.item_id, item_name = data.item_name, reg_date = data.reg_date, content = data.content,
+                                address = data.address, score = data.score, img_url = data.img_url))
 
-            chatroomadapter.datas = datas
-            chatroomadapter.notifyDataSetChanged()
-        }
+                            chatroomadapter.datas = datas
+                            chatroomadapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<List<RoomData>>, t: Throwable) {
+
+            }
+        })
     }
 }
 
@@ -74,17 +101,24 @@ class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRo
         private val itemimg : ImageView = itemView.findViewById(R.id.itemimg)
 
         fun bind(item: RoomData) {
-            username.text = item.Username
-            address.text = item.Address_name
-            date.text = item.Reg_data
-            content.text = item.Content
-            Glide.with(itemView).load("https://avatars.dicebear.com/api/big-smile/"+item.Username+".png").into(profile)
-            //Glide.with(itemView).load(item.Item_img_url).into(item_img)
+            username.text = item.other_name
+            address.text = item.address
+            date.text = item.reg_date
+            content.text = item.content
+            Glide.with(itemView).load("https://avatars.dicebear.com/api/big-smile/"+item.other_name+".png").into(profile)
+            //Glide.with(itemView).load(item.img_url).into(item_img)
             Glide.with(itemView).load("https://placeimg.com/128/128/any").into(itemimg)
 
             itemView.setOnClickListener {
                 Intent(context, ChatRoomActivity::class.java).apply {
-                    putExtra("room_id", item.Room_id)
+                    putExtra("room_id", item.room_id)
+                    putExtra("item_id", item.item_id)
+                    putExtra("item_name", item.item_name)
+                    putExtra("address", item.address)
+                    putExtra("score", item.score)
+                    putExtra("img_url", item.img_url)
+                    putExtra("other_name", item.other_name)
+                    putExtra("other_id", item.other_id)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }.run { context.startActivity(this) }
             }
