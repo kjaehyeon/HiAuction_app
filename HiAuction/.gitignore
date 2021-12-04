@@ -23,7 +23,6 @@ local.properties
 .idea/compiler.xml
 .idea/copyright/profiles_settings.xml
 .idea/encodings.xml
-
 .idea/modules.xml
 .idea/scopes/scope_settings.xml
 .idea/dictionaries
@@ -39,3 +38,5 @@ local.properties
 .idea/jarRepositories.xml
 .idea/navEditor.xml
 /build.gradle
+.idea
+.idea/misc.xml
