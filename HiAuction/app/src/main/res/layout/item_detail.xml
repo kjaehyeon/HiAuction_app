@@ -71,7 +71,7 @@
 
 
             <TextView
-                android:id="@+id/S_id"
+                android:id="@+id/S_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="옥션이1"
@@ -96,7 +96,9 @@
                 android:id="@+id/imageView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/star" />
+                android:src="@drawable/star"
+                />
+
 
 
             <TextView
@@ -138,12 +140,26 @@
                 android:text="XBox"
                 android:textSize="28dp"
                 android:textStyle="bold" />
-            <TextView
-                android:id="@+id/itemDate"
+
+            <LinearLayout
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2021-12-05"/>
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/itemCurrentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시작일 2021-12-05"
+                    android:textSize="16dp"/>
+                <TextView
+                    android:id="@+id/itemExpireDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="만료일 2021-12-10"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+
         </RelativeLayout>
         <TextView
             android:id="@+id/Item_des"
@@ -165,19 +181,21 @@
             android:id="@+id/Imprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:text="즉시구매가 238,000"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:text="즉시구매가 238,000"/>
         <TextView
+            android:id="@+id/divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="|"/>
+            android:text="|"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"/>
+
         <TextView
             android:id="@+id/Bidprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
             android:text="현재입찰가 199,000"
             android:textSize="20dp" />
     </LinearLayout>

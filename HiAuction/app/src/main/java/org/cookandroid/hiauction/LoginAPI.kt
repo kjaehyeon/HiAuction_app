@@ -13,16 +13,10 @@ interface LoginAPI {
         @Field("password") password: String,
     ): Call<ResultLogin>
 
-    @FormUrlEncoded
+    //@FormUrlEncoded
     @POST("api/user/signup")
     fun postSignUp(
-        @Field("id") id: String,
-        @Field("password") password: String,
-        @Field("email") email: String,
-        @Field("address") address: List<Int>,
-        @Field("tel") tel: String,
-        @Field("description") description: String,
-        @Field("name") name: String
+        @Body signUpBody: SignUpBody
     ): Call<ResultLogin>
 }
 

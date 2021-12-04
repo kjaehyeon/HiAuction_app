@@ -22,6 +22,7 @@ data class ResultLogin(
     val address: ArrayList<String>?,
 
     @SerializedName("tel")
+<<<<<<< HEAD
     val tel: String?
 
 ) : Parcelable {
@@ -58,3 +59,18 @@ data class ResultLogin(
         }
     }
 }
+=======
+    val tel: String
+
+)
+
+data class SignUpBody(
+    val id : String,
+    val password : String,
+    val email : String,
+    val tel : String,
+    val name : String,
+    val description : String,
+    val address : ArrayList<Int>
+)
+>>>>>>> 6dfc75cd661097b1a5d9bbc086ac13677183bd25

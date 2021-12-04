@@ -66,7 +66,7 @@ class NaviHomeFragment : Fragment() {
         lv.adapter = Adapter
         lv.setOnItemClickListener { adapterView, view, i, l ->
             val clickedItem = ItemList[i].id
-            val intent = Intent(activity,ItemInfo::class.java)
+            val intent = Intent(activity,ItemDetail::class.java)
             intent.putExtra("Id",clickedItem)
             startActivity(intent)
         }

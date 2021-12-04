@@ -134,12 +134,12 @@ module.exports = (pool) => {
     router.put('/info', async (req, res) => {
         const {body: {user_id, current_password, new_password, email, description}} = req;
         let conn = null;
-
+        
         try {
             conn = await pool.getConnection(async conn => conn);
             const [result] = await conn.query('SELECT * FROM MEMBER'
-                                                + 'WHERE U_id = ?'
-                                                + 'AND Pw = ?', [user_id, current_password]);
+                                                + ' WHERE U_id = ?'
+                                                + ' AND Pw = ?', [user_id, current_password]);
             
             if (!result.length) {
                 res.status(400).json({
@@ -173,6 +173,46 @@ module.exports = (pool) => {
             
             res.status(200).json({
                 message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
+    router.delete('/user', async (req, res) => {
+        const {query: {user_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('DELETE FROM MEMBER WHERE U_id = ?', [user_id]);
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
+    router.get('/room', async (req, res) => {
+        const {query: {item_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            const [result] = await conn.query('SELECT Room_id FROM ROOM'
+                                            + ' WHERE It_id = ?', [item_id]);
+                                    
+            res.status(200).json({
+                room_id: !result.length ? '' : result[0].Room_id
             });
         } catch (err) {
             res.status(500).json({
