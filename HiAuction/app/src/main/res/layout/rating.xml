@@ -27,12 +27,14 @@
         android:layout_height="wrap_content"
         android:gravity="center">
         <Button
+            android:id="@+id/btnEnrollRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="후기 등록"
             android:layout_marginRight="10dp"
             android:backgroundTint="#6A8FD9"/>
         <Button
+            android:id="@+id/btnCancelRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="취소"
