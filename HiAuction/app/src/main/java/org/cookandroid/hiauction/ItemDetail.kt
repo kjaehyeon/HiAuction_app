@@ -1,5 +1,6 @@
 package org.cookandroid.hiauction
 
+import android.app.DatePickerDialog
 import android.content.ClipData
 import android.os.Build
 import android.os.Bundle
@@ -19,11 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.content.Intent
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import java.util.*
 import kotlin.properties.Delegates
 
 
 class ItemDetail: AppCompatActivity() {
-    var itemDetailResponse:ItemDetailResponse? = null
+    var itemDetailData:ItemDetailData? = null
     var type :Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +47,8 @@ class ItemDetail: AppCompatActivity() {
                 .build()
             var itemDetailService: ItemDetailService = retrofit.create(ItemDetailService::class.java)
 
-            itemDetailService.getItem(itemId!!).enqueue(object: Callback<ItemDetailResponse> {
-                override fun onFailure(call: Call<ItemDetailResponse>, t: Throwable) {
+            itemDetailService.getItem(itemId!!).enqueue(object: Callback<ItemDetailData> {
+                override fun onFailure(call: Call<ItemDetailData>, t: Throwable) {
                     t.message?.let { Log.e("ITEMREQUSET", it) }
                     var dialog = AlertDialog.Builder(this@ItemDetail)
                     dialog.setTitle("에러")
@@ -55,13 +57,13 @@ class ItemDetail: AppCompatActivity() {
                 }
 
                 @RequiresApi(Build.VERSION_CODES.M)
-                override fun onResponse(call: Call<ItemDetailResponse>, response: Response<ItemDetailResponse>) {
+                override fun onResponse(call: Call<ItemDetailData>, response: Response<ItemDetailData>) {
                     Log.i("프로젝트", response.code().toString())
-                    itemDetailResponse = response.body()
-                    Log.i("프로젝트", itemDetailResponse!!.item.seller_id)
+                    itemDetailData = response.body()
+                    Log.i("프로젝트", itemDetailData!!.seller_id)
                     //var dialog = AlertDialog.Builder(this@MyBids)
                     //dialog.setMessage(bidListResponse?.bid_list?.get(1)?.item_name.toString())
-                    var item = itemDetailResponse?.item
+                    var item = itemDetailData
                     //Log.i("BidsArr", bidsArr.toString())
                     //dialog.show()
                     var seller_name = findViewById<TextView>(R.id.S_name)
@@ -79,8 +81,8 @@ class ItemDetail: AppCompatActivity() {
                     seller_rate.text = item.seller_rate.toString()
                     item_name.text = item.item_name
                     Log.i("프로젝트", "진행4")
-                    item_create_date.text = "시작일 " + item.create_date
-                    item_expire_date.text = "만료일 " + item.expire_date
+                    item_create_date.text = "시작일 " + item.created_date
+                    item_expire_date.text = "만료일 " + item.expired_date
                     Log.i("프로젝트", "진행5")
                     description.text = item.description
                     Log.i("프로젝트", type.toString())
@@ -138,11 +140,11 @@ class ItemDetail: AppCompatActivity() {
                                         dlg.setTitle("후기 등록")
                                         dlg.setView(dlgView)
                                         var ad = dlg.create()
-                                        var cancelButton = findViewById<Button>(R.id.btnCancelRating)
+                                        var cancelButton = dlgView.findViewById<Button>(R.id.btnCancelRating)
                                         cancelButton.setOnClickListener {
                                             ad.dismiss()
                                         }
-                                        var enrollButton = findViewById<Button>(R.id.btnEnrollRating)
+                                        var enrollButton = dlgView.findViewById<Button>(R.id.btnEnrollRating)
                                         enrollButton.setOnClickListener {
                                             var edtRating = findViewById<TextView>(R.id.edtRating)
                                             var score = findViewById<RatingBar>(R.id.ratingScore)
@@ -174,6 +176,7 @@ class ItemDetail: AppCompatActivity() {
                                                                 var dialog = AlertDialog.Builder(this@ItemDetail)
                                                                 dialog.setTitle("후기등록 오류")
                                                                 dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                                dialog.setNegativeButton("확인", null)
                                                                 dialog.show()
                                                             }
                                                         }
@@ -247,55 +250,88 @@ class ItemDetail: AppCompatActivity() {
 
                                     }
                                 } // 채팅버튼, 거래완료 버튼 표시
-                                2->{
-                                    var endItemBtn = findViewById<Button>(R.id.Imbid)
-                                    endItemBtn.visibility = View.GONE
+                                2-> {
+                                    var Imprice = findViewById<TextView>(R.id.Imprice)
+                                    Imprice.visibility = View.GONE
                                     var divider = findViewById<TextView>(R.id.divider)
                                     divider.visibility = View.GONE
+                                    var Bidprice = findViewById<TextView>(R.id.Bidprice)
+                                    Bidprice.text = "낙찰가 " + item.current_price + "원"
+                                    var endItemBtn = findViewById<Button>(R.id.Imbid)
+                                    endItemBtn.visibility = View.GONE
                                     var expandDateBtn = findViewById<Button>(R.id.Imbuy)
-                                    expandDateBtn.setBackgroundColor(resources.getColor(R.color.itemExpired, null))
+                                    expandDateBtn.setBackgroundColor(
+                                        resources.getColor(
+                                            R.color.itemExpired,
+                                            null
+                                        )
+                                    )
                                     expandDateBtn.text = "기간 연장"
                                     expandDateBtn.setOnClickListener {
                                         // 후기등록 띄우기
-                                        var dlgView = View.inflate(this@ItemDetail, R.layout.expand_date, null)
-                                        var dlg = AlertDialog.Builder(this@ItemDetail)
-                                        dlg.setTitle("기간 연장")
-                                        dlg.setView(dlgView)
-                                        dlg.setNegativeButton("취소", null)
-                                        dlg.setPositiveButton("연장") {dialog, which->
-                                            var expandDate = findViewById<CalendarView>(R.id.expandDate)
-                                            itemDetailService.modifyExpireDate(item.item_id, expandDate.toString())
-                                                .enqueue(object : Callback<ResponseData> {
-                                                    override fun onFailure(call: Call<ResponseData>, t: Throwable) {
-                                                        t.message?.let { Log.e("ITEMREQUSET", it) }
-                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                        dialog.setTitle("에러")
-                                                        dialog.setMessage("호출실패했습니다.")
-                                                        dialog.show()
-                                                    }
-                                                    @RequiresApi(Build.VERSION_CODES.M)
-                                                    override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
-                                                        var responseData = response.body()
-                                                        when(response.code()) {
-                                                            200 -> {
-                                                                finish() //인텐트 종료
-                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
-                                                                val intent = getIntent() //인텐트
-                                                                intent.putExtra("type", 1)
-                                                                startActivity(intent) //액티비티 열기
-                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
-                                                            }
-                                                            500 -> {
-                                                                var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                                dialog.setTitle("기간연장 오류")
-                                                                dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
-                                                                dialog.show()
+                                        //var dlgView = View.inflate(this@ItemDetail, R.layout.expand_date, null)
+//                                        var dlg = AlertDialog.Builder(this@ItemDetail)
+//                                        dlg.setTitle("기간 연장")
+//                                        dlg.setView(dlgView)
+//                                        dlg.setNegativeButton("취소", null)
+                                        val today = GregorianCalendar()
+                                        val year: Int = today.get(Calendar.YEAR)
+                                        val month: Int = today.get(Calendar.MONTH)
+                                        val date: Int = today.get(Calendar.DATE)
+                                        lateinit var expand_date: String
+                                        var dlg = DatePickerDialog(this@ItemDetail, object : DatePickerDialog.OnDateSetListener {
+                                            override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                                                    expand_date = "${year}-${month + 1}-${dayOfMonth}"
+                                                    itemDetailService.modifyExpireDate(item.item_id, expand_date).enqueue(object : Callback<ResponseData> {
+                                                        override fun onFailure(call: Call<ResponseData>, t: Throwable) {
+                                                            t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                            var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                            dialog.setTitle("에러")
+                                                            dialog.setMessage("호출실패했습니다.")
+                                                            dialog.show()
+                                                        }
+
+                                                        @RequiresApi(Build.VERSION_CODES.M)
+                                                        override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
+                                                            var responseData = response.body()
+                                                            when (response.code()) {
+                                                                200 -> {
+                                                                    finish() //인텐트 종료
+                                                                    overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                                    val intent = getIntent() //인텐트
+                                                                    intent.putExtra("type", 1)
+                                                                    startActivity(intent) //액티비티 열기
+                                                                    overridePendingTransition(0, 0
+                                                                    ) //인텐트 효과 없애기
+                                                                }
+                                                                500 -> {
+                                                                    var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                                    dialog.setTitle("기간연장 오류")
+                                                                    dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                                    dialog.setNegativeButton("확인", null)
+                                                                    dialog.show()
+                                                                }
                                                             }
                                                         }
-                                                    }
-                                                })
-                                        }
-                                        dlg.show()
+                                                    })
+                                                }
+                                            }, year, month, date).show()
+//                                        dlg.setPositiveButton("연장") {dialog, which->
+//                                            var expandDate = dlgView.findViewById<CalendarView>(R.id.expandDate)
+//                                            var cal:Calendar = Calendar.getInstance()
+//                                            cal.setTime(Date(expandDate.date))
+//                                            val caldate =
+//                                                Integer.toString(cal.get(Calendar.YEAR)) + "-" + Integer.toString(
+//                                                    cal.get(Calendar.MONTH)
+//                                                ) + "-" + Integer.toString(cal.get(Calendar.DATE))
+//                                            lateinit var expand_date :String
+//                                            expandDate.setOnDateChangeListener{ view, year, month ,dayOfMonth ->
+//                                                Log.i("프로젝트", "날짜 변경")
+//                                                var selectYear = year
+//                                                var selectMonth = month + 1
+//                                                var selectDay = dayOfMonth
+//                                                expand_date = "$selectYear-$selectMonth-$selectDay"
+//                                            }
 
                                     }
                                 } // 기간연장 버튼 표시
