@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="30dp">
+    <EditText
+        android:id="@+id/edtRating"
+        android:gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="후기를 입력해주세요"
+        android:inputType="textMultiLine"
+        android:lines="7"/>
+    <RatingBar
+        android:layout_centerInParent="true"
+        android:id="@+id/ratingScore"
+        android:layout_below="@id/edtRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="0.5" />
+
+    <LinearLayout
+        android:layout_below="@id/ratingScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="후기 등록"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#6A8FD9"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="#DD6C58"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -3,7 +3,10 @@
     package="org.cookandroid.hiauction">
 
     <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
 
+=======
+>>>>>>> a1a79730cc5dedafc69fa7472fc73eca064e7c61
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,6 +32,18 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+<<<<<<< HEAD
+=======
+        <activity
+            android:name=".MyBids"
+            android:label="내 입찰 목록"/>
+        <activity
+            android:name=".MyItems"
+            android:label="내가 등록한 상품"/>
+        <activity
+            android:name=".ModifyUser"
+            android:label="회원정보 수정"/>
+>>>>>>> a1a79730cc5dedafc69fa7472fc73eca064e7c61
     </application>
 
 </manifest>

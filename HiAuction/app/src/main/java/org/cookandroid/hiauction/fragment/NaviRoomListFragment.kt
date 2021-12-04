@@ -86,3 +86,4 @@ class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRo
         }
     }
 }
+

@@ -38,4 +38,8 @@ local.properties
 .idea/gradle.xml
 .idea/jarRepositories.xml
 .idea/navEditor.xml
+<<<<<<< HEAD
 /build.gradle
+=======
+/build.gradle
+>>>>>>> a1a79730cc5dedafc69fa7472fc73eca064e7c61
