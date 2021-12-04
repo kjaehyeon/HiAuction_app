@@ -109,7 +109,8 @@ module.exports = (pool) => {
             switch (action) {
                 case 'extension':
                     const {body: {item_id: extension_item_id, expired_date}} = req;
-                    await conn.query('UPDATE ITEM SET Expire_date = ?'
+                    console.log(extension_item_id, expired_date);
+                    await conn.query(`UPDATE ITEM SET Expire_date = ?, Is_end = '0'`
                                     + ' WHERE It_id = ?', [expired_date, extension_item_id]);
                     break;
                 case 'completion':
