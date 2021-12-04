@@ -1,4 +1,4 @@
-package org.cookandroid.hiauction
+package org.cookandroid.hiauction.datas
 
 data class RoomData(
     val other_name : String,

@@ -1,5 +1,7 @@
-package org.cookandroid.hiauction
+package org.cookandroid.hiauction.interfaces
 
+import org.cookandroid.hiauction.datas.Chatdata
+import org.cookandroid.hiauction.datas.RoomData
 import retrofit2.Call
 import retrofit2.http.*
 

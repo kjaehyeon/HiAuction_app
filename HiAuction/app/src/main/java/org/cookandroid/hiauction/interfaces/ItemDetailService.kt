@@ -1,9 +1,7 @@
-package org.cookandroid.hiauction.`interface`
+package org.cookandroid.hiauction.interfaces
 
-import org.cookandroid.hiauction.BidListResponse
-import org.cookandroid.hiauction.ItemDetailResponse
-import org.cookandroid.hiauction.ItemListResponse
-import org.cookandroid.hiauction.ResponseData
+import org.cookandroid.hiauction.datas.ItemDetailResponse
+import org.cookandroid.hiauction.datas.ResponseData
 import retrofit2.Call
 import retrofit2.http.*
 

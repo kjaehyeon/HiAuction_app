@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import org.cookandroid.hiauction.interfaces.LoginAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

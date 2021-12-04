@@ -1,6 +1,5 @@
 package org.cookandroid.hiauction
 
-import android.content.ClipData
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,21 +8,20 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import org.cookandroid.hiauction.`interface`.BidService
-import org.cookandroid.hiauction.`interface`.ItemDetailService
+import org.cookandroid.hiauction.interfaces.ItemDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.content.Intent
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlin.properties.Delegates
+import org.cookandroid.hiauction.datas.ItemDetailResponse
+import org.cookandroid.hiauction.datas.ResponseData
 
 
 class ItemDetail: AppCompatActivity() {
-    var itemDetailResponse:ItemDetailResponse? = null
+    var itemDetailResponse: ItemDetailResponse? = null
     var type :Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

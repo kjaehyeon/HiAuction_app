@@ -18,17 +18,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.cookandroid.hiauction.`interface`.BidService
-import org.cookandroid.hiauction.`interface`.ItemService
+import org.cookandroid.hiauction.datas.ItemData
+import org.cookandroid.hiauction.datas.ItemListResponse
+import org.cookandroid.hiauction.interfaces.ItemService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDate
 
 class MyItems : AppCompatActivity() {
-    var itemListResponse:ItemListResponse? = null
+    var itemListResponse: ItemListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
 //    var itemsArr = arrayListOf<ItemData>(
 //        ItemData("최신 맥북 프로", "대현동", 2500000, LocalDate.now()),

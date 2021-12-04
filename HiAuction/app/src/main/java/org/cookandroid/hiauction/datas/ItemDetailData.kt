@@ -1,4 +1,4 @@
-package org.cookandroid.hiauction
+package org.cookandroid.hiauction.datas
 
 import android.os.Build
 import androidx.annotation.RequiresApi
