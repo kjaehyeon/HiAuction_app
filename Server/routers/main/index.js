@@ -67,12 +67,13 @@ module.exports = (pool) => {
                 seller_id: result[0].U_id,
                 seller_name: result[0].User_name,
                 seller_rate: !result[0].Score ? 0 : result[0].Score,
+                address: result[0].Address,
                 item_id: result[0].It_id,
                 item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
-                created_date: result[0].Create_date,
-                expired_date: result[0].Expire_date,
+                created_date: result[0].Create_date.toLocaleDateString(),
+                expired_date: result[0].Expire_date.toLocaleDateString(),
                 description: result[0].Description,
                 img_url: result[0].Img
             });
