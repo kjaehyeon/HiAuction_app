@@ -1,5 +1,15 @@
 module.exports = (pool) => {
     const express = require('express');
+    const multer = require('multer');
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.originalname)
+        }
+    });
+    const upload = multer({ storage: storage })
     const router = express.Router();
 
     router.get('/items', async (req, res) => {
@@ -47,7 +57,7 @@ module.exports = (pool) => {
                                             + ' WHERE S_id = I.U_id) Score,'
                                             + ' I.It_id, I.Quick_price, I.Current_price,'
                                             + ' I.Create_date, I.Expire_date,'
-                                            + ' I.Description, I.Img'
+                                            + ' I.Description, I.Name Item_name, I.Img'
                                             + ' FROM ITEM I, MEMBER M, ADDRESS A'
                                             + ' WHERE I.U_id = M.U_id'
                                             + ' AND I.Ad_id = A.Ad_id'
@@ -58,6 +68,7 @@ module.exports = (pool) => {
                 seller_name: result[0].User_name,
                 seller_rate: !result[0].Score ? 0 : result[0].Score,
                 item_id: result[0].It_id,
+                item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
                 created_date: result[0].Create_date,
@@ -172,6 +183,12 @@ module.exports = (pool) => {
         } finally {
             conn.release();
         }
+    });
+
+    router.post('/register', upload.single('img_file'), async (req, res) => {
+        res.status(200).json({
+            message: 'ok'
+        });
     });
 
     return router;
