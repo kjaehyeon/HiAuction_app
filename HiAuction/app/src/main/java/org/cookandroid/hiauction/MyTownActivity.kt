@@ -25,6 +25,9 @@ class MyTownActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mytownList = findViewById(R.id.townlist)
+        var adapter : ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, townArr)
+        mytownList.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        mytownList.adapter = adapter
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
