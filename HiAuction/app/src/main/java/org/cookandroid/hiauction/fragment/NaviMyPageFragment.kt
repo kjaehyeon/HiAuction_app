@@ -25,7 +25,6 @@ class NaviMyPageFragment : Fragment() {
         var view = inflater.inflate(R.layout.mypage_main, container, false)
         setHasOptionsMenu(true)
 
-
         var btnModifyUser = view.findViewById<RelativeLayout>(R.id.btnModifyUser)
         btnModifyUser.setOnClickListener {
             var intent = activity?.let {
