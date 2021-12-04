@@ -42,6 +42,9 @@
         <activity
             android:name=".ModifyUser"
             android:label="회원정보 수정" />
+        <activity
+            android:name=".ItemDetail"
+            android:label="물품 상세페이지"/>
     </application>
 
 </manifest>
