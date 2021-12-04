@@ -100,7 +100,33 @@ module.exports = (pool) => {
                 );
             }
         } catch (err) {
-            console.log(err);
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
+    router.get('/chats', async (req, res) => {
+        const {query: {room_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async con => conn);
+            const [result] = await conn.query('SELECT S_id, Content, Reg_date'
+                                            + ' FROM CHAT'
+                                            + ' WHERE Room_id = ?'
+                                            + ' ORDER BY Reg_date', [room_id]);
+            const chat_list = result.map((chat) => {
+                return {
+                    sender_id: chat.S_id,
+                    reg_date: chat.Reg_date.toLocaleString(),
+                    content: chat.Content
+                };
+            });
+            res.status(200).json(chat_list);
+        } catch (err) {
             res.status(500).json({
                 message: err.message
             });
