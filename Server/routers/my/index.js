@@ -202,5 +202,26 @@ module.exports = (pool) => {
         }
     });
 
+    router.get('/room', async (req, res) => {
+        const {query: {item_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            const [result] = await conn.query('SELECT Room_id FROM ROOM'
+                                            + ' WHERE It_id = ?', [item_id]);
+                                    
+            res.status(200).json({
+                room_id: !result.length ? '' : result[0].Room_id
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     return router;
 };
