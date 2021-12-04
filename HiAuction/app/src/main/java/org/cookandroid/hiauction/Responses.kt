@@ -22,3 +22,13 @@ data class ResultLogin(
     val tel: String
 
 )
+
+data class SignUpBody(
+    val id : String,
+    val password : String,
+    val email : String,
+    val tel : String,
+    val name : String,
+    val description : String,
+    val address : ArrayList<Int>
+)
