@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="theme">#6A8FD9</color>
+    <color name="signup">#65B67E</color>
+    <color name="toolbar">#8B8B8B</color>
+    <color name="bidFinish">#65B67E</color>
+    <color name="itemExpired">#D34646</color>
+    <color name="bidFail">#DB7135</color>
+    <color name="itemFinish">#C4C4C4</color>
+    <color name="itemReview">#FAAA33</color>
+    <color name="itemOnSale">#3CB2E3</color>
 </resources>

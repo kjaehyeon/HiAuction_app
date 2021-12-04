@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp">
+    <ImageView
+        android:id="@+id/itemImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/default_img"/>
+    <LinearLayout
+        android:layout_toRightOf="@+id/itemImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true">
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="제목입니다"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/item_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="대구 북구 대현동"
+            android:layout_marginBottom="5dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/item_state"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="판매중"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:background="@drawable/border_onsale"
+                android:layout_marginRight="10dp"/>
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500,000 원"
+                android:textSize="17dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/item_date"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1일전"/>
+
+</RelativeLayout>
