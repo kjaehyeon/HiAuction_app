@@ -1,13 +1,21 @@
 package org.cookandroid.hiauction
 
 data class RoomData(
-    val Username : String,
-    val Room_id : Int,
-    val It_id : Int,
-    val It_name : String,
-    val Reg_data : String,
-    val Content : String,
-    val Address_name : String,
-    val Avg_score : Float,
-    val Item_img_url : String
+    val other_name : String,
+    val other_id : String,
+    val room_id : Int,
+    val item_id : Int,
+    val item_name : String,
+    val reg_date : String,
+    val content : String,
+    val address : String,
+    val score : Float,
+    val img_url: String
+)
+
+data class Chatdata(
+    val sender_id : String,
+    val reg_date : String,
+    val content : String,
+    val type : Int
 )
