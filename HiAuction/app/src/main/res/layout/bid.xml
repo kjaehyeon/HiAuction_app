@@ -31,7 +31,8 @@
             android:layout_marginBottom="5dp"/>
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center">
             <TextView
                 android:id="@+id/bid_state"
                 android:paddingLeft="10dp"
@@ -49,7 +50,7 @@
                 android:id="@+id/bid_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500,000 원"
+                android:text="입찰가 : 500,000 원"
                 android:textSize="17dp"
                 android:textStyle="bold"/>
         </LinearLayout>
