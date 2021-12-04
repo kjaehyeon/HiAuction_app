@@ -6,7 +6,7 @@ const db_config = {
     password: process.env.MYSQL_PASSWORD,
     port: process.env.MYSQL_PORT,
     connectionLimit: 10,
-    database: process.env.DATABASE
+    database: process.env.MYSQL_DATABASE
 }
 
 module.exports = mysql.createPool(db_config);
