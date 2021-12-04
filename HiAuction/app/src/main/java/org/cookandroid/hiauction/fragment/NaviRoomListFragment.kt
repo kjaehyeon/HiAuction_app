@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_navi_roomlist.*
+import org.cookandroid.hiauction.ChatRoomActivity
 import org.cookandroid.hiauction.MainActivity
 import org.cookandroid.hiauction.R
 import org.cookandroid.hiauction.RoomData
@@ -37,7 +39,7 @@ class NaviRoomListFragment : Fragment() {
         return view
     }
     private fun initRecycler() {
-        chatroomadapter = ChatRoomAdapter()
+        chatroomadapter = ChatRoomAdapter(mainActivity)
         rv_roomlist.adapter = chatroomadapter
 
         datas.apply {
@@ -52,7 +54,7 @@ class NaviRoomListFragment : Fragment() {
     }
 }
 
-class ChatRoomAdapter(): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>(){
+class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>(){
     var datas = mutableListOf<RoomData>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.room_recycler,parent,false)
@@ -82,6 +84,13 @@ class ChatRoomAdapter(): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>(){
             Glide.with(itemView).load("https://avatars.dicebear.com/api/big-smile/"+item.Username+".png").into(profile)
             //Glide.with(itemView).load(item.Item_img_url).into(item_img)
             Glide.with(itemView).load("https://placeimg.com/128/128/any").into(itemimg)
+
+            itemView.setOnClickListener {
+                Intent(context, ChatRoomActivity::class.java).apply {
+                    putExtra("room_id", item.Room_id)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }.run { context.startActivity(this) }
+            }
         }
     }
 }
