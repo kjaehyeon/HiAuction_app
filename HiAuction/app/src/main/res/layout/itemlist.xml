@@ -11,12 +11,12 @@
         android:id="@+id/edtSearch"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="20dp"
-        android:background="#FFF8F8F8"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/teal_200"
         android:hint="상품명 등"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="10dp" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,8 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-
-        android:backgroundTint="#FFF8F8F8"
+        android:backgroundTint="@color/teal_200"
         android:text="도서/티켓/음반"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -61,14 +60,12 @@
     <ListView
         android:id="@+id/lv"
         android:layout_width="386dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="392dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCategory"
-        tools:ignore="MissingConstraints">
-
-    </ListView>
+        tools:ignore="MissingConstraints"></ListView>
 
     <ImageButton
         android:id="@+id/btnWrite"
