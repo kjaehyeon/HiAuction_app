@@ -41,4 +41,9 @@ local.properties
 /.idea
 /.idea/misc.xml
 /.idea/gradle.xml
+<<<<<<< HEAD
 /.idea/compiler.xml
+=======
+/.idea/compiler.xml
+
+>>>>>>> 971bb169f5f6ae62954e0a00905a40f1e45c935d

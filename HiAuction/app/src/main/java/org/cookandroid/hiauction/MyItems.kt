@@ -41,7 +41,7 @@ class MyItems : AppCompatActivity() {
         setContentView(R.layout.myitems)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        var user_id:String? = LoginActivity.prefs.getString("id", null)
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
@@ -49,7 +49,7 @@ class MyItems : AppCompatActivity() {
         var itemService: ItemService = retrofit.create(ItemService::class.java)
         var itemsArr : ArrayList<ItemData>? = null
         Log.d("로그", itemsArr.toString())
-        itemService.getItems("kKTixmkxQM").enqueue(object: Callback<ItemListResponse> {
+        itemService.getItems(user_id!!).enqueue(object: Callback<ItemListResponse> {
             override fun onFailure(call: Call<ItemListResponse>, t: Throwable) {
                 t.message?.let { Log.e("BIDREQUSET", it) }
                 var dialog = AlertDialog.Builder(this@MyItems)

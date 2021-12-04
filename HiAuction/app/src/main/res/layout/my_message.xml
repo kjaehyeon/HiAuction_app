@@ -5,29 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="right">
+    android:gravity="right"
+    android:layout_margin="10dp">
     <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="오후 11:46"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="5dp"
+        android:gravity="bottom"
         android:layout_marginLeft="5dp"/>
     <TextView
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="네 안녕하세요"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:textColor="@color/white"
         android:background="@drawable/chatbubbleblue"
         android:padding="10dp"
         android:layout_marginLeft="5dp"
         android:layout_gravity="center_vertical"/>
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        tools:srcCompat="@tools:sample/avatars"
-        android:padding="10dp"/>
 </LinearLayout>
