@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,7 +31,8 @@ class SignUpActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val api = retrofit.create(LoginAPI::class.java)
-    var addressList : List<Int>? = null
+    var addressIdList : ArrayList<Int>? = null
+    var addressNameList : ArrayList<String>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -55,19 +55,18 @@ class SignUpActivity : AppCompatActivity() {
 
         submit.setOnClickListener {
             if(id.text != null && pw.text != null && email.text != null && tel.text != null
-                && name.text != null && description.text != null && !addressList.isNullOrEmpty()){
-                val callPostSignup = api.postSignUp(id =id.text.toString(), password=pw.text.toString(), email=email.text.toString(),
-                    tel=tel.text.toString(),name=name.text.toString(), description=description.text.toString(), address = addressList!!)
+                && name.text != null && description.text != null && !addressIdList.isNullOrEmpty()){
+                val callPostSignup = api.postSignUp(SignUpBody( id =id.text.toString(), password=pw.text.toString(), email=email.text.toString(),
+                    tel=tel.text.toString(),name=name.text.toString(), description=description.text.toString(), address = addressIdList!!))
                 callPostSignup.enqueue(object : Callback<ResultLogin> {
                     override fun onResponse(
                         call: Call<ResultLogin>,
                         response: Response<ResultLogin>
                     ) {
                         if(response.isSuccessful) {
-                            LoginActivity.prefs.edit().putString("id", response.body()?.id).apply()
-                            LoginActivity.prefs.edit().putString("name", response.body()?.name).apply()
-                            var intent = Intent(applicationContext, MainActivity::class.java)
-                            startActivity(intent)
+                            var intent = Intent(applicationContext, LoginActivity::class.java)
+                            setResult(RESULT_OK, intent)
+                            finish()
                         }
                         else {
                             when (response.code()) {
@@ -112,7 +111,7 @@ class SignUpActivity : AppCompatActivity() {
             android.R.id.home -> {
                 var intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.putExtra("result", "ok")
-                setResult(RESULT_OK, intent)
+                setResult(RESULT_CANCELED, intent)
                 finish()
                 return true
             }
@@ -124,6 +123,18 @@ class SignUpActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode== Activity.RESULT_OK){
+            addressIdList = data?.getIntegerArrayListExtra("addressId") as ArrayList<Int>
+            addressNameList = data?.getStringArrayListExtra("addressName") as ArrayList<String>
+            var str : String = ""
+
+            if(addressIdList.isNullOrEmpty()){
+                mytown.text = "우리 동네 선택"
+            }else{
+                for(tmp in addressNameList!!){
+                    str += tmp+" "
+                }
+                mytown.text = str
+            }
         }
     }
 }

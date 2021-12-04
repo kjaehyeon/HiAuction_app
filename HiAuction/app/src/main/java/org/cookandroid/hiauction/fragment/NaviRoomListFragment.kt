@@ -3,17 +3,14 @@ package org.cookandroid.hiauction.fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_navi_roomlist.*
 import org.cookandroid.hiauction.ChatRoomActivity
 import org.cookandroid.hiauction.MainActivity
 import org.cookandroid.hiauction.R
@@ -56,12 +53,12 @@ class NaviRoomListFragment : Fragment() {
 
 class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>(){
     var datas = mutableListOf<RoomData>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.room_recycler,parent,false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ChatRoomAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(datas[position])
     }
 
