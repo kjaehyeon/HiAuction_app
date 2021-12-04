@@ -14,8 +14,8 @@ class ItemDetailData//TODO("이미지 넣는 거 구현해야함")
     var item_name: String,
     var immediate_price: Int,
     var current_price: Int,
-    @RequiresApi(Build.VERSION_CODES.O) var create_date: String,
-    @RequiresApi(Build.VERSION_CODES.O) var expire_date: String,
+    @RequiresApi(Build.VERSION_CODES.O) var created_date: String,
+    @RequiresApi(Build.VERSION_CODES.O) var expired_date: String,
     var description: String,
     var img_url: String
 ) {
