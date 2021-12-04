@@ -91,7 +91,17 @@ class ItemDetail: AppCompatActivity() {
 
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
-                        1 -> {}
+                        1 -> {
+                            var id = intent.getIntExtra("Id",0)
+                            var Imbuy = findViewById<Button>(R.id.Imbuy)
+                            var Imbid = findViewById<Button>(R.id.Imbid)
+
+                            Imbid.setOnClickListener {
+                                val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
+                                bidintent.putExtra("Id",id)
+                                startActivityForResult(bidintent,0)
+                            }
+                        }
                         //마이페이지 내 입찰목록에서 상품 상세페이지 접근
                         2 -> {
                             var bid_type = intent.getIntExtra("bid_type", 0)
@@ -195,124 +205,6 @@ class ItemDetail: AppCompatActivity() {
                                     }
                                 }
                             }
-                        }
-                        //마이페이지 내가 등록한 상품에서 상품 상세페이지 접근
-                        3 -> {
-                            var itemType = intent.getIntExtra("item_type", 0)
-                            Log.i("프로젝트", "itemType: " + itemType.toString())
-                            when(itemType){
-                                1->{
-                                    var chatBtn = findViewById<Button>(R.id.Imbuy)
-                                    chatBtn.setBackgroundColor(resources.getColor(R.color.bidFinish, null))
-                                    chatBtn.text = "구매자와 채팅"
-                                    chatBtn.setOnClickListener {
-                                        // 채팅으로 가야함
-                                    }
-                                    var endItemBtn = findViewById<Button>(R.id.Imbid)
-                                    endItemBtn.setBackgroundColor(resources.getColor(R.color.itemFinish, null))
-                                    endItemBtn.text = "거래 완료하기"
-                                    endItemBtn.setOnClickListener {
-                                        // 거래완료 시키기
-                                        var dlg = AlertDialog.Builder(this@ItemDetail)
-                                        dlg.setTitle("거래완료")
-                                        dlg.setMessage("거래를 완료하시겠습니까?\n완료하시면 되돌릴수 없습니다.")
-                                        dlg.setNegativeButton("취소", null)
-                                        dlg.setPositiveButton("확인"){ dialog, which ->
-                                            itemDetailService.completeItem(itemId!!)
-                                                .enqueue(object : Callback<ResponseData> {
-                                                    override fun onFailure(call: Call<ResponseData>, t: Throwable) {
-                                                        t.message?.let { Log.e("ITEMREQUSET", it) }
-                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                        dialog.setTitle("에러")
-                                                        dialog.setMessage("호출실패했습니다.")
-                                                        dialog.show()
-                                                    }
-                                                    @RequiresApi(Build.VERSION_CODES.M)
-                                                    override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
-                                                        var responseData = response.body()
-                                                        when(response.code()) {
-                                                            200 -> {
-                                                                chatBtn.visibility = View.GONE
-                                                                endItemBtn.visibility = View.GONE
-                                                                var reviewBtn = findViewById<Button>(R.id.Imbuy)
-                                                                reviewBtn.visibility = View.GONE
-                                                                var endItemBtn = findViewById<Button>(R.id.Imbid)
-                                                                endItemBtn.visibility = View.GONE
-                                                                var Imprice = findViewById<TextView>(R.id.Imprice)
-                                                                Imprice.visibility = View.GONE
-                                                                var divider = findViewById<TextView>(R.id.divider)
-                                                                divider.visibility = View.GONE
-                                                                var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                                                Bidprice.text = "낙찰가 " + item.current_price
-                                                            }
-                                                            500 -> {
-                                                                var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                                dialog.setTitle("거래완료 오류")
-                                                                dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
-                                                                dialog.show()
-                                                            }
-                                                        }
-                                                    }
-                                                })
-                                        }
-
-                                    }
-                                } // 채팅버튼, 거래완료 버튼 표시
-                                2->{
-                                    var endItemBtn = findViewById<Button>(R.id.Imbid)
-                                    endItemBtn.visibility = View.GONE
-                                    var divider = findViewById<TextView>(R.id.divider)
-                                    divider.visibility = View.GONE
-                                    var expandDateBtn = findViewById<Button>(R.id.Imbuy)
-                                    expandDateBtn.setBackgroundColor(resources.getColor(R.color.itemExpired, null))
-                                    expandDateBtn.text = "기간 연장"
-                                    expandDateBtn.setOnClickListener {
-                                        // 후기등록 띄우기
-                                        var dlgView = View.inflate(this@ItemDetail, R.layout.expand_date, null)
-                                        var dlg = AlertDialog.Builder(this@ItemDetail)
-                                        dlg.setTitle("기간 연장")
-                                        dlg.setView(dlgView)
-                                        dlg.setNegativeButton("취소", null)
-                                        dlg.setPositiveButton("연장") {dialog, which->
-                                            var expandDate = findViewById<CalendarView>(R.id.expandDate)
-                                            itemDetailService.modifyExpireDate(item.item_id, expandDate.toString())
-                                                .enqueue(object : Callback<ResponseData> {
-                                                    override fun onFailure(call: Call<ResponseData>, t: Throwable) {
-                                                        t.message?.let { Log.e("ITEMREQUSET", it) }
-                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                        dialog.setTitle("에러")
-                                                        dialog.setMessage("호출실패했습니다.")
-                                                        dialog.show()
-                                                    }
-                                                    @RequiresApi(Build.VERSION_CODES.M)
-                                                    override fun onResponse(call: Call<ResponseData>, response: Response<ResponseData>) {
-                                                        var responseData = response.body()
-                                                        when(response.code()) {
-                                                            200 -> {
-                                                                finish() //인텐트 종료
-                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
-                                                                val intent = getIntent() //인텐트
-                                                                intent.putExtra("type", 1)
-                                                                startActivity(intent) //액티비티 열기
-                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
-                                                            }
-                                                            500 -> {
-                                                                var dialog = AlertDialog.Builder(this@ItemDetail)
-                                                                dialog.setTitle("기간연장 오류")
-                                                                dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
-                                                                dialog.show()
-                                                            }
-                                                        }
-                                                    }
-                                                })
-                                        }
-                                        dlg.show()
-
-                                    }
-                                } // 기간연장 버튼 표시
-                                3->{}
-                            }
-
                         }
                     }
                 }

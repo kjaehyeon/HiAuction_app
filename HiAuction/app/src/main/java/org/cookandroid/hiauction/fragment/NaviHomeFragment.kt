@@ -68,6 +68,7 @@ class NaviHomeFragment : Fragment() {
             val clickedItem = ItemList[i].id
             val intent = Intent(activity,ItemDetail::class.java)
             intent.putExtra("Id",clickedItem)
+            intent.putExtra("type",1)
             startActivity(intent)
         }
         return view
