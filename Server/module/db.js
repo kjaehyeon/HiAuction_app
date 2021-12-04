@@ -1,12 +1,12 @@
 const mysql = require('mysql2/promise');
 
 const db_config = {
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    port: 3307,
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    port: process.env.MYSQL_PORT,
     connectionLimit: 10,
-    database: 'hiauction'
+    database: process.env.MYSQL_DATABASE
 }
 
 module.exports = mysql.createPool(db_config);
