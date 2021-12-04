@@ -79,6 +79,27 @@ module.exports = (pool) => {
         }
     });
 
+    router.delete('/item', async (req, res) => {
+        const {query: {item_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('DELETE FROM ITEM'
+                                + ' WHERE It_id = ?', [item_id]);
+            
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     router.put('/info', async (req, res) => {
         const {body: {id, password, email, description}} = req;
         let conn = null;
@@ -99,7 +120,7 @@ module.exports = (pool) => {
             conn.release();
         }
     });
-    
+
     router.post('/rating', async (req, res) => {
         const {body: {seller_id, buyer_id, score, description}} = req;
         let conn = null;
@@ -120,6 +141,6 @@ module.exports = (pool) => {
             conn.release();
         }
     });
-    
+
     return router;
 };
