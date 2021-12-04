@@ -131,5 +131,37 @@ module.exports = (pool) => {
         }
     });
 
+    router.post('/immediate', async (req, res) => {
+        const {body: {item_id, user_id}} = req;
+        let conn = null
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            const [result] = await conn.query('SELECT Is_end, Quick_price FROM ITEM'
+                                            + ' WHERE It_id = ?', [item_id]);
+            if (result[0].Is_end !== '0') {
+                res.status(400).json({
+                    message: '유효하지 않은 상품입니다'
+                });
+            } else {
+                await conn.query('INSERT INTO BID(Price, U_id, It_id)'
+                                + ' VALUES(?, ?, ?)', [result[0].Quick_price, user_id, item_id]);
+                await conn.query('UPDATE ITEM'
+                                + ' SET Current_price = Quick_price,'
+                                + ` Is_end = '1'`
+                                + ' WHERE It_id = ?', [item_id]);
+                res.status(200).json({
+                    message: 'accepted'
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     return router;
 };
