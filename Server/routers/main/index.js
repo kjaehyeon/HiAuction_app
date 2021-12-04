@@ -137,15 +137,26 @@ module.exports = (pool) => {
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            const [result] = await conn.query('SELECT Is_end, Quick_price FROM ITEM'
+            const [result] = await conn.query('SELECT Is_end, Quick_price, U_id,'
+                                            + ' FROM ITEM'
                                             + ' WHERE It_id = ?', [item_id]);
-            if (result[0].Is_end !== '0') {
+            const {
+                Is_end: is_end,
+                Quick_price: quick_price,
+                U_id: seller_id
+            } = result[0];
+
+            if (is_end !== '0') {
                 res.status(400).json({
                     message: '유효하지 않은 상품입니다'
                 });
+            } else if (user_id === seller_id) {
+                res.status(400).json({
+                    message: '자신의 상품은 즉시 구매할 수 없습니다'
+                });
             } else {
                 await conn.query('INSERT INTO BID(Price, U_id, It_id)'
-                                + ' VALUES(?, ?, ?)', [result[0].Quick_price, user_id, item_id]);
+                                + ' VALUES(?, ?, ?)', [quick_price, user_id, item_id]);
                 await conn.query('UPDATE ITEM'
                                 + ' SET Current_price = Quick_price,'
                                 + ` Is_end = '1'`
