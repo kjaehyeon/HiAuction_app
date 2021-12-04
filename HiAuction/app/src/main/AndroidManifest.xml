@@ -28,6 +28,15 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".MyBids"
+            android:label="내 입찰 목록"/>
+        <activity
+            android:name=".MyItems"
+            android:label="내가 등록한 상품"/>
+        <activity
+            android:name=".ModifyUser"
+            android:label="회원정보 수정"/>
     </application>
 
 </manifest>
