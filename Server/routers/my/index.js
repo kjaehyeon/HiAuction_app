@@ -132,17 +132,27 @@ module.exports = (pool) => {
     });
 
     router.put('/info', async (req, res) => {
-        const {body: {id, password, email, description}} = req;
+        const {body: {user_id, current_password, new_password, email, description}} = req;
         let conn = null;
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            await conn.query('UPDATE MEMBER'
-                                + ' SET Pw = ?, Email = ?, Description = ?'
-                                + ' WHERE U_id = ?', [password, email, description, id]);
-            res.status(200).json({
-                message: 'accepted'
-            });
+            const [result] = await conn.query('SELECT * FROM MEMBER'
+                                                + 'WHERE U_id = ?'
+                                                + 'AND Pw = ?', [user_id, current_password]);
+            
+            if (!result.length) {
+                res.status(400).json({
+                    message: '현재 비밀번호가 틀립니다'
+                });
+            } else {
+                await conn.query('UPDATE MEMBER'
+                                    + ' SET Pw = ?, Email = ?, Description = ?'
+                                    + ' WHERE U_id = ?', [new_password, email, description, user_id]);
+                res.status(200).json({
+                    message: 'accepted'
+                });
+            }
         } catch (err) {
             res.status(500).json({
                 message: err.message
