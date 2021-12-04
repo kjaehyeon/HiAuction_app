@@ -77,6 +77,16 @@ class MyItems : AppCompatActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        finish() //인텐트 종료
+        overridePendingTransition(0, 0) //인텐트 효과 없애기
+        val intent = getIntent() //인텐트
+        intent.putExtra("type", 1)
+        startActivity(intent) //액티비티 열기
+        overridePendingTransition(0, 0)
+    }
+
     inner class MyItemListViewAdapter(var context: Context, var itemList: ArrayList<ItemData>): BaseAdapter() {
         override fun getCount(): Int {
             return itemList.size

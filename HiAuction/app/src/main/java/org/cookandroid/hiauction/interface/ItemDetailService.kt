@@ -1,9 +1,6 @@
 package org.cookandroid.hiauction.`interface`
 
-import org.cookandroid.hiauction.BidListResponse
-import org.cookandroid.hiauction.ItemDetailResponse
-import org.cookandroid.hiauction.ItemListResponse
-import org.cookandroid.hiauction.ResponseData
+import org.cookandroid.hiauction.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -11,7 +8,7 @@ interface ItemDetailService {
     @GET("/api/main/item")
     fun getItem(
         @Query("item_id") item_id: Int,
-    ): Call<ItemDetailResponse>
+    ): Call<ItemDetailData>
 
     // 거래완료
     @FormUrlEncoded
