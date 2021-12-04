@@ -100,5 +100,26 @@ module.exports = (pool) => {
         }
     });
     
+    router.post('/rating', async (req, res) => {
+        const {body: {seller_id, buyer_id, score, description}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('INSERT INTO RATING(S_id, Buy_id, Score, Description)'
+                            + ' VALUES(?, ?, ?, ?)', [seller_id, buyer_id, score, description]);
+            
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+    
     return router;
 };
