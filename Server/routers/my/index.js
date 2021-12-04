@@ -183,5 +183,24 @@ module.exports = (pool) => {
         }
     });
 
+    router.delete('/user', async (req, res) => {
+        const {query: {user_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('DELETE FROM MEMBER WHERE U_id = ?', [user_id]);
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     return router;
 };
