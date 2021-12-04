@@ -100,6 +100,34 @@ module.exports = (pool) => {
         }
     });
 
+    router.put('/item/:action', async (req, res) => {
+        const {params: {action}} = req;
+        let conn = null;
+        
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            switch (action) {
+                case 'extension':
+                    const {body: {item_id, expired_date}} = req;
+                    await conn.query('UPDATE ITEM SET Expire_date = ?'
+                                    + ' WHERE It_id = ?', [expired_date, item_id]);
+                    break;
+                case 'completion':
+                    break;
+            }
+
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     router.put('/info', async (req, res) => {
         const {body: {id, password, email, description}} = req;
         let conn = null;
