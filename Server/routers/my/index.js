@@ -8,7 +8,7 @@ module.exports = (pool) => {
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            const [result] = await conn.query('SELECT I.It_id, I.Name AS Item_name, I.Current_price,'
+            const [result] = await conn.query('SELECT I.It_id, I.Name Item_name, I.Current_price,'
                                                 + ' I.Img, I.Is_end, A.Name Address,'
                                                 + ' B.B_id, B.Price, B.Create_date'
                                                 + ' FROM BID B, ITEM I, ADDRESS A'
@@ -28,11 +28,47 @@ module.exports = (pool) => {
                     bid_id: bid.B_id,
                     bid_price: bid.Price,
                     bid_created_date: bid.Create_date.toLocaleDateString(),
-                }
+                };
             });
 
             res.status(200).json({
                 bid_list
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
+    router.get('/items', async (req, res) => {
+        const {query: {user_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            const [result] = await conn.query('SELECT I.It_id, I.Name Item_name, I.Current_price,'
+                                                + ' I.Img, I.Is_end, I.Create_date, A.Name Address'
+                                                + ' FROM ITEM I, Address A'
+                                                + ' WHERE I.Ad_id = A.Ad_id'
+                                                + ' AND U_id = ?', [user_id]);
+            
+            const item_list = result.map((item) => {
+                return {
+                    item_id: item.It_id,
+                    item_name: item.Item_name,
+                    item_price: item.Current_price,
+                    img_url: item.Img,
+                    is_end: item.Is_end,
+                    created_date: item.Create_date.toLocaleDateString(),
+                    address: item.Address
+                };
+            });
+
+            res.status(200).json({
+                item_list
             });
         } catch (err) {
             res.status(500).json({
@@ -63,6 +99,6 @@ module.exports = (pool) => {
             conn.release();
         }
     });
-
+    
     return router;
 };
