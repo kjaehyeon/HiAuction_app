@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable-v24/border_expired.xml" value="0.2942708333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable-v24/border_fail.xml" value="0.3223958333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable-v24/border_finish.xml" value="0.3223958333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable-v24/border_onsale.xml" value="0.3223958333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable-v24/border_review.xml" value="0.3223958333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable/border_bidfinish.xml" value="0.321875" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/drawable/toolbar_edge.xml" value="0.2942708333333333" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/activity_login.xml" value="0.2341485507246377" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/activity_sign_up.xml" value="0.5" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/bid.xml" value="0.67" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/item.xml" value="0.75" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/modify_user.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/mybids.xml" value="0.3015625" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/myitems.xml" value="0.3015625" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/layout/mypage_main.xml" value="0.33" />
+        <entry key="..\:/Users/dydal/Desktop/mobileAppProgramming/HiAuction/app/src/main/res/menu/menu.xml" value="0.27447916666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
