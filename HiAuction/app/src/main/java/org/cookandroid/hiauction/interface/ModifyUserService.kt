@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction.`interface`
 
 import org.cookandroid.hiauction.BidListResponse
+import org.cookandroid.hiauction.DeleteUserResponse
 import org.cookandroid.hiauction.ItemListResponse
 import org.cookandroid.hiauction.ModifyUserResponse
 import retrofit2.Call
@@ -16,4 +17,9 @@ interface ModifyUserService {
         @Field("email") email: String,
         @Field("description") description: String,
     ): Call<ModifyUserResponse>
+
+    @DELETE("api/my/user")
+    fun deleteUser(
+        @Query("user_id") user_id : String,
+    ): Call<DeleteUserResponse>
 }

@@ -3,10 +3,7 @@ package org.cookandroid.hiauction
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.ListView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -17,16 +14,18 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 
 class ModifyUser : AppCompatActivity() {
     var modifyUserResponse: ModifyUserResponse? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.modify_user)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
+        //회원정보수정
         var btnModifyUser = findViewById<Button>(R.id.btnModifyUser)
         btnModifyUser.setOnClickListener {
             var currentPass = findViewById<TextView>(R.id.edtCurrentPass)
@@ -47,8 +46,9 @@ class ModifyUser : AppCompatActivity() {
                     .build()
                 var modifyUserService: ModifyUserService = retrofit.create(ModifyUserService::class.java)
                 //@TO_DO("user id preference에서 받아와야함")
-                modifyUserService.modifyUserInfo("kKTixmkxQM", currentPass.text.toString(), new_pass.text.toString(), email.text.toString(), describe.text.toString()).enqueue(object: Callback<ModifyUserResponse> {
-                    override fun onFailure(call: Call<ModifyUserResponse>, t: Throwable) {
+                var user_id:String? = prefs.getString("id", null)
+                modifyUserService.modifyUserInfo(user_id!!, currentPass.text.toString(), new_pass.text.toString(), email.text.toString(), describe.text.toString()).enqueue(object: Callback<ModifyUserResponse> {
+                    override fun onFailure(call: Call<ModifyUserResponse>, t: Throwable) {0
                         t.message?.let { Log.e("BIDREQUSET", it) }
                         var dialog = AlertDialog.Builder(this@ModifyUser)
                         dialog.setTitle("에러")
@@ -73,7 +73,7 @@ class ModifyUser : AppCompatActivity() {
                             dialog.show()
                         } else if (response.code() == 200) {
                             var dialog = AlertDialog.Builder(this@ModifyUser)
-                            dialog.setTitle("회원정보 수정 오류")
+                            dialog.setTitle("회원정보 수정")
                             dialog.setMessage("수정했습니다")
                             dialog.setNegativeButton("확인" ){ dialog, which ->
                                 finish()
@@ -84,6 +84,9 @@ class ModifyUser : AppCompatActivity() {
                 })
             }
         }
+        
+
+        
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -42,6 +42,8 @@ class MyBids : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        var user_id:String? = LoginActivity.prefs.getString("id", null)
+
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
@@ -49,7 +51,7 @@ class MyBids : AppCompatActivity() {
         var bidService: BidService = retrofit.create(BidService::class.java)
         var bidsArr : ArrayList<BidData>? = null
         Log.d("로그", bidsArr.toString())
-        bidService.getBidItems("kKTixmkxQM").enqueue(object: Callback<BidListResponse> {
+        bidService.getBidItems(user_id!!).enqueue(object: Callback<BidListResponse> {
             override fun onFailure(call: Call<BidListResponse>, t: Throwable) {
                 t.message?.let { Log.e("BIDREQUSET", it) }
                 var dialog = AlertDialog.Builder(this@MyBids)
