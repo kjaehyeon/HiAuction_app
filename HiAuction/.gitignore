@@ -40,4 +40,6 @@ local.properties
 /build.gradle
 /.idea
 /.idea/misc.xml
+/.idea/gradle.xml
+/.idea/compiler.xml
 
