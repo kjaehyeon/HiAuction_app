@@ -7,8 +7,6 @@
     tools:context=".SignUpActivity"
     android:orientation="vertical">
     <!--toolbar-->
-    <!--toolbar-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -50,7 +48,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_person_outline_24" />
             <EditText
-                android:id="@+id/editTextTextPersonName3"
+                android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -67,30 +65,14 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_lock_24" />
             <EditText
-                android:id="@+id/editTextTextPassword2"
+                android:id="@+id/pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
                 android:hint="비밀번호"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_baseline_lock_open_24" />
-            <EditText
-                android:id="@+id/editTextTextPassword3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:hint="비밀번호 확인"/>
-        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +83,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_person_24" />
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -118,7 +100,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_phone_android_24" />
             <EditText
-                android:id="@+id/editTextPhone"
+                android:id="@+id/tel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -135,7 +117,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_email_24" />
             <EditText
-                android:id="@+id/editTextTextEmailAddress"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -152,7 +134,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_view_headline_24" />
             <EditText
-                android:id="@+id/editTextTextPersonName5"
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -173,7 +155,7 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/submit"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/theme"

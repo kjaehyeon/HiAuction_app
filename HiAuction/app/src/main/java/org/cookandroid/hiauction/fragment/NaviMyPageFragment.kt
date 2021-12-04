@@ -1,10 +1,13 @@
 package org.cookandroid.hiauction.fragment
 
+
 import android.content.Intent
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import android.widget.Button
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
@@ -18,9 +21,9 @@ class NaviMyPageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         var view = inflater.inflate(R.layout.mypage_main, container, false)
         setHasOptionsMenu(true)
-
 
         var btnModifyUser = view.findViewById<RelativeLayout>(R.id.btnModifyUser)
         btnModifyUser.setOnClickListener {

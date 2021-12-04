@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_person_outline_24" />
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -52,7 +52,7 @@
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_baseline_lock_open_24" />
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

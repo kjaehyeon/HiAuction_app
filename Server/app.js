@@ -14,10 +14,10 @@ app.use(function(req, res, next) {
 });
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
-app.use('/user', require('./routers/user')(pool));
-app.use('/main', require('./routers/main')(pool));
-app.use('/my', require('./routers/my')(pool));
-app.use('/chat', require('./routers/chat')(pool));
+app.use('/api/user', require('./routers/user')(pool));
+app.use('/api/main', require('./routers/main')(pool));
+app.use('/api/my', require('./routers/my')(pool));
+app.use('/api/chat', require('./routers/chat')(pool));
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
