@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#F1F1F1">
 
-    android:orientation="vertical">
-    <!--toolbar-->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="채팅"
+                android:text="내가 등록한 상품"
                 android:textColor="@color/toolbar"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -31,12 +30,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
-    <!--toolbar-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_roomlist"
+
+    <ListView
+        android:id="@+id/listMyBids"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        tools:listitem="@layout/room_recycler"/>
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

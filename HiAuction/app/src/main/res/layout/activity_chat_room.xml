@@ -22,7 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="옥션이"
+                android:text="옥션이1"
+
                 android:textColor="@color/toolbar"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -36,7 +37,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatlist"
         android:layout_width="match_parent"
-        android:layout_height="600dp" />
+        android:layout_height="600dp"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
