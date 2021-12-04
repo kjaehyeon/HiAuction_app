@@ -30,9 +30,30 @@ module.exports = (pool) => {
                     bid_created_date: bid.Create_date.toLocaleDateString(),
                 }
             });
-            
+
             res.status(200).json({
                 bid_list
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
+    router.put('/info', async (req, res) => {
+        const {body: {id, password, email, description}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('UPDATE MEMBER'
+                                + ' SET Pw = ?, Email = ?, Description = ?'
+                                + ' WHERE U_id = ?', [password, email, description, id]);
+            res.status(200).json({
+                message: 'accepted'
             });
         } catch (err) {
             res.status(500).json({
