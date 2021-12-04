@@ -74,5 +74,62 @@ module.exports = (pool) => {
         }
     });
 
+    router.post('/bid', async (req, res) => {
+        const {body: {user_id, price, item_id}} = req;
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            const [result] = await conn.query('SELECT Min_bid_unit, Current_price,'
+                                            + ' Is_end, Quick_price, U_id'
+                                            + ' FROM ITEM'
+                                            + ' WHERE It_id = ?', [item_id]);
+            const {
+                Min_bid_unit: min_bid_unit,
+                Current_price: current_price,
+                Is_end: is_end,
+                Quick_price: quick_price,
+                U_id: seller_id
+            } = result[0];
+
+            if (is_end !== '0') {
+                res.status(400).json({
+                    message: '유효하지 않은 상품입니다'
+                });
+            } else if (user_id === seller_id) {
+                res.status(400).json({
+                    message: '자신의 상품은 입찰할 수 없습니다'
+                });
+            } else if (price <= current_price) {
+                res.status(400).json({
+                    message: '입찰가는 현재가보다 커야합니다'
+                });
+            } else if (price >= quick_price) {
+                res.status(400).json({
+                    message: '즉시구매 해주세요'
+                });
+            } else if ((price - current_price) % min_bid_unit !== 0) {
+                res.status(400).json({
+                    message: '최소입찰단위를 맞춰주세요'
+                });
+            } else {
+                await conn.query('INSERT INTO BID(Price, U_id, It_id)'
+                                + ' VALUES(?, ?, ?)', [price, user_id, item_id]);
+                await conn.query('UPDATE ITEM'
+                                + ' SET Current_price = ?'
+                                + ' WHERE It_id = ?', [price, item_id]);
+                res.status(200).json({
+                    message: 'accepted'
+                });
+            }
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
+    });
+
     return router;
 };
