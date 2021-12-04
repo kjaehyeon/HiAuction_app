@@ -134,12 +134,12 @@ module.exports = (pool) => {
     router.put('/info', async (req, res) => {
         const {body: {user_id, current_password, new_password, email, description}} = req;
         let conn = null;
-
+        
         try {
             conn = await pool.getConnection(async conn => conn);
             const [result] = await conn.query('SELECT * FROM MEMBER'
-                                                + 'WHERE U_id = ?'
-                                                + 'AND Pw = ?', [user_id, current_password]);
+                                                + ' WHERE U_id = ?'
+                                                + ' AND Pw = ?', [user_id, current_password]);
             
             if (!result.length) {
                 res.status(400).json({
