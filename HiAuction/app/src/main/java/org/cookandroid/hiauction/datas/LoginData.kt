@@ -18,7 +18,7 @@ data class ResultLogin(
     val description: String?,
 
     @SerializedName("address")
-    val address: ArrayList<String>?,
+    val address: List<String>,
 
     @SerializedName("tel")
     val tel: String
