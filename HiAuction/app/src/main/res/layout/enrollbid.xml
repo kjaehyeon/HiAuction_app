@@ -31,7 +31,7 @@
             tools:layout_editor_absoluteX="200dp" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/seller"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
@@ -44,6 +44,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
+            android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
@@ -51,10 +52,11 @@
             android:text="대구 산격동"
             android:textSize="18dp"
             app:layout_constraintStart_toEndOf="@+id/S_profile"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/seller"
             tools:ignore="MissingConstraints" />
 
         <TextView
+            android:id="@+id/itemname"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
