@@ -131,7 +131,6 @@ module.exports = (pool) => {
     router.post('/bid', async (req, res) => {
         const {body: {user_id, price, item_id}} = req;
         let conn = null;
-        console.log(user_id, price, item_id);
         try {
             conn = await pool.getConnection(async conn => conn);
             const [result] = await conn.query('SELECT Min_bid_unit, Current_price,'
@@ -177,7 +176,6 @@ module.exports = (pool) => {
                 });
             }
         } catch (err) {
-            console.log(err)
             res.status(500).json({
                 message: err.message
             });
