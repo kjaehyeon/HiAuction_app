@@ -3,10 +3,10 @@ module.exports = (pool) => {
     const multer = require('multer');
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, 'uploads/')
+            cb(null, 'uploads/');
         },
         filename: function (req, file, cb) {
-            cb(null, file.originalname)
+            cb(null, `${Date.now()}-${req.body.user_id}-${file.originalname}`);
         }
     });
     const upload = multer({ storage: storage })
@@ -187,9 +187,42 @@ module.exports = (pool) => {
     });
 
     router.post('/register', upload.single('img_file'), async (req, res) => {
-        res.status(200).json({
-            message: 'ok'
-        });
+        const {
+            body: {
+                user_id,
+                item_name,
+                category_id,
+                start_price,
+                min_bid_unit,
+                immediate_price,
+                description,
+                address,
+                expired_date,
+                }
+            } = req;
+        const {file: {path}} = req;
+        const img_url = process.env.BASE_URL + path.replace('\\', '/');
+        let conn = null;
+
+        try {
+            conn = await pool.getConnection(async conn => conn);
+            await conn.query('INSERT INTO ITEM (Name, Description, Min_bid_unit, Quick_price,'
+                            + ' Current_price, Expire_Date, Start_price, Img, C_id, U_id, Ad_id)'
+                            + ' VALUES(?, ?, ?, ?, ?, ? ,? ,?, ?, ?, (SELECT Ad_id FROM ADDRESS'
+                                                                    + ' WHERE Name = ?))',
+                                [item_name, description, min_bid_unit, immediate_price,
+                                start_price, expired_date, start_price, img_url, category_id,
+                                user_id, address]);
+            res.status(200).json({
+                message: 'accepted'
+            });
+        } catch (err) {
+            res.status(500).json({
+                message: err.message
+            });
+        } finally {
+            conn.release();
+        }
     });
 
     return router;
