@@ -18,12 +18,32 @@ module.exports = (pool) => {
 
         try {
             conn = await pool.getConnection(async conn => conn);
+            const [result1] = await conn.query('SELECT I.It_id, I.U_id, (SELECT COUNT(*) FROM BID B'
+                                                                +' WHERE B.It_id = I.It_id) Bid_count'
+                                            + ' FROM ITEM I'
+                                            + ' WHERE Expire_date < NOW()'
+                                            + ` AND Is_end = '0'`);
+            for (item of result1) {
+                if (!item.Bid_count) {
+                    await conn.query(`UPDATE ITEM SET Is_end = '2'`
+                                    + ' WHERE It_id = ?', [item.It_id]);
+                } else {
+                    await conn.query(`UPDATE ITEM SET Is_end = '1'`
+                                    + ' WHERE It_id = ?', [item.It_id]);
+                    await conn.query('INSERT INTO ROOM(It_id, Buy_id, Sell_id)'
+                                    + ' VALUES(?, (SELECT U_id FROM BID'
+                                                + ' WHERE It_id = ?'
+                                                + ' ORDER BY Create_date DESC LIMIT 1), ?)',
+                                                [item.It_id, item.It_id, item.U_id]);
+                }
+            }
             const [result] = await conn.query('SELECT It_id, Name, Quick_price,'
                                             + ' Current_price, Create_date, Img'
                                             + ' FROM ITEM'
                                             + ' WHERE c_id = ?'
                                             + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
-                                                            + 'WHERE Name = ?)'
+                                                            + ' WHERE Name = ?)'
+                                            + ' AND Expire_date > NOW()'
                                             + ' ORDER BY Create_date DESC', [category_id, address]);
             const item_list = result.map((item_info) => {
                 return {
