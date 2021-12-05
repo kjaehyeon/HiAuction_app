@@ -27,7 +27,7 @@ module.exports = (pool) => {
     const router = express.Router();
 
     router.get('/items', async (req, res) => {
-        const {query: {category_id, address}} = req;
+        const {query: {category_id, address, key}} = req;
         let conn = null;
 
         try {
@@ -51,14 +51,20 @@ module.exports = (pool) => {
                                                 [item.It_id, item.It_id, item.U_id]);
                 }
             }
-            const [result2] = await conn.query('SELECT It_id, Name, Quick_price,'
-                                            + ' Current_price, Create_date, Img'
-                                            + ' FROM ITEM'
-                                            + ' WHERE c_id = ?'
-                                            + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
-                                                            + ' WHERE Name = ?)'
-                                            + ' AND Expire_date > NOW()'
-                                            + ' ORDER BY Create_date DESC', [category_id, address]);
+
+            let sql = 'SELECT It_id, Name, Quick_price,'
+                        + ' Current_price, Create_date, Img'
+                        + ' FROM ITEM'
+                        + ' WHERE c_id = ?'
+                        + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
+                                        + ' WHERE Name = ?)'
+                        + ' AND Expire_date > NOW()';
+            if (key) {
+                sql += ` AND LOWER(Name) LIKE '%${key.toLowerCase()}%'`
+            }
+            sql += ' ORDER BY Create_date DESC'
+            
+            const [result2] = await conn.query(sql, [category_id, address]);
             const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
