@@ -1,10 +1,12 @@
 package org.cookandroid.hiauction
 
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.datas.ItemDetailData
 import org.cookandroid.hiauction.datas.ResponseData
 import android.app.DatePickerDialog
 import android.content.ClipData
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -75,6 +77,10 @@ class ItemDetail: AppCompatActivity() {
                     var item_create_date = findViewById<TextView>(R.id.itemCurrentDate)
                     var item_expire_date = findViewById<TextView>(R.id.itemExpireDate)
                     var description = findViewById<TextView>(R.id.Item_des)
+                    var itemImmediatPrice = findViewById<TextView>(R.id.Imprice)
+                    var itemCurrentPrice = findViewById<TextView>(R.id.Bidprice)
+                    var itemImg = findViewById<ImageView>(R.id.Itemimage)
+
                     Log.i("프로젝트", "진행1")
                     seller_name.text = item!!.seller_name
                     Log.i("프로젝트", "진행2")
@@ -88,6 +94,9 @@ class ItemDetail: AppCompatActivity() {
                     Log.i("프로젝트", "진행5")
                     description.text = item.description
                     Log.i("프로젝트", type.toString())
+                    itemImmediatPrice.text = "즉시구매가 " + item.immediate_price.toString() + "원"
+                    itemCurrentPrice.text = "현재입찰가 " + item.current_price.toString() + "원"
+                    Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {
@@ -261,6 +270,46 @@ class ItemDetail: AppCompatActivity() {
                                     chatBtn.text = "구매자와 채팅"
                                     chatBtn.setOnClickListener {
                                         // 채팅으로 가야함
+                                        itemDetailService.getChatRoom(item.item_id).enqueue(object : Callback<RoomNumber> {
+                                            override fun onFailure(call: Call<RoomNumber>, t: Throwable) {
+                                                t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                dialog.setTitle("에러")
+                                                dialog.setMessage("호출실패했습니다.")
+                                                dialog.show()
+                                            }
+
+                                            @RequiresApi(Build.VERSION_CODES.M)
+                                            override fun onResponse(call: Call<RoomNumber>, response: Response<RoomNumber>) {
+                                                var dataResponse = response.body()
+                                                when (response.code()) {
+                                                    200 -> {
+                                                        var user_id:String? = LoginActivity.prefs.getString("id", null)
+                                                        var user_name:String? = LoginActivity.prefs.getString("name", null)
+                                                        var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
+                                                            putExtra("room_id", dataResponse!!.room_id)
+                                                            putExtra("item_id", item.item_id)
+                                                            putExtra("item_name", item.item_name)
+                                                            putExtra("address", item.address)
+                                                            putExtra("score", item.seller_rate)
+                                                            putExtra("img_url", item.img_url)
+                                                            putExtra("other_name", user_name)
+                                                            putExtra("other_id", user_id)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                        }
+                                                        startActivity(chatIntent)
+                                                    }
+                                                    500 -> {
+                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                        dialog.setTitle("내부 오류 발생")
+                                                        dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                        dialog.setNegativeButton("확인", null)
+                                                        dialog.show()
+                                                    }
+                                                }
+                                            }
+                                        })
                                     }
                                     var endItemBtn = findViewById<Button>(R.id.Imbid)
                                     endItemBtn.setBackgroundColor(resources.getColor(R.color.itemFinish, null))
@@ -298,6 +347,14 @@ class ItemDetail: AppCompatActivity() {
                                                                 divider.visibility = View.GONE
                                                                 var Bidprice = findViewById<TextView>(R.id.Bidprice)
                                                                 Bidprice.text = "낙찰가 " + item.current_price
+                                                                finish() //인텐트 종료
+                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                                val intent = getIntent() //인텐트
+                                                                intent.putExtra("type", 2)
+                                                                intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                                                                startActivity(intent) //액티비티 열기
+                                                                overridePendingTransition(0, 0
+                                                                ) //인텐트 효과 없애기
                                                             }
                                                             500 -> {
                                                                 var dialog = AlertDialog.Builder(this@ItemDetail)
@@ -308,7 +365,7 @@ class ItemDetail: AppCompatActivity() {
                                                         }
                                                     }
                                                 })
-                                        }
+                                        }.show()
 
                                     }
                                 } // 채팅버튼, 거래완료 버튼 표시

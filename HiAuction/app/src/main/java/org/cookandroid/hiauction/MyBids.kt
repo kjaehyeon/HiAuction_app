@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction
 
 import android.content.Context
+import com.bumptech.glide.Glide
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -113,6 +114,7 @@ class MyBids : AppCompatActivity() {
             bidAddress.text = bid.address
             bidDate.text = bid.bid_create_date
             bidPrice.text = "입찰가 " + bid.bid_price.toString() + " 원"
+            Glide.with(this@MyBids).load(bid.img_url).into(bidImg)
             Log.d("is_end", bid.is_end)
             //TODO("bid state 구분해서 if/else로 코드 구현해야함")
             // 낙찰 유력 : 1, 낙찰 완료 : 2, 판매중인데 낙찰 실패 : 3, 낙찰완료인데 낙찰실패 : 4, 후기등록 필요인데 낙찰 실패 : 5

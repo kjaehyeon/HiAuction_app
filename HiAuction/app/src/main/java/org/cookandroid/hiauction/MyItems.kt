@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction
 
 import android.content.Context
+import com.bumptech.glide.Glide
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -117,6 +118,7 @@ class MyItems : AppCompatActivity() {
             itemAddress.text = item.address
             itemDate.text = item.create_date
             itemPrice.text = "현재가 " + item.item_price.toString() + " 원"
+            Glide.with(this@MyItems).load(item.img_url).into(itemImg)
             when (item.is_end){
                 "0" -> {
                     itemState.text = "판매중"

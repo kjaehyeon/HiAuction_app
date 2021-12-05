@@ -10,11 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import org.cookandroid.hiauction.*
+import org.cookandroid.hiauction.LoginActivity.Companion.addresses
 import org.cookandroid.hiauction.datas.DeleteUserResponse
 import org.cookandroid.hiauction.interfaces.ModifyUserService
 import retrofit2.Call
@@ -34,7 +36,20 @@ class NaviMyPageFragment : Fragment() {
 
         var view = inflater.inflate(R.layout.mypage_main, container, false)
         setHasOptionsMenu(true)
-
+        var user_id:String? = LoginActivity.prefs.getString("id", null)
+        var user_name:String? = LoginActivity.prefs.getString("name", null)
+        var addressCat:String = ""
+        for (address in addresses)
+        {
+            addressCat += address
+            addressCat += " | "
+        }
+        var userName = view.findViewById<TextView>(R.id.userName)
+        userName.text = user_name
+        var userAddress = view.findViewById<TextView>(R.id.userAddress)
+        userAddress.text = addressCat
+        var userId = view.findViewById<TextView>(R.id.userId)
+        userId.text = "@" + user_id
         var btnModifyUser = view.findViewById<RelativeLayout>(R.id.btnModifyUser)
         btnModifyUser.setOnClickListener {
             var intent = activity?.let {

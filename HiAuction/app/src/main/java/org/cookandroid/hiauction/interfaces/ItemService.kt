@@ -25,6 +25,6 @@ interface ItemService {
         @Part("description") description: RequestBody,
         @Part("address") address : RequestBody,
         @Part("expired_date") expired_date : RequestBody,
-        @Part image : MultipartBody.Part
+        @Part img_file : MultipartBody.Part
     ): Call<ItemRegisterResult>
 }
