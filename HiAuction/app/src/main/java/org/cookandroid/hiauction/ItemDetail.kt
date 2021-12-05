@@ -259,6 +259,46 @@ class ItemDetail: AppCompatActivity() {
                                     chatBtn.text = "구매자와 채팅"
                                     chatBtn.setOnClickListener {
                                         // 채팅으로 가야함
+                                        itemDetailService.getChatRoom(item.item_id).enqueue(object : Callback<RoomNumber> {
+                                            override fun onFailure(call: Call<RoomNumber>, t: Throwable) {
+                                                t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                dialog.setTitle("에러")
+                                                dialog.setMessage("호출실패했습니다.")
+                                                dialog.show()
+                                            }
+
+                                            @RequiresApi(Build.VERSION_CODES.M)
+                                            override fun onResponse(call: Call<RoomNumber>, response: Response<RoomNumber>) {
+                                                var dataResponse = response.body()
+                                                when (response.code()) {
+                                                    200 -> {
+                                                        var user_id:String? = LoginActivity.prefs.getString("id", null)
+                                                        var user_name:String? = LoginActivity.prefs.getString("name", null)
+                                                        var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
+                                                            putExtra("room_id", dataResponse!!.room_id)
+                                                            putExtra("item_id", item.item_id)
+                                                            putExtra("item_name", item.item_name)
+                                                            putExtra("address", item.address)
+                                                            putExtra("score", item.seller_rate)
+                                                            putExtra("img_url", item.img_url)
+                                                            putExtra("other_name", user_name)
+                                                            putExtra("other_id", user_id)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                        }
+                                                        startActivity(chatIntent)
+                                                    }
+                                                    500 -> {
+                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                        dialog.setTitle("내부 오류 발생")
+                                                        dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                        dialog.setNegativeButton("확인", null)
+                                                        dialog.show()
+                                                    }
+                                                }
+                                            }
+                                        })
                                     }
                                     var endItemBtn = findViewById<Button>(R.id.Imbid)
                                     endItemBtn.setBackgroundColor(resources.getColor(R.color.itemFinish, null))
