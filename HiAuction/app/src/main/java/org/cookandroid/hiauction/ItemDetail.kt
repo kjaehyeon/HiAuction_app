@@ -107,8 +107,12 @@ class ItemDetail: AppCompatActivity() {
                             Imbid.setOnClickListener {
                                 Log.i("프로젝트", "listener event")
                                 val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
+                                Log.i("efef","now2")
                                 bidintent.putExtra("Id",id)
-                                startActivityForResult(bidintent,0)
+                                bidintent.putExtra("address",item.address)
+                                bidintent.putExtra("itemname",item.item_name)
+                                bidintent.putExtra("seller",item!!.seller_name)
+                                startActivity(bidintent)
                             }
                         }
                         //마이페이지 내 입찰목록에서 상품 상세페이지 접근
@@ -183,6 +187,7 @@ class ItemDetail: AppCompatActivity() {
                                     divider.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
                                     Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.setPadding(10, 20, 10, 40)
                                 }
                                 // 후기등록 필요
                                 3 -> {
