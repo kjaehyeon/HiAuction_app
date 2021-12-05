@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -86,7 +87,7 @@ class NaviHomeFragment : Fragment() {
             intent.putExtra("type",1)
             startActivity(intent)
         }
-        var retrofit = Retrofit.Builder()
+        /*var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -102,10 +103,16 @@ class NaviHomeFragment : Fragment() {
                 itemListResponse = response.body()
                 itemArr = itemListResponse?.item_list ?: ArrayList()
             }
-        }
+        }*/
 
         return view
     }
+
+    override fun onResume() {
+        fragmentManager?.let { refreshFragment(this, it) }
+        return super.onResume()
+    }
+
     fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
         var ft: FragmentTransaction = fragmentManager.beginTransaction()
         ft.detach(fragment).attach(fragment).commit()
