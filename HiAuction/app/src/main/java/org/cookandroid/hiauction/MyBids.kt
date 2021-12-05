@@ -18,16 +18,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.cookandroid.hiauction.`interface`.BidService
+import org.cookandroid.hiauction.datas.BidData
+import org.cookandroid.hiauction.datas.BidListResponse
+import org.cookandroid.hiauction.interfaces.BidService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDate
 
 class MyBids : AppCompatActivity() {
-    var bidListResponse:BidListResponse? = null
+    var bidListResponse: BidListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
 //    var bidsArr = arrayListOf<BidData>(
 //        BidData(1, "최신 맥북 프로", 2500000, "","0", "대현동", 1, 2600000, "2021-06-21"),

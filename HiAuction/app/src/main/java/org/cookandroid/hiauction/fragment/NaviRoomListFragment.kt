@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.*
+import org.cookandroid.hiauction.datas.RoomData
+import org.cookandroid.hiauction.interfaces.ChatAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,9 +63,11 @@ class NaviRoomListFragment : Fragment() {
                     while(iterator.hasNext()){
                         var data = iterator.next()
                         datas.apply {
-                            add(RoomData(other_id=data.other_id, other_name = data.other_name, room_id = data.room_id,
+                            add(
+                                RoomData(other_id=data.other_id, other_name = data.other_name, room_id = data.room_id,
                                 item_id = data.item_id, item_name = data.item_name, reg_date = data.reg_date, content = data.content,
-                                address = data.address, score = data.score, img_url = data.img_url))
+                                address = data.address, score = data.score, img_url = data.img_url)
+                            )
 
                             chatroomadapter.datas = datas
                             chatroomadapter.notifyDataSetChanged()

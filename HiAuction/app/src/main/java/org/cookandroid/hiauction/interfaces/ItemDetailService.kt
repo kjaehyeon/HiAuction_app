@@ -1,6 +1,9 @@
-package org.cookandroid.hiauction.`interface`
+package org.cookandroid.hiauction.interfaces
+import org.cookandroid.hiauction.datas.ItemDetailData
+import org.cookandroid.hiauction.datas.ItemDetailResponse
+import org.cookandroid.hiauction.datas.ResponseData
+import org.cookandroid.hiauction.datas.RoomNumber
 
-import org.cookandroid.hiauction.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -46,5 +49,5 @@ interface ItemDetailService {
     @GET("api/my/room")
     fun getChatRoom(
         @Query("item_id") item_id: Int,
-    ): Call<roomData>
+    ): Call<RoomNumber>
 }

@@ -1,7 +1,10 @@
 package org.cookandroid.hiauction
 
+import org.cookandroid.hiauction.datas.ItemDetailData
+import org.cookandroid.hiauction.datas.ResponseData
 import android.app.DatePickerDialog
 import android.content.ClipData
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,23 +13,21 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import org.cookandroid.hiauction.`interface`.BidService
-import org.cookandroid.hiauction.`interface`.ItemDetailService
+import org.cookandroid.hiauction.interfaces.ItemDetailService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.content.Intent
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.rating.view.*
+import org.cookandroid.hiauction.datas.RoomNumber
 import java.util.*
 import kotlin.properties.Delegates
-
-
 class ItemDetail: AppCompatActivity() {
-    var itemDetailData:ItemDetailData? = null
+    var itemDetailData: ItemDetailData? = null
+
     var type :Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +103,8 @@ class ItemDetail: AppCompatActivity() {
                                     chatBtn.text = "판매자와 채팅"
                                     chatBtn.setOnClickListener {
                                         // 채팅으로 가야함
-                                        itemDetailService.getChatRoom(item.item_id).enqueue(object : Callback<roomData> {
-                                            override fun onFailure(call: Call<roomData>, t: Throwable) {
+                                        itemDetailService.getChatRoom(item.item_id).enqueue(object : Callback<RoomNumber> {
+                                            override fun onFailure(call: Call<RoomNumber>, t: Throwable) {
                                                 t.message?.let { Log.e("ITEMREQUSET", it) }
                                                 var dialog = AlertDialog.Builder(this@ItemDetail)
                                                 dialog.setTitle("에러")
@@ -112,11 +113,23 @@ class ItemDetail: AppCompatActivity() {
                                             }
 
                                             @RequiresApi(Build.VERSION_CODES.M)
-                                            override fun onResponse(call: Call<roomData>, response: Response<roomData>) {
-                                                var room_id = response.body()
+                                            override fun onResponse(call: Call<RoomNumber>, response: Response<RoomNumber>) {
+                                                var dataResponse = response.body()
                                                 when (response.code()) {
                                                     200 -> {
-                                                        
+                                                        var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
+                                                            putExtra("room_id", dataResponse!!.room_id)
+                                                            putExtra("item_id", item.item_id)
+                                                            putExtra("item_name", item.item_name)
+                                                            putExtra("address", item.address)
+                                                            putExtra("score", item.seller_rate)
+                                                            putExtra("img_url", item.img_url)
+                                                            putExtra("other_name", item.seller_name)
+                                                            putExtra("other_id", item.seller_id)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                        }
+                                                        startActivity(chatIntent)
                                                     }
                                                     500 -> {
                                                         var dialog = AlertDialog.Builder(this@ItemDetail)

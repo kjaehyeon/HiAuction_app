@@ -109,7 +109,7 @@ module.exports = (pool) => {
             switch (action) {
                 case 'extension':
                     const {body: {item_id: extension_item_id, expired_date}} = req;
-                    await conn.query('UPDATE ITEM SET Expire_date = ?'
+                    await conn.query(`UPDATE ITEM SET Expire_date = ?, Is_end = '0'`
                                     + ' WHERE It_id = ?', [expired_date, extension_item_id]);
                     break;
                 case 'completion':
@@ -163,14 +163,15 @@ module.exports = (pool) => {
     });
 
     router.post('/rating', async (req, res) => {
-        const {body: {seller_id, buyer_id, score, description}} = req;
+        const {body: {item_id, seller_id, buyer_id, score, description}} = req;
         let conn = null;
 
         try {
             conn = await pool.getConnection(async conn => conn);
             await conn.query('INSERT INTO RATING(S_id, Buy_id, Score, Description)'
                             + ' VALUES(?, ?, ?, ?)', [seller_id, buyer_id, score, description]);
-            
+            await conn.query(`UPDATE ITEM SET Is_end = '4'`
+                            + ' WHERE It_id = ?', [item_id]);
             res.status(200).json({
                 message: 'accepted'
             });

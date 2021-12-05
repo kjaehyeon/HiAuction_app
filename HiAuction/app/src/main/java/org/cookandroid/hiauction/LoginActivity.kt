@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import org.cookandroid.hiauction.interfaces.LoginAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
