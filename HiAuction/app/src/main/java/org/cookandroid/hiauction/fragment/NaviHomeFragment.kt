@@ -1,36 +1,20 @@
 package org.cookandroid.hiauction.fragment
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.fragement_navi_home.*
-import okhttp3.internal.notify
 import org.cookandroid.hiauction.*
 import org.cookandroid.hiauction.ListAdapter
-import org.cookandroid.hiauction.LoginActivity.Companion.addresses
-import org.cookandroid.hiauction.datas.*
-import org.cookandroid.hiauction.interfaces.BidService
-import org.cookandroid.hiauction.interfaces.ItemListService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class NaviHomeFragment : Fragment() {

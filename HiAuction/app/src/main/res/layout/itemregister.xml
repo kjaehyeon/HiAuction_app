@@ -16,7 +16,7 @@
             <TextView
                 android:id="@+id/tv_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="상품 등록"
                 android:textColor="@color/toolbar"
@@ -29,6 +29,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ImageButton
+        android:id="@+id/imgbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
@@ -39,36 +40,162 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_margin="10dp">
+        android:gravity="center">
         <Spinner
-            android:id="@+id/category"
+            android:id="@+id/categorySpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:autofillHints="카테고리"/>
         <Spinner
-            android:id="@+id/address"
+            android:id="@+id/addressSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:autofillHints="등록할 주소"/>
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="게시글 제목"
+        android:layout_marginHorizontal="10dp"/>
 
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:layout_marginHorizontal="10dp"
+        android:hint="게시글 내용을 입력해주세요."
+        android:background="@drawable/register_description"/>
+    <!--start_price, min_bid_unit, immediate_price, expire_date-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="시작가"/>
+        <EditText
+            android:id="@+id/start_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:layout_weight="9" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="원"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="즉시낙찰가" />
+        <EditText
+            android:id="@+id/immediate_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:layout_weight="10"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="원"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="최소 입찰 단위" />
+        <EditText
+            android:id="@+id/min_bid_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:layout_weight="10"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="원"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:id="@+id/selected_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="3dp"
+            android:background="@drawable/register_description"
+            android:text=" 2021-12-21"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/datebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:text="만료 날짜 선택"
+            android:layout_marginHorizontal="10dp"
+            android:drawableRight="@drawable/ic_baseline_calendar_today_24"
+            android:backgroundTint="@color/white"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/submit"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
         android:textSize="20sp"
         android:textStyle="bold"
         android:backgroundTint="@color/signup"
