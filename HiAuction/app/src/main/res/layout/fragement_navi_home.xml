@@ -13,6 +13,7 @@
         android:layout_height="50dp"
         android:layout_margin="20dp"
         android:background="#FFF8F8F8"
+        android:imeOptions="actionSearch"
         android:hint="상품명 등"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

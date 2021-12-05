@@ -48,7 +48,6 @@
             android:label="회원정보 수정" />
 
         <activity android:name=".Category" />
-        <activity android:name=".ItemList" />
         <activity android:name=".ItemRegister" />
         <activity android:name=".EnrollBid"/>
         <activity
