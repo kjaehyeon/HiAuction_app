@@ -7,14 +7,14 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.cookandroid.hiauction.`interface`.ItemService
-import org.cookandroid.hiauction.`interface`.ModifyUserService
+import org.cookandroid.hiauction.interfaces.ModifyUserService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
+import org.cookandroid.hiauction.fragment.ModifyUserResponse
 
 class ModifyUser : AppCompatActivity() {
     var modifyUserResponse: ModifyUserResponse? = null

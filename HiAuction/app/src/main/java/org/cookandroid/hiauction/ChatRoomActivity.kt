@@ -15,14 +15,14 @@ import com.bumptech.glide.Glide
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.json.JSONArray
+import org.cookandroid.hiauction.datas.Chatdata
+import org.cookandroid.hiauction.interfaces.ChatAPI
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.reflect.typeOf
 
 class ChatRoomActivity : AppCompatActivity() {
     lateinit var chatAdapter: ChatAdapter
@@ -103,25 +103,31 @@ class ChatRoomActivity : AppCompatActivity() {
             if(it[0].equals(id)){
                 previous = 1
                 datas.apply{
-                    add(Chatdata(sender_id= it[0].toString(),
+                    add(
+                        Chatdata(sender_id= it[0].toString(),
                         reg_date = ampm+" "+hours[0]+":"+hours[1],
-                        content=it[2].toString(), type=1))
+                        content=it[2].toString(), type=1)
+                    )
                     chatAdapter.datas = datas
                     chatAdapter.notifyDataSetChanged()
                 }
             }else if(!it[0].equals(id) && previous == 1){
                 previous = 2
                 datas.apply{
-                    add(Chatdata(sender_id= it[0].toString(), reg_date =ampm+" "+hours[0]+":"+hours[1],
-                        content=it[2].toString(), type=2))
+                    add(
+                        Chatdata(sender_id= it[0].toString(), reg_date =ampm+" "+hours[0]+":"+hours[1],
+                        content=it[2].toString(), type=2)
+                    )
                     chatAdapter.datas = datas
                     chatAdapter.notifyDataSetChanged()
                 }
             }else{
                 previous = 3
                 datas.apply{
-                    add(Chatdata(sender_id= it[0].toString(), reg_date = ampm+" "+hours[0]+":"+hours[1],
-                        content=it[2].toString(), type=3))
+                    add(
+                        Chatdata(sender_id= it[0].toString(), reg_date = ampm+" "+hours[0]+":"+hours[1],
+                        content=it[2].toString(), type=3)
+                    )
                     chatAdapter.datas = datas
                     chatAdapter.notifyDataSetChanged()
                 }
@@ -167,24 +173,30 @@ class ChatRoomActivity : AppCompatActivity() {
                         if(data.sender_id.equals(id)){
                             previous = 1
                             datas.apply {
-                                add(Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
-                                    content=data.content, type=1))
+                                add(
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
+                                    content=data.content, type=1)
+                                )
                                 chatAdapter.datas = datas
                                 chatAdapter.notifyDataSetChanged()
                             }
                         }else if(!data.sender_id.equals(id) && previous == 1){
                             previous = 2
                             datas.apply {
-                                add(Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
-                                    content=data.content, type=2))
+                                add(
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
+                                    content=data.content, type=2)
+                                )
                                 chatAdapter.datas = datas
                                 chatAdapter.notifyDataSetChanged()
                             }
                         }else{
                             previous = 3
                             datas.apply {
-                                add(Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
-                                    content=data.content, type=3))
+                                add(
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
+                                    content=data.content, type=3)
+                                )
                                 chatAdapter.datas = datas
                                 chatAdapter.notifyDataSetChanged()
                             }
