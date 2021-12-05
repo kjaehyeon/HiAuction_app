@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.fragement_navi_home.*
 import org.cookandroid.hiauction.*
 import org.cookandroid.hiauction.ListAdapter
+import org.cookandroid.hiauction.LoginActivity.Companion.addresses
 import org.cookandroid.hiauction.datas.*
 import org.cookandroid.hiauction.interfaces.ItemListService
 import retrofit2.Call
@@ -34,8 +35,9 @@ class NaviHomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var addressess : List<String> = LoginActivity.addresses
-        var user_id:String? = LoginActivity.prefs.getString("id", null)
+        /*addresses
+        for(address in addresses)*/
+        /*var user_id:String? = LoginActivity.prefs.getString("id", null)*/
 
         val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
         var edtSearch = view.findViewById<EditText>(R.id.edtSearch) //검색창
