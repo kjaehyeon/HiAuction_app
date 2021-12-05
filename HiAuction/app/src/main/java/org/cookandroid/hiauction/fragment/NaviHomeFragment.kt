@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
@@ -29,6 +30,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NaviHomeFragment : Fragment() {
     lateinit var test : TextView
     var category_id: Int = 1
+    var itemArr : ArrayList<ItemListData>? = null
+    lateinit var itemAdapter:ListAdapter
+    lateinit var edtSearch:EditText
+    lateinit var itemListService: ItemListService
+    lateinit var lv:ListView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,13 +48,18 @@ class NaviHomeFragment : Fragment() {
         )*/
         //test = view.findViewById(R.id.textView)
         //test.text = prefs.getString("id", null)
-        var edtSearch = view.findViewById<EditText>(R.id.edtSearch) //검색창
+        edtSearch = view.findViewById<EditText>(R.id.edtSearch) //검색창
         var card = view.findViewById<CardView>(R.id.cardview)
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
         var btnWrite = view.findViewById<ImageButton>(R.id.btnWrite) //물품 등록 버튼
         var Location = view.findViewById<TextView>(R.id.Location) //사용자 주소
+        var retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.0.17:4000")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        itemListService = retrofit.create(ItemListService::class.java)
+        //var search = edtSearch.toString() // 검색 내용
 
-        var search = edtSearch.toString() // 검색 내용
 
         var regintent = Intent(activity, ItemRegister::class.java)
         var categoryintent = activity?.let {
@@ -64,8 +75,8 @@ class NaviHomeFragment : Fragment() {
         btnWrite.setOnClickListener{
             startActivity(regintent)
         }
-        var itemArr : ArrayList<ItemListData>? = null
-        val lv = view.findViewById<View>(R.id.lv) as ListView
+
+        lv = view.findViewById<View>(R.id.lv) as ListView
         lv.setOnItemClickListener { adapterView, view, i, l ->
             val clickedItem = itemArr?.get(i)?.item_id
             val intent = Intent(activity,ItemDetail::class.java)
@@ -73,11 +84,7 @@ class NaviHomeFragment : Fragment() {
             intent.putExtra("type",1)
             startActivity(intent)
         }
-        var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.17:4000")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        var itemListService: ItemListService = retrofit.create(ItemListService::class.java)
+
 
         var address : String = "동인동"
         var itemListResponse: ListResponse? = null
@@ -94,7 +101,7 @@ class NaviHomeFragment : Fragment() {
                 Log.i("프로젝트",response.code().toString())
                 itemArr = itemListResponse?.item_list ?: ArrayList()
                 Log.i("프로젝트",itemArr.toString())
-                var itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }
+                itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
                 lv.adapter = itemAdapter
             }
         })
@@ -102,8 +109,46 @@ class NaviHomeFragment : Fragment() {
     }
 
     override fun onResume() {
-        fragmentManager?.let { refreshFragment(this, it) }
-        return super.onResume()
+        //fragmentManager?.let { refreshFragment(this, it) }
+        super.onResume()
+        edtSearch.setOnEditorActionListener { textView, action, keyEvent ->
+            Log.i("프로젝트", "검색바")
+            var handled = false
+            Log.i("프로젝트", action.toString())
+            if (action == EditorInfo.IME_ACTION_SEARCH) {
+                Log.i("프로젝트", "검색 이벤트 발생")
+                var searchData = edtSearch.text.toString()
+                var address = "동인동"
+                var itemListResponse: ListResponse? = null
+                itemListService.getItemList(category_id!!, address, searchData)
+                    .enqueue(object : Callback<ListResponse> {
+                        override fun onFailure(call: Call<ListResponse>, t: Throwable) {
+                            t.message?.let { Log.e("BIDREQUSET", it) }
+                            var dialog = activity?.let { AlertDialog.Builder(it) }
+                            dialog!!.setTitle("에러")
+                            dialog.setMessage("호출실패했습니다.")
+                            dialog.show()
+                        }
+
+                        override fun onResponse(
+                            call: Call<ListResponse>,
+                            response: Response<ListResponse>
+                        ) {
+                            itemListResponse = response.body()
+                            Log.i("프로젝트", response.code().toString())
+                            itemArr!!.clear()
+                            itemArr!!.addAll(itemListResponse?.item_list ?: ArrayList())
+                            Log.i("프로젝트", itemArr.toString())
+                            itemAdapter.notifyDataSetChanged()
+                            //lv.adapter = itemAdapter;
+                            //var ft = parentFragmentManager.beginTransaction()
+                            //ft!!.detach(this@NaviHomeFragment).attach(this@NaviHomeFragment).commit()
+                        }
+                    })
+                handled = true
+            }
+            handled
+        }
     }
 
     fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
