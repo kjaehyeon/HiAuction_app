@@ -2,6 +2,7 @@ package org.cookandroid.hiauction.interfaces
 import org.cookandroid.hiauction.datas.ItemDetailData
 import org.cookandroid.hiauction.datas.ItemDetailResponse
 import org.cookandroid.hiauction.datas.ResponseData
+import org.cookandroid.hiauction.datas.RoomNumber
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -41,5 +42,12 @@ interface ItemDetailService {
         @Field("buyer_id") buyer_id: String,
         @Field("score") score :Float,
         @Field("description") description: String,
+        @Field("item_id") item_id: Int,
     ): Call<ResponseData>
+
+    // 채팅방 번호 받기
+    @GET("api/my/room")
+    fun getChatRoom(
+        @Query("item_id") item_id: Int,
+    ): Call<RoomNumber>
 }

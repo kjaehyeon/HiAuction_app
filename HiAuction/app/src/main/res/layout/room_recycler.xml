@@ -41,6 +41,15 @@
                 android:textSize="12sp"
                 android:layout_marginLeft="5dp" />
             <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="."
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"/>
+            <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,10 +71,12 @@
 
     <ImageView
         android:id="@+id/itemimg"
-        android:layout_width="50dp"
+        android:layout_width="40dp"
         android:layout_height="50dp"
         app:srcCompat="@drawable/test"
         android:layout_gravity="center"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginRight="20dp"
+        />
 
 </LinearLayout>
