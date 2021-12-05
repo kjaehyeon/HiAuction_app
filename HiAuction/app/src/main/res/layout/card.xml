@@ -8,62 +8,77 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
         android:layout_marginRight="18dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
         app:cardCornerRadius="10dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView android:id="@+id/Itemimage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="10dp"
+
+            <ImageView
+                android:id="@+id/Itemimage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_marginBottom="10dp"
+                android:src="@mipmap/ic_launcher" />
+
             <LinearLayout
                 android:id="@+id/info"
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/Itemimage"
-                android:orientation="vertical"
-                android:gravity="center">
-                <TextView android:id="@+id/Item_name"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/Item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="Nike air Jordon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:textSize="17dp"
                     android:textStyle="bold"
-                    android:layout_marginBottom="10dp"/>
-                <TextView android:id="@+id/Item_location"
-                    android:text="대구 산격동"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/Item_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"/>
-                <TextView android:id="@+id/Bidprice"
-                    android:text="즉시구매가 165,000"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="14dp"
+                    android:text="대구 산격동" />
+
+                <TextView
+                    android:id="@+id/Bidprice"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-                <TextView android:id="@+id/Imprice"
-                    android:text="현재입찰가 124,000"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="즉시구매가 165,000" />
+
+                <TextView
+                    android:id="@+id/Imprice"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:text="현재입찰가 124,000" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="50dp"
+
+            <TextView
+                android:id="@+id/Regdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/info"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/Regdate"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="1일전" />
-            </LinearLayout>
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:layout_alignParentRight="true"
+                android:text="1일전" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

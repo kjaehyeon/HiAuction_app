@@ -9,6 +9,7 @@ interface ItemListService {
     @GET("/api/main/items")
     fun getItemList(
         @Query("category_id") category_id: Int,
-        @Query("address_id") address_id: String
+        @Query("address") address: String,
+        @Query("key") key:String? = null,
     ): Call<ListResponse>
 }
