@@ -1,3 +1,17 @@
+const leftPad = (value) => { 
+    if (value >= 10) { 
+        return value; 
+    } 
+    return `0${value}`; 
+};
+
+const toStringByFormatting = (source, delimiter = '-') => { 
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+    return [year, month, day].join(delimiter);
+};
+
 module.exports = (pool) => {
     const express = require('express');
     const multer = require('multer');
@@ -37,7 +51,7 @@ module.exports = (pool) => {
                                                 [item.It_id, item.It_id, item.U_id]);
                 }
             }
-            const [result] = await conn.query('SELECT It_id, Name, Quick_price,'
+            const [result2] = await conn.query('SELECT It_id, Name, Quick_price,'
                                             + ' Current_price, Create_date, Img'
                                             + ' FROM ITEM'
                                             + ' WHERE c_id = ?'
@@ -45,7 +59,7 @@ module.exports = (pool) => {
                                                             + ' WHERE Name = ?)'
                                             + ' AND Expire_date > NOW()'
                                             + ' ORDER BY Create_date DESC', [category_id, address]);
-            const item_list = result.map((item_info) => {
+            const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
                     name: item_info.name,
@@ -83,7 +97,6 @@ module.exports = (pool) => {
                                             + ' WHERE I.U_id = M.U_id'
                                             + ' AND I.Ad_id = A.Ad_id'
                                             + ' AND I.It_id = ?', [item_id]);
-            
             res.status(200).json({
                 seller_id: result[0].U_id,
                 seller_name: result[0].User_name,
@@ -93,8 +106,8 @@ module.exports = (pool) => {
                 item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
-                created_date: result[0].Create_date.toLocaleDateString(),
-                expired_date: result[0].Expire_date.toLocaleDateString(),
+                created_date: toStringByFormatting(result[0].Create_date),
+                expired_date: toStringByFormatting(result[0].Expire_date),
                 description: result[0].Description,
                 img_url: result[0].Img
             });
