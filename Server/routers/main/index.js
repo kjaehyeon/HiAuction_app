@@ -1,3 +1,17 @@
+const leftPad = (value) => { 
+    if (value >= 10) { 
+        return value; 
+    } 
+    return `0${value}`; 
+};
+
+const toStringByFormatting = (source, delimiter = '-') => { 
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+    return [year, month, day].join(delimiter);
+};
+
 module.exports = (pool) => {
     const express = require('express');
     const multer = require('multer');
@@ -13,19 +27,45 @@ module.exports = (pool) => {
     const router = express.Router();
 
     router.get('/items', async (req, res) => {
-        const {query: {category_id, address}} = req;
+        const {query: {category_id, address, key}} = req;
         let conn = null;
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            const [result] = await conn.query('SELECT It_id, Name, Quick_price,'
-                                            + ' Current_price, Create_date, Img'
-                                            + ' FROM ITEM'
-                                            + ' WHERE c_id = ?'
-                                            + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
-                                                            + 'WHERE Name = ?)'
-                                            + ' ORDER BY Create_date DESC', [category_id, address]);
-            const item_list = result.map((item_info) => {
+            const [result1] = await conn.query('SELECT I.It_id, I.U_id, (SELECT COUNT(*) FROM BID B'
+                                                                +' WHERE B.It_id = I.It_id) Bid_count'
+                                            + ' FROM ITEM I'
+                                            + ' WHERE Expire_date < NOW()'
+                                            + ` AND Is_end = '0'`);
+            for (item of result1) {
+                if (!item.Bid_count) {
+                    await conn.query(`UPDATE ITEM SET Is_end = '2'`
+                                    + ' WHERE It_id = ?', [item.It_id]);
+                } else {
+                    await conn.query(`UPDATE ITEM SET Is_end = '1'`
+                                    + ' WHERE It_id = ?', [item.It_id]);
+                    await conn.query('INSERT INTO ROOM(It_id, Buy_id, Sell_id)'
+                                    + ' VALUES(?, (SELECT U_id FROM BID'
+                                                + ' WHERE It_id = ?'
+                                                + ' ORDER BY Create_date DESC LIMIT 1), ?)',
+                                                [item.It_id, item.It_id, item.U_id]);
+                }
+            }
+
+            let sql = 'SELECT It_id, Name, Quick_price,'
+                        + ' Current_price, Create_date, Img'
+                        + ' FROM ITEM'
+                        + ' WHERE c_id = ?'
+                        + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
+                                        + ' WHERE Name = ?)'
+                        + ' AND Expire_date > NOW()';
+            if (key) {
+                sql += ` AND LOWER(Name) LIKE '%${key.toLowerCase()}%'`
+            }
+            sql += ' ORDER BY Create_date DESC'
+            
+            const [result2] = await conn.query(sql, [category_id, address]);
+            const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
                     name: item_info.name,
@@ -63,7 +103,6 @@ module.exports = (pool) => {
                                             + ' WHERE I.U_id = M.U_id'
                                             + ' AND I.Ad_id = A.Ad_id'
                                             + ' AND I.It_id = ?', [item_id]);
-            
             res.status(200).json({
                 seller_id: result[0].U_id,
                 seller_name: result[0].User_name,
@@ -73,8 +112,8 @@ module.exports = (pool) => {
                 item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
-                created_date: result[0].Create_date.toLocaleDateString(),
-                expired_date: result[0].Expire_date.toLocaleDateString(),
+                created_date: toStringByFormatting(result[0].Create_date),
+                expired_date: toStringByFormatting(result[0].Expire_date),
                 description: result[0].Description,
                 img_url: result[0].Img
             });
@@ -174,6 +213,9 @@ module.exports = (pool) => {
                                 + ' SET Current_price = Quick_price,'
                                 + ` Is_end = '1'`
                                 + ' WHERE It_id = ?', [item_id]);
+                await conn.query('INSERT INTO ROOM(It_id, Buy_id, Sell_id)'
+                                + ' VALUES(?, ?, (SELECT U_id FROM ITEM'
+                                                + ' WHERE It_id = ?))', [item_id, user_id, item_id]);
                 res.status(200).json({
                     message: 'accepted'
                 });

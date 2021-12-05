@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     if(response.isSuccessful) {
                         prefs.edit().putString("id", response.body()?.id).apply()
                         prefs.edit().putString("name", response.body()?.name).apply()
-                        addresses = response.body()!!.address
+                        addresses = response.body()!!.address!!
                         var intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)
                     }
