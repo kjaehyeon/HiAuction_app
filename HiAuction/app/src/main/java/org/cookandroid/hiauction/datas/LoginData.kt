@@ -1,19 +1,21 @@
 package org.cookandroid.hiauction
 
+
 import com.google.gson.annotations.SerializedName
+import java.util.ArrayList
 
 data class ResultLogin(
     @SerializedName("id")
-    val id: String,
+    val id: String?,
 
     @SerializedName("email")
-    val email: String,
+    val email: String?,
 
     @SerializedName("name")
-    val name: String,
+    val name: String?,
 
     @SerializedName("description")
-    val description: String,
+    val description: String?,
 
     @SerializedName("address")
     val address: List<String>,
@@ -32,3 +34,4 @@ data class SignUpBody(
     val description : String,
     val address : ArrayList<Int>
 )
+

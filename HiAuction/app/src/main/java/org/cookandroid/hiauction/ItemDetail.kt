@@ -99,7 +99,18 @@ class ItemDetail: AppCompatActivity() {
                     Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
-                        1 -> {}
+                        1 -> {
+                            var id = intent.getIntExtra("Id",0)
+                            var Imbuy = findViewById<Button>(R.id.Imbuy)
+                            var Imbid = findViewById<Button>(R.id.Imbid)
+
+                            Imbid.setOnClickListener {
+                                Log.i("프로젝트", "listener event")
+                                val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
+                                bidintent.putExtra("Id",id)
+                                startActivityForResult(bidintent,0)
+                            }
+                        }
                         //마이페이지 내 입찰목록에서 상품 상세페이지 접근
                         2 -> {
                             var bidType = intent.getIntExtra("bid_type", 0)
@@ -336,6 +347,14 @@ class ItemDetail: AppCompatActivity() {
                                                                 divider.visibility = View.GONE
                                                                 var Bidprice = findViewById<TextView>(R.id.Bidprice)
                                                                 Bidprice.text = "낙찰가 " + item.current_price
+                                                                finish() //인텐트 종료
+                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                                val intent = getIntent() //인텐트
+                                                                intent.putExtra("type", 2)
+                                                                intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                                                                startActivity(intent) //액티비티 열기
+                                                                overridePendingTransition(0, 0
+                                                                ) //인텐트 효과 없애기
                                                             }
                                                             500 -> {
                                                                 var dialog = AlertDialog.Builder(this@ItemDetail)
@@ -346,7 +365,7 @@ class ItemDetail: AppCompatActivity() {
                                                         }
                                                     }
                                                 })
-                                        }
+                                        }.show()
 
                                     }
                                 } // 채팅버튼, 거래완료 버튼 표시
