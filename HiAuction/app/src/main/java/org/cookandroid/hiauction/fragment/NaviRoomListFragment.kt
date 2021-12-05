@@ -84,10 +84,7 @@ class NaviRoomListFragment : Fragment() {
         })
     }
     override fun onResume() {
-        println("onResume!!!!!")
         fragmentManager?.let { refreshFragment(this, it) }
-        chatroomadapter.datas = datas
-        chatroomadapter.notifyDataSetChanged()
         return super.onResume()
     }
     fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {

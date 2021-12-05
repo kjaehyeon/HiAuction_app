@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import org.cookandroid.hiauction.LoginActivity.Companion.addresses
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.R
@@ -22,5 +24,13 @@ class NaviHomeFragment : Fragment() {
         test.text = prefs.getString("id", null)
         println(addresses[0])
         return view
+    }
+    override fun onResume() {
+        fragmentManager?.let { refreshFragment(this, it) }
+        return super.onResume()
+    }
+    fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
+        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(fragment).attach(fragment).commit()
     }
 }
