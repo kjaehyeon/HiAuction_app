@@ -31,6 +31,16 @@ class ItemDetail: AppCompatActivity() {
     var itemDetailData: ItemDetailData? = null
 
     var type :Int = -1
+    override fun onRestart() {
+        super.onRestart()
+        finish() //인텐트 종료
+        overridePendingTransition(0, 0) //인텐트 효과 없애기
+        val intent = getIntent() //인텐트
+        intent.putExtra("type", 1)
+        startActivity(intent) //액티비티 열기
+        overridePendingTransition(0, 0
+        )
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_detail)
@@ -100,7 +110,6 @@ class ItemDetail: AppCompatActivity() {
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {
-                            var id = intent.getIntExtra("Id",0)
                             var Imbuy = findViewById<Button>(R.id.Imbuy)
                             var Imbid = findViewById<Button>(R.id.Imbid)
 
@@ -108,7 +117,7 @@ class ItemDetail: AppCompatActivity() {
                                 Log.i("프로젝트", "listener event")
                                 val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
                                 Log.i("efef","now2")
-                                bidintent.putExtra("Id",id)
+                                bidintent.putExtra("Id",itemId)
                                 bidintent.putExtra("address",item.address)
                                 bidintent.putExtra("itemname",item.item_name)
                                 bidintent.putExtra("seller",item!!.seller_name)
