@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.*
@@ -80,6 +83,14 @@ class NaviRoomListFragment : Fragment() {
             }
         })
     }
+    override fun onResume() {
+        fragmentManager?.let { refreshFragment(this, it) }
+        return super.onResume()
+    }
+    fun refreshFragment(fragment: Fragment, fragmentManager: FragmentManager) {
+        var ft: FragmentTransaction = fragmentManager.beginTransaction()
+        ft.detach(fragment).attach(fragment).commit()
+    }
 }
 
 class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRoomAdapter.ViewHolder>(){
@@ -110,8 +121,8 @@ class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRo
             date.text = item.reg_date
             content.text = item.content
             Glide.with(itemView).load("https://avatars.dicebear.com/api/big-smile/"+item.other_name+".png").into(profile)
-            //Glide.with(itemView).load(item.img_url).into(item_img)
-            Glide.with(itemView).load("https://placeimg.com/128/128/any").into(itemimg)
+            Glide.with(itemView).load(item.img_url).into(itemimg)
+            //Glide.with(itemView).load("https://placeimg.com/128/128/any").into(itemimg)
 
             itemView.setOnClickListener {
                 Intent(context, ChatRoomActivity::class.java).apply {
