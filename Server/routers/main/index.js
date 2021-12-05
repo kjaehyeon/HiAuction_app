@@ -174,6 +174,9 @@ module.exports = (pool) => {
                                 + ' SET Current_price = Quick_price,'
                                 + ` Is_end = '1'`
                                 + ' WHERE It_id = ?', [item_id]);
+                await conn.query('INSERT INTO ROOM(It_id, Buy_id, Sell_id)'
+                                + ' VALUES(?, ?, (SELECT U_id FROM ITEM'
+                                                + ' WHERE It_id = ?))', [item_id, user_id, item_id]);
                 res.status(200).json({
                     message: 'accepted'
                 });
