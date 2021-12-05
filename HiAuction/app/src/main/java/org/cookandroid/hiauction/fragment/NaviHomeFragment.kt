@@ -34,14 +34,10 @@ class NaviHomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
+        var addressess : List<String> = LoginActivity.addresses
+        var user_id:String? = LoginActivity.prefs.getString("id", null)
 
-        /*var ItemList = arrayListOf<Item>( //고치기
-            Item(1,"Auction2", "대현동", "165,000", "140,000",1),
-            Item(2,"Auction3", "대현동", "123,000","100,000",2)
-        )*/
-        //test = view.findViewById(R.id.textView)
-        //test.text = prefs.getString("id", null)
+        val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
         var edtSearch = view.findViewById<EditText>(R.id.edtSearch) //검색창
         var card = view.findViewById<CardView>(R.id.cardview)
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
