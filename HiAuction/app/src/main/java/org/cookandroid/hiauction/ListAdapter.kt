@@ -20,7 +20,9 @@ class ListAdapter(val context: Context, val itemArr: ArrayList<ItemListData>) : 
         return 0
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view : View = LayoutInflater.from(context).inflate(R.layout.card, null)
+        var view = convertView
+
+        view = LayoutInflater.from(context).inflate(R.layout.card, null)
         val name = view.findViewById<TextView>(R.id.Item_name)
         val bidprice = view.findViewById<TextView>(R.id.Bidprice)
         val imprice = view.findViewById<TextView>(R.id.Imprice)
