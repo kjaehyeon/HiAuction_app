@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
@@ -17,17 +18,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.cookandroid.hiauction.`interface`.BidService
-import org.cookandroid.hiauction.`interface`.ItemService
+import org.cookandroid.hiauction.datas.ItemData
+import org.cookandroid.hiauction.datas.ItemListResponse
+import org.cookandroid.hiauction.interfaces.ItemService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDate
 
 class MyItems : AppCompatActivity() {
-    var itemListResponse:ItemListResponse? = null
+    var itemListResponse: ItemListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
 //    var itemsArr = arrayListOf<ItemData>(
 //        ItemData("최신 맥북 프로", "대현동", 2500000, LocalDate.now()),
@@ -76,6 +77,16 @@ class MyItems : AppCompatActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        finish() //인텐트 종료
+        overridePendingTransition(0, 0) //인텐트 효과 없애기
+        val intent = getIntent() //인텐트
+        intent.putExtra("type", 1)
+        startActivity(intent) //액티비티 열기
+        overridePendingTransition(0, 0)
+    }
+
     inner class MyItemListViewAdapter(var context: Context, var itemList: ArrayList<ItemData>): BaseAdapter() {
         override fun getCount(): Int {
             return itemList.size
@@ -111,30 +122,67 @@ class MyItems : AppCompatActivity() {
                     itemState.text = "판매중"
                     var bgShape : GradientDrawable = itemState.background as GradientDrawable
                     bgShape.setColor(resources.getColor(R.color.itemOnSale, null))
-
+                    itemView.setOnClickListener {
+                        var intent = Intent(this@MyItems, ItemDetail::class.java)
+                        intent.putExtra("type", 1)
+                        intent.putExtra("item_id", item.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
                 }
                 "1" -> {
                     itemState.text = "낙찰완료"
                     var bgShape : GradientDrawable = itemState.background as GradientDrawable
                     bgShape.setColor(resources.getColor(R.color.bidFinish, null))
+                    itemView.setOnClickListener {
+                        var intent = Intent(this@MyItems, ItemDetail::class.java)
+                        intent.putExtra("type", 3)
+                        intent.putExtra("item_type", 1) // 채팅버튼. 거래완료 버튼 표시
+                        intent.putExtra("item_id", item.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
 
                 }
                 "2" -> {
                     itemState.text = "기간만료"
                     var bgShape : GradientDrawable = itemState.background as GradientDrawable
                     bgShape.setColor(resources.getColor(R.color.itemExpired, null))
+                    itemView.setOnClickListener {
+                        var intent = Intent(this@MyItems, ItemDetail::class.java)
+                        intent.putExtra("type", 3)
+                        intent.putExtra("item_type", 2) // 기간연장버튼 표시
+                        intent.putExtra("item_id", item.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
                 }
                 "3" -> {
                     itemState.text = "거래완료"
                     var bgShape : GradientDrawable = itemState.background as GradientDrawable
                     bgShape.setColor(resources.getColor(R.color.itemFinish, null))
+                    itemView.setOnClickListener {
+                        var intent = Intent(this@MyItems, ItemDetail::class.java)
+                        intent.putExtra("type", 2)
+                        intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                        intent.putExtra("item_id", item.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
 
                 }
                 "4" -> {
                     itemState.text = "거래완료"
                     var bgShape : GradientDrawable = itemState.background as GradientDrawable
                     bgShape.setColor(resources.getColor(R.color.itemFinish, null))
-
+                    itemView.setOnClickListener {
+                        var intent = Intent(this@MyItems, ItemDetail::class.java)
+                        intent.putExtra("type", 2)
+                        intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                        intent.putExtra("item_id", item.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
                 }
             }
 

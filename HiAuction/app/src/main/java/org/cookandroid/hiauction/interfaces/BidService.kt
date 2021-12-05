@@ -1,10 +1,8 @@
-package org.cookandroid.hiauction.`interface`
+package org.cookandroid.hiauction.interfaces
 
-import org.cookandroid.hiauction.BidListResponse
+import org.cookandroid.hiauction.datas.BidListResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BidService {

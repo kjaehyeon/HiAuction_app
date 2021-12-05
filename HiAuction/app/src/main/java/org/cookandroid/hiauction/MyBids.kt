@@ -1,6 +1,7 @@
 package org.cookandroid.hiauction
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
@@ -17,16 +18,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import org.cookandroid.hiauction.`interface`.BidService
+import org.cookandroid.hiauction.datas.BidData
+import org.cookandroid.hiauction.datas.BidListResponse
+import org.cookandroid.hiauction.interfaces.BidService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDate
 
 class MyBids : AppCompatActivity() {
-    var bidListResponse:BidListResponse? = null
+    var bidListResponse: BidListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
 //    var bidsArr = arrayListOf<BidData>(
 //        BidData(1, "최신 맥북 프로", 2500000, "","0", "대현동", 1, 2600000, "2021-06-21"),
@@ -113,11 +115,10 @@ class MyBids : AppCompatActivity() {
             bidPrice.text = "입찰가 " + bid.bid_price.toString() + " 원"
             Log.d("is_end", bid.is_end)
             //TODO("bid state 구분해서 if/else로 코드 구현해야함")
+            // 낙찰 유력 : 1, 낙찰 완료 : 2, 판매중인데 낙찰 실패 : 3, 낙찰완료인데 낙찰실패 : 4, 후기등록 필요인데 낙찰 실패 : 5
+            // 거래완료상품 낙찰실패 :
             when (bid.is_end){
                 "0" -> {
-//                    bidState.text = "판매중"
-//                    bidState.setBackgroundResource(R.drawable.border_onsale)
-//                    bidState.setPadding(10, 5, 10, 5)
                     if (bid.bid_price < bid.item_price){ //낙찰 실패
                         bidState.text = "낙찰실패"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
@@ -127,20 +128,42 @@ class MyBids : AppCompatActivity() {
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.itemOnSale, null))
                     }
+                    bidView.setOnClickListener {
+                        var intent = Intent(this@MyBids, ItemDetail::class.java)
+                        intent.putExtra("type", 1)
+                        intent.putExtra("item_id", bid.item_id)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
+                    }
                 }
                 "1" -> {
                     //TODO("bid price랑 item currentprice 비교해서 낙찰완료 구현해야함")
-//                    bidState.setBackgroundResource(R.drawable.border_bidfinish)
-//                    bidState.setPadding(10, 5, 10, 5)
                     if (bid.bid_price == bid.item_price){
                         bidState.text = "낙찰완료"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.bidFinish, null))
+                        bidView.setOnClickListener {
+                            var intent = Intent(this@MyBids, ItemDetail::class.java)
+                            intent.putExtra("type", 2)
+                            intent.putExtra("bid_type", 1) //채팅버튼 만들어야 함
+                            intent.putExtra("item_id", bid.item_id)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intent)
+                        }
                     } else {
                         bidState.text = "낙찰실패"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.bidFail, null))
+                        bidView.setOnClickListener {
+                            var intent = Intent(this@MyBids, ItemDetail::class.java)
+                            intent.putExtra("type", 2)
+                            intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                            intent.putExtra("item_id", bid.item_id)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intent)
+                        }
                     }
+                    
                 }
                 "2" -> {
                     bidState.text = "기간만료"
@@ -152,11 +175,28 @@ class MyBids : AppCompatActivity() {
                         bidState.text = "후기등록 필요"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.itemReview, null))
+                        bidView.setOnClickListener {
+                            var intent = Intent(this@MyBids, ItemDetail::class.java)
+                            intent.putExtra("type", 2)
+                            intent.putExtra("bid_type", 3) //후기등록 버튼 만들기
+                            intent.putExtra("item_id", bid.item_id)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intent)
+                        }
                     } else {
                         bidState.text = "낙찰실패"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.bidFail, null))
+                        bidView.setOnClickListener {
+                            var intent = Intent(this@MyBids, ItemDetail::class.java)
+                            intent.putExtra("type", 2)
+                            intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                            intent.putExtra("item_id", bid.item_id)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intent)
+                        }
                     }
+
 
                 }
                 "4" -> {
@@ -170,6 +210,13 @@ class MyBids : AppCompatActivity() {
                         bidState.text = "낙찰실패"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
                         bgShape.setColor(resources.getColor(R.color.bidFail, null))
+                    }
+                    bidView.setOnClickListener {
+                        var intent = Intent(this@MyBids, ItemDetail::class.java)
+                        intent.putExtra("type", 2)
+                        intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intent)
                     }
 
                 }
