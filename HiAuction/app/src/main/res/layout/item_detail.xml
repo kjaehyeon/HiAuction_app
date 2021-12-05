@@ -86,6 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,8 +95,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/star"
                 />
 
@@ -107,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4.7"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </RelativeLayout>
@@ -132,13 +133,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:layout_alignParentLeft="true"
                 android:id="@+id/Item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:text="XBox"
-                android:textSize="28dp"
+                android:textSize="22dp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -151,13 +153,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="시작일 2021-12-05"
-                    android:textSize="16dp"/>
+                    android:textSize="13dp"/>
                 <TextView
                     android:id="@+id/itemExpireDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="만료일 2021-12-10"
-                    android:textSize="16dp"/>
+                    android:textSize="13dp"/>
             </LinearLayout>
 
         </RelativeLayout>
@@ -165,7 +167,8 @@
             android:id="@+id/Item_des"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="17dp"
+            android:paddingTop="10dp"
+            android:textSize="16dp"
             android:text="한 번 쓴 XBox 팔아요." />
     </LinearLayout>
 
@@ -181,7 +184,7 @@
             android:id="@+id/Imprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:text="즉시구매가 238,000"/>
         <TextView
             android:id="@+id/divider"
@@ -197,7 +200,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="현재입찰가 199,000"
-            android:textSize="20dp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -210,19 +213,23 @@
         android:background="@color/white">
         <Button
             android:id="@+id/Imbuy"
-            android:layout_width="180dp"
-            android:layout_height="70dp"
+            android:padding="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:backgroundTint="@color/itemExpired"
             android:text="즉시구매" />
 
         <Button
             android:id="@+id/Imbid"
-            android:layout_width="180dp"
-            android:layout_height="70dp"
+            android:padding="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:textSize="20dp"
+            android:textSize="16dp"
             android:backgroundTint="@color/bidFinish"
             android:text="입찰하기" />
     </LinearLayout>

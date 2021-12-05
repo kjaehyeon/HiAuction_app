@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -18,21 +20,22 @@ class Category : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.category)
         setSupportActionBar(toolbar)
-        var btnCategory1 = findViewById<ImageButton>(R.id.btnCategory1)
-        var btnCategory2 = findViewById<ImageButton>(R.id.btnCategory2)
-        var btnCategory3 = findViewById<ImageButton>(R.id.btnCategory3)
-        var btnCategory4 = findViewById<ImageButton>(R.id.btnCategory4)
-        var btnCategory5 = findViewById<ImageButton>(R.id.btnCategory5)
-        var btnCategory6 = findViewById<ImageButton>(R.id.btnCategory6)
-        var btnCategory7 = findViewById<ImageButton>(R.id.btnCategory7)
-        var btnCategory8 = findViewById<ImageButton>(R.id.btnCategory8)
-        var btnCategory9 = findViewById<ImageButton>(R.id.btnCategory9)
-        var btnCategory10 = findViewById<ImageButton>(R.id.btnCategory10)
-        var btnCategory11 = findViewById<ImageButton>(R.id.btnCategory11)
-        var btnCategory12 = findViewById<ImageButton>(R.id.btnCategory12)
-        var btnCategory13 = findViewById<ImageButton>(R.id.btnCategory13)
-        var btnCategory14 = findViewById<ImageButton>(R.id.btnCategory14)
-        var btnCategory15 = findViewById<ImageButton>(R.id.btnCategory15)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        var btnCategory1 = findViewById<LinearLayout>(R.id.btnCategory1)
+        var btnCategory2 = findViewById<LinearLayout>(R.id.btnCategory2)
+        var btnCategory3 = findViewById<LinearLayout>(R.id.btnCategory3)
+        var btnCategory4 = findViewById<LinearLayout>(R.id.btnCategory4)
+        var btnCategory5 = findViewById<LinearLayout>(R.id.btnCategory5)
+        var btnCategory6 = findViewById<LinearLayout>(R.id.btnCategory6)
+        var btnCategory7 = findViewById<LinearLayout>(R.id.btnCategory7)
+        var btnCategory8 = findViewById<LinearLayout>(R.id.btnCategory8)
+        var btnCategory9 = findViewById<LinearLayout>(R.id.btnCategory9)
+        var btnCategory10 = findViewById<LinearLayout>(R.id.btnCategory10)
+        var btnCategory11 = findViewById<LinearLayout>(R.id.btnCategory11)
+        var btnCategory12 = findViewById<LinearLayout>(R.id.btnCategory12)
+        var btnCategory13 = findViewById<LinearLayout>(R.id.btnCategory13)
+        var btnCategory14 = findViewById<LinearLayout>(R.id.btnCategory14)
+        var btnCategory15 = findViewById<LinearLayout>(R.id.btnCategory15)
 
         var select = String()
         var outintent = Intent(applicationContext, MainActivity::class.java)//액티비티 고치기
@@ -141,5 +144,22 @@ class Category : AppCompatActivity(){
             setResult(Activity.RESULT_OK, outintent)
             finish()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId){
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 }
