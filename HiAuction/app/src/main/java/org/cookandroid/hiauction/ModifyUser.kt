@@ -14,7 +14,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
-import org.cookandroid.hiauction.fragment.ModifyUserResponse
+import org.cookandroid.hiauction.datas.ModifyUserResponse
 
 class ModifyUser : AppCompatActivity() {
     var modifyUserResponse: ModifyUserResponse? = null

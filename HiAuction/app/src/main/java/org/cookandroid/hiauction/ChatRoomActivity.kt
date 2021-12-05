@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +31,7 @@ class ChatRoomActivity : AppCompatActivity() {
     lateinit var rv_chatlist : RecyclerView
     lateinit var mSocket: Socket
     lateinit var sendbutton : Button
-    lateinit var textForSend : TextView
+    lateinit var textForSend : EditText
     lateinit var tv_logo : TextView
     val id = LoginActivity.prefs.getString("id", null)
     var previous : Int = 1
@@ -84,7 +85,7 @@ class ChatRoomActivity : AppCompatActivity() {
             jsonObject.put("sender_id", id)
             jsonObject.put("receiver_id", other_id)
             mSocket.emit("message",jsonObject)
-            textForSend.text=""
+            textForSend.setText("")
         }
 
         mSocket.on("new Message", onNewMessage)

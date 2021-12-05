@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var pwtext : EditText
     companion object {
         lateinit var prefs : SharedPreferences
+        lateinit var addresses : List<String>
     }
 
     val BASE_URL= "http://192.168.0.17:4000/"
@@ -53,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                     if(response.isSuccessful) {
                         prefs.edit().putString("id", response.body()?.id).apply()
                         prefs.edit().putString("name", response.body()?.name).apply()
+                        addresses = response.body()!!.address
                         var intent = Intent(applicationContext, MainActivity::class.java)
                         startActivity(intent)
                     }
