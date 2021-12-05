@@ -63,17 +63,18 @@ module.exports = (pool) => {
                 sql += ` AND LOWER(Name) LIKE '%${key.toLowerCase()}%'`
             }
             sql += ' ORDER BY Create_date DESC'
-            
+
             const [result2] = await conn.query(sql, [category_id, address]);
             const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
-                    name: item_info.name,
+                    item_name: item_info.Name,
                     current_price: item_info.Current_price,
                     immediate_price: item_info.Quick_price,
                     created_date: item_info.Create_date.toLocaleDateString(),
-                    img_url: item_info.Img
-                }
+                    img_url: item_info.Img,
+                    address
+                };
             });
             res.status(200).json({
                 item_list
