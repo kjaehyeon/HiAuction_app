@@ -13,7 +13,7 @@ module.exports = (pool) => {
     const router = express.Router();
 
     router.get('/items', async (req, res) => {
-        const {query: {category_id, address_id}} = req
+        const {query: {category_id, address}} = req;
         let conn = null;
 
         try {
@@ -22,8 +22,9 @@ module.exports = (pool) => {
                                             + ' Current_price, Create_date, Img'
                                             + ' FROM ITEM'
                                             + ' WHERE c_id = ?'
-                                            + ' AND Ad_id = ?'
-                                            + ' ORDER BY Create_date DESC', [category_id, address_id]);
+                                            + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
+                                                            + 'WHERE Name = ?)'
+                                            + ' ORDER BY Create_date DESC', [category_id, address]);
             const item_list = result.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
