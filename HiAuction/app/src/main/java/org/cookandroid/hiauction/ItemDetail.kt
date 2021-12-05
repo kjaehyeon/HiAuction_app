@@ -1,10 +1,12 @@
 package org.cookandroid.hiauction
 
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.datas.ItemDetailData
 import org.cookandroid.hiauction.datas.ResponseData
 import android.app.DatePickerDialog
 import android.content.ClipData
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -75,6 +77,10 @@ class ItemDetail: AppCompatActivity() {
                     var item_create_date = findViewById<TextView>(R.id.itemCurrentDate)
                     var item_expire_date = findViewById<TextView>(R.id.itemExpireDate)
                     var description = findViewById<TextView>(R.id.Item_des)
+                    var itemImmediatPrice = findViewById<TextView>(R.id.Imprice)
+                    var itemCurrentPrice = findViewById<TextView>(R.id.Bidprice)
+                    var itemImg = findViewById<ImageView>(R.id.Itemimage)
+
                     Log.i("프로젝트", "진행1")
                     seller_name.text = item!!.seller_name
                     Log.i("프로젝트", "진행2")
@@ -88,6 +94,9 @@ class ItemDetail: AppCompatActivity() {
                     Log.i("프로젝트", "진행5")
                     description.text = item.description
                     Log.i("프로젝트", type.toString())
+                    itemImmediatPrice.text = "즉시구매가 " + item.immediate_price.toString() + "원"
+                    itemCurrentPrice.text = "현재입찰가 " + item.current_price.toString() + "원"
+                    Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {}
