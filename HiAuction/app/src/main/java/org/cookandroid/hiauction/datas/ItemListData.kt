@@ -5,6 +5,6 @@ class ItemListData (
     var name : String,
     var current_price : Int,
     var immediate_price : Int,
-    var created_date : Int,
+    var created_date : String,
     var img_url : String,
 )

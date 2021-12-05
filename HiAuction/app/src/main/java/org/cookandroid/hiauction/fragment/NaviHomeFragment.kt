@@ -85,20 +85,15 @@ class NaviHomeFragment : Fragment() {
             override fun onFailure(call: Call<ListResponse>, t: Throwable) {
                 t.message?.let { Log.e("BIDREQUSET", it) }
                 var dialog = activity?.let { AlertDialog.Builder(it) }
-                if (dialog != null) {
-                    dialog.setTitle("에러")
-                }
-                if (dialog != null) {
-                    dialog.setMessage("호출실패했습니다.")
-                }
-                if (dialog != null) {
-                    dialog.show()
-                }
+                dialog!!.setTitle("에러")
+                dialog.setMessage("호출실패했습니다.")
+                dialog.show()
             }
             override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
                 itemListResponse = response.body()
-                Log.i("efe",response.code().toString())
+                Log.i("프로젝트",response.code().toString())
                 itemArr = itemListResponse?.item_list ?: ArrayList()
+                Log.i("프로젝트",itemArr.toString())
                 var itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }
                 lv.adapter = itemAdapter
             }
