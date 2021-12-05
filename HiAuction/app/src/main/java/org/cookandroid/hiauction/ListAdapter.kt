@@ -24,8 +24,10 @@ class ListAdapter(val context: Context, val itemArr: ArrayList<ItemListData>) : 
         val item_name = view.findViewById<TextView>(R.id.Item_name)
         val bidprice = view.findViewById<TextView>(R.id.Bidprice)
         val imprice = view.findViewById<TextView>(R.id.Imprice)
+        val location = view.findViewById<TextView>(R.id.Location)
         val date = view.findViewById<TextView>(R.id.Regdate)
         item_name.text = itemArr[position].name
+        location.text = 
         bidprice.text = "현재입찰가 " + itemArr[position].current_price
         imprice.text = "즉시구매가 " + itemArr[position].immediate_price
         date.text = itemArr[position].created_date.toString() + "일전"
