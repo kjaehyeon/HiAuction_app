@@ -21,17 +21,18 @@ class ListAdapter(val context: Context, val itemArr: ArrayList<ItemListData>) : 
     }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var view = convertView
-        //if (view == null){
-            view = LayoutInflater.from(context).inflate(R.layout.card, null)
-            val item_name = view.findViewById<TextView>(R.id.Item_name)
-            val bidprice = view.findViewById<TextView>(R.id.Bidprice)
-            var imprice = view.findViewById<TextView>(R.id.Imprice)
-            var date = view.findViewById<TextView>(R.id.Regdate)
-        //}
-        item_name.text = itemArr[position].item_name
+
+        view = LayoutInflater.from(context).inflate(R.layout.card, null)
+        val name = view.findViewById<TextView>(R.id.Item_name)
+        val bidprice = view.findViewById<TextView>(R.id.Bidprice)
+        val imprice = view.findViewById<TextView>(R.id.Imprice)
+        val location = view.findViewById<TextView>(R.id.Item_location)
+        val date = view.findViewById<TextView>(R.id.Regdate)
+        name.text = itemArr[position].item_name
         bidprice.text = "현재입찰가 " + itemArr[position].current_price
         imprice.text = "즉시구매가 " + itemArr[position].immediate_price
-        date.text = itemArr[position].created_date.toString() + "일전"
+        date.text = itemArr[position].created_date.toString()
+        location.text = itemArr[position].address
         return view;
     }
 }

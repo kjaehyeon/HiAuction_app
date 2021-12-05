@@ -183,6 +183,7 @@ class ItemDetail: AppCompatActivity() {
                                     divider.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
                                     Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.setPadding(10, 20, 10, 40)
                                 }
                                 // 후기등록 필요
                                 3 -> {

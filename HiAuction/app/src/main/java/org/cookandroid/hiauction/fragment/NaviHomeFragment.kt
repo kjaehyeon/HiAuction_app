@@ -1,6 +1,9 @@
 package org.cookandroid.hiauction.fragment
 
+import android.app.Activity
+import android.app.Activity.INPUT_METHOD_SERVICE
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 
 import androidx.fragment.app.FragmentManager
@@ -40,18 +45,16 @@ class NaviHomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
+        var addressess : List<String> = LoginActivity.addresses
+        var user_id:String? = LoginActivity.prefs.getString("id", null)
 
-        /*var ItemList = arrayListOf<Item>( //고치기
-            Item(1,"Auction2", "대현동", "165,000", "140,000",1),
-            Item(2,"Auction3", "대현동", "123,000","100,000",2)
-        )*/
-        //test = view.findViewById(R.id.textView)
-        //test.text = prefs.getString("id", null)
-        edtSearch = view.findViewById<EditText>(R.id.edtSearch) //검색창
+
+
+        val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
+        edtSearch = view.findViewById<EditText>(R.id.edtSearch)//검색창
         var card = view.findViewById<CardView>(R.id.cardview)
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
-        var btnWrite = view.findViewById<ImageButton>(R.id.btnWrite) //물품 등록 버튼
+        var btnWrite = view.findViewById<ImageView>(R.id.btnWrite) //물품 등록 버튼
         var Location = view.findViewById<TextView>(R.id.Location) //사용자 주소
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
@@ -140,6 +143,8 @@ class NaviHomeFragment : Fragment() {
                             itemArr!!.addAll(itemListResponse?.item_list ?: ArrayList())
                             Log.i("프로젝트", itemArr.toString())
                             itemAdapter.notifyDataSetChanged()
+                            val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            inputMethodManager!!.hideSoftInputFromWindow(edtSearch.windowToken, 0)
                             //lv.adapter = itemAdapter;
                             //var ft = parentFragmentManager.beginTransaction()
                             //ft!!.detach(this@NaviHomeFragment).attach(this@NaviHomeFragment).commit()

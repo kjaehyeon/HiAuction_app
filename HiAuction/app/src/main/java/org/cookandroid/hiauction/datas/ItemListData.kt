@@ -7,4 +7,5 @@ class ItemListData (
     var immediate_price : Int,
     var created_date : String,
     var img_url : String,
+    var address : String
 )
