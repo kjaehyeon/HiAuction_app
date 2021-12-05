@@ -114,7 +114,7 @@ module.exports = (pool) => {
                     break;
                 case 'completion':
                     const {body: {item_id: completion_item_id}} = req;
-                    await conn.query(`UPDATE ITEM SET Is_end = '4'`
+                    await conn.query(`UPDATE ITEM SET Is_end = '3'`
                                     + ' WHERE It_id = ?', [completion_item_id]);
                     break;
             }
