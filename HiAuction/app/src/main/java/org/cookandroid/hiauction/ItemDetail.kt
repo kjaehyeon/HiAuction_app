@@ -21,7 +21,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
-
+import kotlinx.android.synthetic.main.rating.view.*
+import org.cookandroid.hiauction.datas.RoomNumber
 import java.util.*
 import kotlin.properties.Delegates
 class ItemDetail: AppCompatActivity() {
@@ -113,6 +114,44 @@ class ItemDetail: AppCompatActivity() {
                                     chatBtn.text = "판매자와 채팅"
                                     chatBtn.setOnClickListener {
                                         // 채팅으로 가야함
+                                        itemDetailService.getChatRoom(item.item_id).enqueue(object : Callback<RoomNumber> {
+                                            override fun onFailure(call: Call<RoomNumber>, t: Throwable) {
+                                                t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                dialog.setTitle("에러")
+                                                dialog.setMessage("호출실패했습니다.")
+                                                dialog.show()
+                                            }
+
+                                            @RequiresApi(Build.VERSION_CODES.M)
+                                            override fun onResponse(call: Call<RoomNumber>, response: Response<RoomNumber>) {
+                                                var dataResponse = response.body()
+                                                when (response.code()) {
+                                                    200 -> {
+                                                        var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
+                                                            putExtra("room_id", dataResponse!!.room_id)
+                                                            putExtra("item_id", item.item_id)
+                                                            putExtra("item_name", item.item_name)
+                                                            putExtra("address", item.address)
+                                                            putExtra("score", item.seller_rate)
+                                                            putExtra("img_url", item.img_url)
+                                                            putExtra("other_name", item.seller_name)
+                                                            putExtra("other_id", item.seller_id)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                            addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                        }
+                                                        startActivity(chatIntent)
+                                                    }
+                                                    500 -> {
+                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                        dialog.setTitle("내부 오류 발생")
+                                                        dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                        dialog.setNegativeButton("확인", null)
+                                                        dialog.show()
+                                                    }
+                                                }
+                                            }
+                                        })
                                     }
                                     var divider = findViewById<TextView>(R.id.divider)
                                     divider.visibility = View.GONE
@@ -147,22 +186,24 @@ class ItemDetail: AppCompatActivity() {
                                     reviewBtn.text = "후기 등록"
                                     reviewBtn.setOnClickListener {
                                         // 후기등록 띄우기
-                                        var dlgView = View.inflate(this@ItemDetail, R.layout.rating, null)
-                                        var dlg = AlertDialog.Builder(this@ItemDetail)
-                                        dlg.setTitle("후기 등록")
-                                        dlg.setView(dlgView)
-                                        var ad = dlg.create()
-                                        var cancelButton = dlgView.findViewById<Button>(R.id.btnCancelRating)
-                                        cancelButton.setOnClickListener {
-                                            ad.dismiss()
+                                        var dlgLayout = layoutInflater.inflate(R.layout.rating, null)
+                                        var dlg = AlertDialog.Builder(this@ItemDetail).apply {
+                                            setView(dlgLayout)
+                                            setTitle("후기 등록")
                                         }
-                                        var enrollButton = dlgView.findViewById<Button>(R.id.btnEnrollRating)
+
+                                        var show = dlg.show()
+                                        var cancelButton = dlgLayout.btnCancelRating
+                                        cancelButton.setOnClickListener {
+                                            show.dismiss()
+                                        }
+                                        var enrollButton = dlgLayout.findViewById<Button>(R.id.btnEnrollRating)
                                         enrollButton.setOnClickListener {
-                                            var edtRating = findViewById<TextView>(R.id.edtRating)
-                                            var score = findViewById<RatingBar>(R.id.ratingScore)
+                                            var edtRating = dlgLayout.findViewById<TextView>(R.id.edtRating)
+                                            var score = dlgLayout.findViewById<RatingBar>(R.id.ratingScore)
                                             var rating_score = score.rating
                                             var user_id:String? = LoginActivity.prefs.getString("id", null)
-                                            itemDetailService.enrollRating(item.seller_id, user_id!!, rating_score, edtRating.text.toString())
+                                            itemDetailService.enrollRating(item.seller_id, user_id!!, rating_score, edtRating.text.toString(), item.item_id)
                                                 .enqueue(object : Callback<ResponseData> {
                                                     override fun onFailure(call: Call<ResponseData>, t: Throwable) {
                                                         t.message?.let { Log.e("ITEMREQUSET", it) }
@@ -176,13 +217,22 @@ class ItemDetail: AppCompatActivity() {
                                                         var responseData = response.body()
                                                         when(response.code()) {
                                                             200 -> {
-                                                                reviewBtn.visibility = View.GONE
-                                                                var Imprice = findViewById<TextView>(R.id.Imprice)
-                                                                Imprice.visibility = View.GONE
-                                                                var divider = findViewById<TextView>(R.id.divider)
-                                                                divider.visibility = View.GONE
-                                                                var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                                                Bidprice.text = "낙찰가 " + item.current_price
+                                                                show.dismiss()
+//                                                                reviewBtn.visibility = View.GONE
+//                                                                var Imprice = findViewById<TextView>(R.id.Imprice)
+//                                                                Imprice.visibility = View.GONE
+//                                                                var divider = findViewById<TextView>(R.id.divider)
+//                                                                divider.visibility = View.GONE
+//                                                                var Bidprice = findViewById<TextView>(R.id.Bidprice)
+//                                                                Bidprice.text = "낙찰가 " + item.current_price
+                                                                finish() //인텐트 종료
+                                                                overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                                val intent = getIntent() //인텐트
+                                                                intent.putExtra("type", 1)
+                                                                startActivity(intent) //액티비티 열기
+                                                                overridePendingTransition(0, 0
+                                                                ) //인텐트 효과 없애기
+
                                                             }
                                                             500 -> {
                                                                 var dialog = AlertDialog.Builder(this@ItemDetail)
@@ -195,7 +245,7 @@ class ItemDetail: AppCompatActivity() {
                                                     }
                                                 })
                                         }
-                                        dlg.show()
+
                                     }
                                 }
                             }
@@ -358,6 +408,8 @@ class ItemDetail: AppCompatActivity() {
 
 
     }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId){
             android.R.id.home -> {

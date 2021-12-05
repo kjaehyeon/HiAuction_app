@@ -2,6 +2,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const dotenv = require('dotenv');
 const socketio = require('socket.io');
+const fs = require('fs').promises;
 const app = express();
 dotenv.config();
 
@@ -15,10 +16,23 @@ app.use(function(req, res, next) {
 });
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json());
+app.use(express.static('uploads'));
 app.use('/api/user', require('./routers/user')(pool));
 app.use('/api/main', require('./routers/main')(pool));
 app.use('/api/my', require('./routers/my')(pool));
 app.use('/api/chat', require('./routers/chat')(pool));
+app.get('/uploads/:file_name', async (req, res) => {
+    try {
+        const data = await fs.readFile(__dirname + `/uploads/${req.params.file_name}`);
+        res.write(data);
+        res.end();
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: err.message
+        });
+    }
+});
 
 const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

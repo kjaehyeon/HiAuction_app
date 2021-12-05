@@ -1,7 +1,7 @@
 package org.cookandroid.hiauction.interfaces
 
 import org.cookandroid.hiauction.datas.DeleteUserResponse
-import org.cookandroid.hiauction.fragment.ModifyUserResponse
+import org.cookandroid.hiauction.datas.ModifyUserResponse
 import retrofit2.Call
 import retrofit2.http.*
 
