@@ -168,9 +168,9 @@ class ChatRoomActivity : AppCompatActivity() {
                         var strs : List<String> = data.reg_date.split(' ')
                         var hours : List<String> = strs[1].split(':')
                         var ampm : String  = if(hours[0].toInt() < 12)
-                            "오전"
-                        else
                             "오후"
+                        else
+                            "오전"
                         if(data.sender_id.equals(id)){
                             previous = 1
                             datas.apply {
