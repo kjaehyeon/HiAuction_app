@@ -21,7 +21,7 @@ class Category : AppCompatActivity(){
         setContentView(R.layout.category)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        var btnCategory0 = findViewById<LinearLayout>(R.id.btnCategory0)
+        var btnCategory0 = findViewById<Button>(R.id.btnCategory0)
         var btnCategory1 = findViewById<LinearLayout>(R.id.btnCategory1)
         var btnCategory2 = findViewById<LinearLayout>(R.id.btnCategory2)
         var btnCategory3 = findViewById<LinearLayout>(R.id.btnCategory3)
