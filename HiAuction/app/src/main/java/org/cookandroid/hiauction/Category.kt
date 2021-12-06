@@ -21,6 +21,7 @@ class Category : AppCompatActivity(){
         setContentView(R.layout.category)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        var btnCategory0 = findViewById<LinearLayout>(R.id.btnCategory0)
         var btnCategory1 = findViewById<LinearLayout>(R.id.btnCategory1)
         var btnCategory2 = findViewById<LinearLayout>(R.id.btnCategory2)
         var btnCategory3 = findViewById<LinearLayout>(R.id.btnCategory3)
@@ -39,6 +40,13 @@ class Category : AppCompatActivity(){
 
         var select = String()
         var outintent = Intent(applicationContext, MainActivity::class.java)//액티비티 고치기
+        btnCategory0.setOnClickListener {
+            select = "모든 카테고리"
+            outintent.putExtra("category",select)
+            outintent.putExtra("category_id",0)
+            setResult(Activity.RESULT_OK, outintent)
+            finish()
+        }
         btnCategory1.setOnClickListener{
             select = "디지털 기기"
             outintent.putExtra("category",select)

@@ -45,12 +45,11 @@ class EnrollBid : AppCompatActivity(){
         address.text = intent.getStringExtra("address")
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
-        var img_url : Int = intent.getIntExtra("img",0)
+        var img_url : String? = intent.getStringExtra("img")
         Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
             Log.i("efef","now5")
             if (user_id != null) {
-
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
                     .enqueue(object : Callback<PriceData> {
