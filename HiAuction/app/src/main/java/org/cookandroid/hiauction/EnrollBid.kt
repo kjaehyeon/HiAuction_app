@@ -50,7 +50,6 @@ class EnrollBid : AppCompatActivity(){
         btnBid.setOnClickListener {
             Log.i("efef","now5")
             if (user_id != null) {
-
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
                     .enqueue(object : Callback<PriceData> {
