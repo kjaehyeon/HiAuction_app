@@ -13,12 +13,8 @@ module.exports = (pool) => {
                                                 + ' WHERE Buy_id = ?'
                                                 + ' OR Sell_id = ?', [user_id, user_id]);
             
-            if (!result1.length) {
-                res.status(400).json({
-                    message: '조회된 방이 없습니다'
-                });
-            } else {
-                const room_list = [];
+            const room_list = [];
+            if (result1.length) {
                 for (const room of result1) {
                     if (room.Buy_id === user_id) {
                         const [result2] = await conn.query('SELECT M.Name Other_name, M.U_id,'
@@ -95,10 +91,10 @@ module.exports = (pool) => {
                     if (x.reg_date === y.reg_date) return 0;
                     if (x.reg_date < y.reg_date) return 1;
                 });
-                res.status(200).json(
-                    room_list
-                );
             }
+            res.status(200).json(
+                room_list
+            );
         } catch (err) {
             res.status(500).json({
                 message: err.message

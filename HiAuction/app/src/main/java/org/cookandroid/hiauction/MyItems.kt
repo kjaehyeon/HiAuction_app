@@ -31,13 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyItems : AppCompatActivity() {
     var itemListResponse: ItemListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
-//    var itemsArr = arrayListOf<ItemData>(
-//        ItemData("최신 맥북 프로", "대현동", 2500000, LocalDate.now()),
-//        ItemData("아이폰13 프로", "복현동", 1100000, LocalDate.now()),
-//        ItemData("갤럭시s21", "산격동", 780000, LocalDate.now()),
-//        ItemData("갤럭시 워치4", "침산동", 180000, LocalDate.now()),
-//        ItemData("애플 워치6", "대현동", 200000, LocalDate.now())
-//    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.myitems)
@@ -50,7 +43,6 @@ class MyItems : AppCompatActivity() {
             .build()
         var itemService: ItemService = retrofit.create(ItemService::class.java)
         var itemsArr : ArrayList<ItemData>? = null
-        Log.d("로그", itemsArr.toString())
         itemService.getItems(user_id!!).enqueue(object: Callback<ItemListResponse> {
             override fun onFailure(call: Call<ItemListResponse>, t: Throwable) {
                 t.message?.let { Log.e("BIDREQUSET", it) }
@@ -62,11 +54,7 @@ class MyItems : AppCompatActivity() {
 
             override fun onResponse(call: Call<ItemListResponse>, response: Response<ItemListResponse>) {
                 itemListResponse = response.body()
-                //var dialog = AlertDialog.Builder(this@MyBids)
-                //dialog.setMessage(bidListResponse?.bid_list?.get(1)?.item_name.toString())
                 itemsArr = itemListResponse?.item_list ?: ArrayList()
-                //Log.i("BidsArr", bidsArr.toString())
-                //dialog.show()
                 var myItemList = findViewById<ListView>(R.id.listMyItems)
                 var itemAdapter = MyItemListViewAdapter(this@MyItems, itemsArr!!)
                 myItemList.adapter = itemAdapter

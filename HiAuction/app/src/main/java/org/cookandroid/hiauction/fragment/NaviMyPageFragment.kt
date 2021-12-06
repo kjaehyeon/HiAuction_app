@@ -101,7 +101,6 @@ class NaviMyPageFragment : Fragment() {
                     dialog!!.setTitle("로그아웃 오류")
                     dialog.setMessage("로그아웃 중 오류가 발생했습니다")
                     dialog.setPositiveButton("확인", null)
-                    Log.d("LogOutException", e.toString())
                     dialog.show()
                 }
 
@@ -139,8 +138,6 @@ class NaviMyPageFragment : Fragment() {
                     override fun onResponse(call: Call<DeleteUserResponse>, response: Response<DeleteUserResponse>) {
                         deleteUserResponse = response.body()
                         var message = deleteUserResponse?.message
-                        Log.d("로그", message!!)
-                        Log.d("로그", response.code().toString())
                         if (response.code() == 500) {
                             var dialog = getActivity()?.let { it1 -> AlertDialog.Builder(it1) }
                             dialog!!.setTitle("회원탈퇴 오류")

@@ -45,7 +45,6 @@ class ModifyUser : AppCompatActivity() {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 var modifyUserService: ModifyUserService = retrofit.create(ModifyUserService::class.java)
-                //@TO_DO("user id preference에서 받아와야함")
                 var user_id:String? = prefs.getString("id", null)
                 modifyUserService.modifyUserInfo(user_id!!, currentPass.text.toString(), new_pass.text.toString(), email.text.toString(), describe.text.toString()).enqueue(object: Callback<ModifyUserResponse> {
                     override fun onFailure(call: Call<ModifyUserResponse>, t: Throwable) {0
