@@ -165,18 +165,22 @@ class ChatRoomActivity : AppCompatActivity() {
                     var iterator : Iterator<Chatdata> = response.body()!!.iterator()
                     while(iterator.hasNext()){
                         var data : Chatdata = iterator.next()
-                        var strs : List<String> = data.reg_date.split(' ')
-                        var hours : List<String> = strs[1].split(':')
-                        var ampm : String  = if(hours[0].toInt() < 12)
-                            "오전"
-                        else
-                            "오후"
+                        //연 월 일 시 분 초 띄어쓰기로 구분돼서 옴
+                        var dateArr : MutableList<String> = data.reg_date.split(' ') as MutableList<String>
+                        var ampm : String
+                            if(dateArr[3].toInt() < 12){
+                                ampm = "오전"
+                            } else{
+                                ampm = "오후"
+                                dateArr[3] = (dateArr[3].toInt()-12).toString()
+                            }
+
                         if(data.sender_id.equals(id)){
                             previous = 1
                             datas.apply {
                                 add(
-                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
-                                    content=data.content, type=1)
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+dateArr[3]+":"+dateArr[4],
+                                        content=data.content, type=1)
                                 )
                                 chatAdapter.datas = datas
                                 chatAdapter.notifyDataSetChanged()
@@ -185,7 +189,7 @@ class ChatRoomActivity : AppCompatActivity() {
                             previous = 2
                             datas.apply {
                                 add(
-                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+dateArr[3]+":"+dateArr[4],
                                     content=data.content, type=2)
                                 )
                                 chatAdapter.datas = datas
@@ -195,7 +199,7 @@ class ChatRoomActivity : AppCompatActivity() {
                             previous = 3
                             datas.apply {
                                 add(
-                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+hours[0]+":"+hours[1],
+                                    Chatdata(sender_id= data.sender_id, reg_date = ampm+" "+dateArr[3]+":"+dateArr[4],
                                     content=data.content, type=3)
                                 )
                                 chatAdapter.datas = datas
