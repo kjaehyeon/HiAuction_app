@@ -55,17 +55,26 @@ module.exports = (pool) => {
             let sql = 'SELECT It_id, Name, Quick_price,'
                         + ' Current_price, Create_date, Img'
                         + ' FROM ITEM'
-                        + ' WHERE c_id = ?'
-                        + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
+                        + ' WHERE Ad_id = (SELECT Ad_id FROM ADDRESS'
                                         + ' WHERE Name = ?)'
                         + ' AND Expire_date > NOW()'
                         + ` AND Is_end = '0'`;
+
+            if (parseInt(category_id)) {
+                sql += ' AND c_id = ?';
+            }
             if (key) {
                 sql += ` AND LOWER(Name) LIKE '%${key.toLowerCase()}%'`
             }
             sql += ' ORDER BY Create_date DESC'
 
-            const [result2] = await conn.query(sql, [category_id, address]);
+            let result2 = null;
+            if (!parseInt(category_id)) {
+                [result2] = await conn.query(sql, [address]);
+            } else {
+                [result2] = await conn.query(sql, [address, category_id]);
+            }
+
             const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
@@ -81,6 +90,7 @@ module.exports = (pool) => {
                 item_list
             });
         } catch (err) {
+            console.log(err);
             res.status(500).json({
                 message: err.message
             });
