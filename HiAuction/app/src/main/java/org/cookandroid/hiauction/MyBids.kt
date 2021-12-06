@@ -31,13 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MyBids : AppCompatActivity() {
     var bidListResponse: BidListResponse? = null
     @RequiresApi(Build.VERSION_CODES.O)
-//    var bidsArr = arrayListOf<BidData>(
-//        BidData(1, "최신 맥북 프로", 2500000, "","0", "대현동", 1, 2600000, "2021-06-21"),
-//        BidData(1, "최신 맥북 프로", 2500000, "","1", "대현동", 1, 2600000, "2021-06-21"),
-//        BidData(1, "최신 맥북 프로", 2500000, "","2", "대현동", 1, 2600000, "2021-06-21"),
-//        BidData(1, "최신 맥북 프로", 2500000, "","3", "대현동", 1, 2600000, "2021-06-21"),
-//        BidData(1, "최신 맥북 프로", 2500000, "","4", "대현동", 1, 2600000, "2021-06-21"),
-//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +41,11 @@ class MyBids : AppCompatActivity() {
         var user_id:String? = LoginActivity.prefs.getString("id", null)
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         var bidService: BidService = retrofit.create(BidService::class.java)
         var bidsArr : ArrayList<BidData>? = null
-        Log.d("로그", bidsArr.toString())
         bidService.getBidItems(user_id!!).enqueue(object: Callback<BidListResponse> {
             override fun onFailure(call: Call<BidListResponse>, t: Throwable) {
                 t.message?.let { Log.e("BIDREQUSET", it) }
@@ -65,20 +57,12 @@ class MyBids : AppCompatActivity() {
 
             override fun onResponse(call: Call<BidListResponse>, response: Response<BidListResponse>) {
                 bidListResponse = response.body()
-                //var dialog = AlertDialog.Builder(this@MyBids)
-                //dialog.setMessage(bidListResponse?.bid_list?.get(1)?.item_name.toString())
                 bidsArr = bidListResponse?.bid_list ?: ArrayList()
-                //Log.i("BidsArr", bidsArr.toString())
-                //dialog.show()
                 var myBidList = findViewById<ListView>(R.id.listMyBids)
                 var bidAdapter = MyBidListViewAdapter(this@MyBids, bidsArr!!)
                 myBidList.adapter = bidAdapter
             }
         })
-        Log.d("로그", bidsArr.toString())
-//        var myBidList = findViewById<ListView>(R.id.listMyBids)
-//        var bidAdapter = bidsArr?.let { MyBidListViewAdapter(this, it) }
-//        myBidList.adapter = bidAdapter
 
     }
 
@@ -107,16 +91,11 @@ class MyBids : AppCompatActivity() {
             var bidDate = bidView.findViewById<TextView>(R.id.bid_date)
 
             var bid = bidList[position]
-            //TODO("이미지 넣는 거 구현해야함")
             bidTitle.text = bid.item_name
             bidAddress.text = bid.address
             bidDate.text = bid.bid_create_date
             bidPrice.text = "입찰가 " + bid.bid_price.toString() + " 원"
             Glide.with(this@MyBids).load(bid.img_url).into(bidImg)
-            Log.d("is_end", bid.is_end)
-            //TODO("bid state 구분해서 if/else로 코드 구현해야함")
-            // 낙찰 유력 : 1, 낙찰 완료 : 2, 판매중인데 낙찰 실패 : 3, 낙찰완료인데 낙찰실패 : 4, 후기등록 필요인데 낙찰 실패 : 5
-            // 거래완료상품 낙찰실패 :
             when (bid.is_end){
                 "0" -> {
                     if (bid.bid_price < bid.item_price){ //낙찰 실패
@@ -137,7 +116,6 @@ class MyBids : AppCompatActivity() {
                     }
                 }
                 "1" -> {
-                    //TODO("bid price랑 item currentprice 비교해서 낙찰완료 구현해야함")
                     if (bid.bid_price == bid.item_price){
                         bidState.text = "낙찰완료"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
@@ -200,8 +178,6 @@ class MyBids : AppCompatActivity() {
 
                 }
                 "4" -> {
-
-                    //TODO("bid price랑 item currentprice 비교해서 낙찰완료 구현해야함")
                     if (bid.bid_price == bid.item_price){
                         bidState.text = "거래완료"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
@@ -215,6 +191,7 @@ class MyBids : AppCompatActivity() {
                         var intent = Intent(this@MyBids, ItemDetail::class.java)
                         intent.putExtra("type", 2)
                         intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                        intent.putExtra("item_id", bid.item_id)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                     }

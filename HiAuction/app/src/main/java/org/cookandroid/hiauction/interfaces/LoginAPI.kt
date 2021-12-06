@@ -15,7 +15,6 @@ interface LoginAPI {
         @Field("password") password: String,
     ): Call<ResultLogin>
 
-    //@FormUrlEncoded
     @POST("api/user/signup")
     fun postSignUp(
         @Body signUpBody: SignUpBody

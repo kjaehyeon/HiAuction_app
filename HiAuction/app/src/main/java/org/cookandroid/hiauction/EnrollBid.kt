@@ -26,10 +26,9 @@ class EnrollBid : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.enrollbid2)
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        Log.i("efef","now2")
         var enrollBidService: EnrollBidService = retrofit.create(EnrollBidService::class.java)
         var btnBid = findViewById<Button>(R.id.btnBid)
         var seller_id = findViewById<TextView>(R.id.seller)
@@ -55,7 +54,6 @@ class EnrollBid : AppCompatActivity(){
         Glide.with(this@EnrollBid).load("https://avatars.dicebear.com/api/big-smile/"+seller_id.text+".png").into(s_profile)
         Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
-            Log.i("efef","now5")
             if (user_id != null) {
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
@@ -72,10 +70,7 @@ class EnrollBid : AppCompatActivity(){
                             when(response.code()) {
                                 200 -> {
                                     Log.i("efef","200")
-                                    finish()
-                                    //finish() //인텐트 종료
-
-                                //액티비티 열기 //인텐트 효과 없애기
+                                    finish()//인텐트 종료
                                 }
                                 400 ->{
                                     val dlg: AlertDialog.Builder = AlertDialog.Builder(this@EnrollBid)

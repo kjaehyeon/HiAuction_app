@@ -60,7 +60,7 @@ class NaviHomeFragment : Fragment() {
         var btnWrite = view.findViewById<ImageView>(R.id.btnWrite) //물품 등록 버튼
         var Location = view.findViewById<Spinner>(R.id.Location) //사용자 주소
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         itemListService = retrofit.create(ItemListService::class.java)
@@ -105,9 +105,7 @@ class NaviHomeFragment : Fragment() {
                     }
                     override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
                         itemListResponse = response.body()
-                        Log.i("프로젝트",response.code().toString())
                         itemArr = itemListResponse?.item_list ?: ArrayList()
-                        Log.i("프로젝트",itemArr.toString())
                         itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
                         lv.adapter = itemAdapter
                     }

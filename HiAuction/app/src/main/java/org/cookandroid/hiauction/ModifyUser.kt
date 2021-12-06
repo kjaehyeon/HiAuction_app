@@ -41,11 +41,10 @@ class ModifyUser : AppCompatActivity() {
                 dlg.show()
             } else {
                 var retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.22.48:4000")
+                    .baseUrl("http://192.168.0.17:4000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 var modifyUserService: ModifyUserService = retrofit.create(ModifyUserService::class.java)
-                //@TO_DO("user id preference에서 받아와야함")
                 var user_id:String? = prefs.getString("id", null)
                 modifyUserService.modifyUserInfo(user_id!!, currentPass.text.toString(), new_pass.text.toString(), email.text.toString(), describe.text.toString()).enqueue(object: Callback<ModifyUserResponse> {
                     override fun onFailure(call: Call<ModifyUserResponse>, t: Throwable) {0

@@ -54,7 +54,7 @@ class ItemRegister : AppCompatActivity(){
     lateinit var selected_date : TextView
     val id : String = prefs.getString("id", null).toString()
 
-    val BASE_URL= "http://192.168.22.48:4000/"
+    val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

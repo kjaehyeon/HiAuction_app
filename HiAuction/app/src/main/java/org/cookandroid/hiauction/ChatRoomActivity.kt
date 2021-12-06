@@ -45,7 +45,7 @@ class ChatRoomActivity : AppCompatActivity() {
     var score : Float? = null
     var room_id : Int? = null
 
-    val BASE_URL= "http://192.168.22.48:4000/"
+    val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
