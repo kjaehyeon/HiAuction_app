@@ -42,6 +42,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Nike air Jordon"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textSize="17dp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
@@ -51,6 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="대구 산격동" />
 
@@ -58,6 +61,7 @@
                     android:id="@+id/Bidprice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="즉시구매가 165,000" />
 
@@ -65,6 +69,7 @@
                     android:id="@+id/Imprice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="현재입찰가 124,000" />
             </LinearLayout>
