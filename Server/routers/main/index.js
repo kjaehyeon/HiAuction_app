@@ -109,7 +109,7 @@ module.exports = (pool) => {
                                             + ' (SELECT ROUND(AVG(Score), 1) FROM RATING'
                                             + ' WHERE S_id = I.U_id) Score,'
                                             + ' I.It_id, I.Quick_price, I.Current_price,'
-                                            + ' I.Create_date, I.Expire_date,'
+                                            + ' I.Min_bid_unit, I.Create_date, I.Expire_date,'
                                             + ' I.Description, I.Name Item_name, I.Img'
                                             + ' FROM ITEM I, MEMBER M, ADDRESS A'
                                             + ' WHERE I.U_id = M.U_id'
@@ -124,6 +124,7 @@ module.exports = (pool) => {
                 item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
+                min_bid_unit: result[0].Min_bid_unit,
                 created_date: toStringByFormatting(result[0].Create_date),
                 expired_date: toStringByFormatting(result[0].Expire_date),
                 description: result[0].Description,
