@@ -59,7 +59,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:backgroundTint="#FFF8F8F8"
-            android:text="도서/티켓/음반"
+            android:text="디지털 기기"
             android:textColor="@color/black"
             android:textStyle="bold" />
     </RelativeLayout>

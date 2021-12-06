@@ -36,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NaviHomeFragment : Fragment() {
     lateinit var test : TextView
+    lateinit var address : String
     var category_id: Int = 1
     var itemArr : ArrayList<ItemListData>? = null
     lateinit var itemAdapter:ListAdapter
@@ -88,7 +89,7 @@ class NaviHomeFragment : Fragment() {
             intent.putExtra("type",1)
             startActivity(intent)
         }
-        var address = addresses[0]
+        address = addresses[0]
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
                 address = addresses[arg2]
@@ -194,6 +195,25 @@ class NaviHomeFragment : Fragment() {
             if (data != null) {
                 btnCategory.text = data.getStringExtra("category")
                 category_id = data!!.getIntExtra("category_id",0)
+                var itemListResponse: ListResponse? = null
+                Log.i("category",category_id.toString())
+                itemListService.getItemList(category_id!! ,address).enqueue(object: Callback<ListResponse> {
+                    override fun onFailure(call: Call<ListResponse>, t: Throwable) {
+                        t.message?.let { Log.e("BIDREQUSET", it) }
+                        var dialog = activity?.let { AlertDialog.Builder(it) }
+                        dialog!!.setTitle("에러")
+                        dialog.setMessage("호출실패했습니다.")
+                        dialog.show()
+                    }
+                    override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
+                        itemListResponse = response.body()
+                        Log.i("프로젝트트",response.code().toString())
+                        itemArr = itemListResponse?.item_list ?: ArrayList()
+                        Log.i("프로젝트트",itemArr.toString())
+                        itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
+                        lv.adapter = itemAdapter
+                    }
+                })
             }
         }
     }
