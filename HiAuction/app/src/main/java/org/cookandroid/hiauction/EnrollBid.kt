@@ -39,6 +39,8 @@ class EnrollBid : AppCompatActivity(){
         var user_id : String? = prefs.getString("id",null)
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
         var img = findViewById<ImageView>(R.id.Itemimage)
+        var curprice = findViewById<TextView>(R.id.curprice)
+        var minbidunit = findViewById<TextView>(R.id.min_bid_unit)
 
         var intent = intent
         var item_id : Int = intent.getIntExtra("Id",0)
@@ -46,6 +48,9 @@ class EnrollBid : AppCompatActivity(){
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
         var img_url : String? = intent.getStringExtra("img")
+        curprice.text = intent.getIntExtra("curPrice", 0).toString()
+        minbidunit.text = intent.getIntExtra("minBidUnit",0).toString()
+
 
         Glide.with(this@EnrollBid).load("https://avatars.dicebear.com/api/big-smile/"+seller_id.text+".png").into(s_profile)
         Glide.with(this@EnrollBid).load(img_url).into(img)
