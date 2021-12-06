@@ -45,7 +45,6 @@
                 android:src="@drawable/location" />
 
 
-
             <Button
                 android:id="@+id/btnCategory"
                 android:layout_width="130dp"
@@ -54,19 +53,21 @@
                 android:layout_centerVertical="true"
                 android:backgroundTint="#FFF8F8F8"
                 android:text="디지털 기기"
+                android:textSize="15dp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
             <Spinner
                 android:id="@+id/Location"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/imageView"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="15dp"
                 android:background="@drawable/spinner"
-                android:padding="8dp" />
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
         </RelativeLayout>
     </RelativeLayout>
 
