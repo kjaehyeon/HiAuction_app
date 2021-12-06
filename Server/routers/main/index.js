@@ -190,7 +190,7 @@ module.exports = (pool) => {
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            const [result] = await conn.query('SELECT Is_end, Quick_price, U_id,'
+            const [result] = await conn.query('SELECT Is_end, Quick_price, U_id'
                                             + ' FROM ITEM'
                                             + ' WHERE It_id = ?', [item_id]);
             const {
