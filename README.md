@@ -36,15 +36,10 @@
 
 
 ## **Tech Stack**
-
-[!node.js](http://img.shields.io/badge/languge-node.js-green)
-
-[!kotiln](https://img.shields.io/badge/languge-kotlin-blue)
-
-[!android](https://img.shields.io/badge/android-android-brightgreenen)
-
-[!express](https://img.shields.io/badge/framework-express-orange)
-
+<img src="http://img.shields.io/badge/languge-node.js-green">
+<img src="https://img.shields.io/badge/languate-kotlin-blue">
+<img src="https://img.shields.io/badge/platform-android-brightgreenen">
+<img src="https://img.shields.io/badge/framework-express-orange">
 
 
 ## **[API Specification](https://www.notion.so/taewon98/API-af3430291615445b843849486f619ddd#97066c29bfc94c098877d2766b5416c8)**
