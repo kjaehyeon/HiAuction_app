@@ -1,3 +1,20 @@
+const leftPad = (value) => { 
+    if (value >= 10) { 
+        return value; 
+    } 
+    return `0${value}`; 
+};
+
+const toStringByFormatting = (source, delimiter = ' ') => { 
+    const year = source.getFullYear();
+    const month = leftPad(source.getMonth() + 1);
+    const day = leftPad(source.getDate());
+    const hours = leftPad(source.getHours());
+    const minutes = leftPad(source.getMinutes());
+    const seconds = leftPad(source.getSeconds());
+    return [year, month, day, hours, minutes, seconds].join(delimiter);
+};
+
 module.exports = (pool) => {
     const express = require('express');
     const router = express.Router();
@@ -117,12 +134,13 @@ module.exports = (pool) => {
             const chat_list = result.map((chat) => {
                 return {
                     sender_id: chat.S_id,
-                    reg_date: chat.Reg_date.toLocaleString(),
+                    reg_date: toStringByFormatting(chat.Reg_date),
                     content: chat.Content
                 };
             });
             res.status(200).json(chat_list);
         } catch (err) {
+            console.log(err);
             res.status(500).json({
                 message: err.message
             });
