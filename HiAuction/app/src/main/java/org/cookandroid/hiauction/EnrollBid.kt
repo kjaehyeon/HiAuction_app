@@ -20,6 +20,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import org.json.JSONObject
+import org.cookandroid.hiauction.datas.APIError
+
+import com.google.gson.Gson
+
+
+
+
+
+
 
 class EnrollBid : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +79,17 @@ class EnrollBid : AppCompatActivity(){
                         override fun onResponse(call: Call<PriceData>, response: Response<PriceData>) {
                             when(response.code()) {
                                 200 -> {
-                                    Log.i("efef","200")
                                     finish()//인텐트 종료
                                 }
                                 400 ->{
                                     val dlg: AlertDialog.Builder = AlertDialog.Builder(this@EnrollBid)
                                     dlg.setTitle("Message") //제목
-                                    dlg.setMessage("efefef") // 메시지
+                                    //val jObjError = JSONObject(response.errorBody()!!.string())
+                                    val message = Gson().fromJson(
+                                        response.errorBody()!!.charStream(),
+                                        APIError::class.java
+                                    )
+                                    dlg.setMessage(message.getMessage()) // 메시지
                                     dlg.setPositiveButton("닫기",null)
                                     dlg.show()
                                 }

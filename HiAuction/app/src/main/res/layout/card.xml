@@ -53,7 +53,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="대구 산격동" />
 
@@ -61,7 +60,6 @@
                     android:id="@+id/Bidprice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="즉시구매가 165,000" />
 
@@ -69,7 +67,6 @@
                     android:id="@+id/Imprice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1" android:ellipsize="end"
                     android:textSize="14dp"
                     android:text="현재입찰가 124,000" />
             </LinearLayout>
@@ -78,10 +75,12 @@
                 android:id="@+id/Regdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
-                android:layout_alignParentRight="true"
-                android:text="1일전" />
+                android:paddingBottom="10dp"
+                android:text="2021-12-12" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
