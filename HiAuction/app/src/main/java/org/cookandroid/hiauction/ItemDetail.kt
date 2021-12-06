@@ -35,12 +35,21 @@ class ItemDetail: AppCompatActivity() {
     var itemDetailData: ItemDetailData? = null
     var user_id : String? = prefs.getString("id",null)
     var type :Int = -1
+    var bidType : Int = -1
+    var itemType : Int = -1
     override fun onRestart() {
         super.onRestart()
         finish() //인텐트 종료
         overridePendingTransition(0, 0) //인텐트 효과 없애기
         val intent = getIntent() //인텐트
-        intent.putExtra("type", 1)
+        intent.putExtra("type", type)
+        if (bidType != -1){
+            intent.putExtra("bid_type", bidType) //버튼 없애고, 낙찰가 표시
+        }
+        if (itemType != -1){
+            intent.putExtra("item_type", itemType) //버튼 없애고, 낙찰가 표시
+        }
+
         startActivity(intent) //액티비티 열기
         overridePendingTransition(0, 0
         )
@@ -195,7 +204,7 @@ class ItemDetail: AppCompatActivity() {
                                 }
                             }
                         2 -> {
-                            var bidType = intent.getIntExtra("bid_type", 0)
+                            bidType = intent.getIntExtra("bid_type", 0)
                             println("ITEM_TYPE : $bidType ===========================================================")
                             when(bidType){
                                 // 낙찰완료 + 자기자신이 낙찰 (채팅버튼)
@@ -251,7 +260,8 @@ class ItemDetail: AppCompatActivity() {
                                     var Imprice = findViewById<TextView>(R.id.Imprice)
                                     Imprice.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                    Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.text = "낙찰가 " + item.current_price + "원"
+                                    Bidprice.textSize = 17f
                                 }
                                 // 버튼 없애고, 낙찰가만 표시 (된다면 그래프 띄어도 좋을 듯)
                                 2 -> {
@@ -264,7 +274,8 @@ class ItemDetail: AppCompatActivity() {
                                     var divider = findViewById<TextView>(R.id.divider)
                                     divider.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                    Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.text = "낙찰가 " + item.current_price + "원"
+                                    Bidprice.textSize = 17f
                                     Bidprice.setPadding(10, 20, 10, 40)
                                 }
                                 // 후기등록 필요
@@ -343,7 +354,7 @@ class ItemDetail: AppCompatActivity() {
                         }
                         //마이페이지 내가 등록한 상품에서 상품 상세페이지 접근
                         3 -> {
-                            var itemType = intent.getIntExtra("item_type", 0)
+                            itemType = intent.getIntExtra("item_type", 0)
                             Log.i("프로젝트", "itemType: " + itemType.toString())
                             when(itemType){
                                 1->{
