@@ -37,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NaviHomeFragment : Fragment() {
     lateinit var test : TextView
     lateinit var address : String
-    var category_id: Int = 1
+    var category_id: Int = 0
     var itemArr : ArrayList<ItemListData>? = null
     lateinit var itemAdapter:ListAdapter
     lateinit var edtSearch:EditText
