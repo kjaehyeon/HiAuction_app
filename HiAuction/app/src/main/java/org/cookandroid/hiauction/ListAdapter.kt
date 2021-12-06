@@ -36,7 +36,9 @@ class ListAdapter(val context: Context, val itemArr: ArrayList<ItemListData>) : 
         imprice.text = "즉시구매가 " + itemArr[position].immediate_price
         date.text = itemArr[position].created_date.toString()
         location.text = itemArr[position].address
-        Glide.with(context).load(itemArr[position].img_url).into(img)
+        lateinit var mainActivity: MainActivity
+        mainActivity = context as MainActivity
+        Glide.with(mainActivity).load(itemArr[position].img_url).into(img)
         return view;
     }
 }

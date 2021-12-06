@@ -117,7 +117,7 @@ class NaviMyPageFragment : Fragment() {
             dlg.setPositiveButton("확인") { dialog, which ->
                 var deleteUserResponse: DeleteUserResponse? = null
                 var retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.0.17:4000")
+                    .baseUrl("http://192.168.22.48:4000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 var modifyUserService: ModifyUserService = retrofit.create(ModifyUserService::class.java)
