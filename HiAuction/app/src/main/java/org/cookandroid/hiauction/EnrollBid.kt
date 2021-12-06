@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class EnrollBid : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.enrollbid)
+        setContentView(R.layout.enrollbid2)
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.22.48:4000")
             .addConverterFactory(GsonConverterFactory.create())
@@ -35,7 +35,7 @@ class EnrollBid : AppCompatActivity(){
         var seller_id = findViewById<TextView>(R.id.seller)
         var address = findViewById<TextView>(R.id.address)
         var item_name = findViewById<TextView>(R.id.itemname)
-
+        var s_profile : ImageView = findViewById(R.id.S_profile)
         var user_id : String? = prefs.getString("id",null)
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
         var img = findViewById<ImageView>(R.id.Itemimage)
@@ -45,7 +45,9 @@ class EnrollBid : AppCompatActivity(){
         address.text = intent.getStringExtra("address")
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
-        var img_url : Int = intent.getIntExtra("img",0)
+        var img_url : String? = intent.getStringExtra("img")
+
+        Glide.with(this@EnrollBid).load("https://avatars.dicebear.com/api/big-smile/"+seller_id.text+".png").into(s_profile)
         Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
             Log.i("efef","now5")
