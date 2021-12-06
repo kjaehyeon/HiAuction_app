@@ -53,7 +53,8 @@ class NaviHomeFragment : Fragment() {
         var card = view.findViewById<CardView>(R.id.cardview)
         var spinner = view.findViewById<Spinner>(R.id.Location)
         var adapter: ArrayAdapter<String>
-        adapter = ArrayAdapter(requireActivity(),  android.R.layout.simple_spinner_item, addresses)
+        adapter = ArrayAdapter(requireActivity(),  R.layout.spinner_item, addresses)
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         spinner.adapter = adapter
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
         var btnWrite = view.findViewById<ImageView>(R.id.btnWrite) //물품 등록 버튼
