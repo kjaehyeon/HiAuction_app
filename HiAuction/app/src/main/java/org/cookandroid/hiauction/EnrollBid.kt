@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.ResponseData
@@ -23,7 +25,6 @@ class EnrollBid : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.enrollbid)
-        Log.i("efef","now1")
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
@@ -34,16 +35,17 @@ class EnrollBid : AppCompatActivity(){
         var seller_id = findViewById<TextView>(R.id.seller)
         var address = findViewById<TextView>(R.id.address)
         var item_name = findViewById<TextView>(R.id.itemname)
-        Log.i("efef","now3")
         var user_id : String? = prefs.getString("id",null)
-        Log.i("efef","now4")
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
+        var img = findViewById<ImageView>(R.id.Itemimage)
 
         var intent = intent
         var item_id : Int = intent.getIntExtra("Id",0)
         address.text = intent.getStringExtra("address")
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
+        var img_url : Int = intent.getIntExtra("img",0)
+        Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
             Log.i("efef","now5")
             if (user_id != null) {
