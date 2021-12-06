@@ -66,6 +66,7 @@
         android:layout_marginHorizontal="10dp"/>
 
     <EditText
+        android:padding="10dp"
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,21 +86,22 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="2"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="시작가"/>
         <EditText
             android:id="@+id/start_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:layout_weight="1" />
+            android:layout_weight="2.5"
+            android:textAlignment="textEnd"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="원"/>
@@ -112,21 +114,22 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="2"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="즉시낙찰가" />
         <EditText
             android:id="@+id/immediate_price"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:layout_weight="1"/>
+            android:layout_weight="2.5"
+            android:textAlignment="textEnd"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="원"/>
@@ -140,24 +143,25 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_weight="2"
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="최소 입찰 단위" />
         <EditText
             android:id="@+id/min_bid_unit"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number"
-            android:layout_weight="1"/>
+            android:layout_weight="2.5"
+            android:textAlignment="textEnd"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="원"/>
+            android:text="원" />
     </LinearLayout>
 
     <LinearLayout

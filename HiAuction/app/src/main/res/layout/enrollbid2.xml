@@ -11,40 +11,48 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="0.5"
+        android:layout_margin="10dp"
+        android:background="@drawable/register_description">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="2">
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/S_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:src="@drawable/logo"
-                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
                     />
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="2"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp">
                     <TextView
+                        android:id="@+id/seller"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Auction1"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
                     <TextView
+                        android:id="@+id/address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="X box series x"
-                        android:textSize="20sp"/>
+                        android:text="동인동"
+                        android:layout_weight="1"
+                        android:textSize="15sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -52,38 +60,134 @@
     </LinearLayout>
     <!-- head -->
 
-    <!-- item image -->
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:src="@drawable/logo"
-        android:layout_weight="1"/>
-    <!-- item image -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <!-- item image -->
         <TextView
+            android:id="@+id/itemname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="입찰가"/>
-        <EditText
-            android:layout_width="wrap_content"
+            android:text="X box series x"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="10dp"/>
+        <ImageView
+            android:id="@+id/Itemimage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/logo"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="30dp"
+            android:layout_weight="3"/>
+        <!-- item image -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="입찰가 입력"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="원"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="현재입찰가"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    />
+                <TextView
+                    android:width="0dp"
+                    android:id="@+id/min_bid_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="199,000"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="최소 입찰 단위"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    />
+                <TextView
+                    android:id="@+id/curprice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="199,000"
+                    android:textSize="20sp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
-    <Button
+    <!-- item image -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="입찰하기"
-        android:textSize="25sp"
-        android:layout_marginHorizontal="20dp"/>
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="나의 입찰가"
+                android:textColor="@color/black"
+                android:layout_weight="2"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+            <EditText
+                android:id="@+id/Bidprice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="입찰가 입력"
+                android:layout_weight="2.5"
+                android:textAlignment="textEnd"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_weight="0.5"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/signup"
+            android:text="입찰하기"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="50dp" />
+    </LinearLayout>
+
 </LinearLayout>
