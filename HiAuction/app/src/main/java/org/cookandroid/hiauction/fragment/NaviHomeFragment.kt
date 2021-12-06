@@ -105,9 +105,7 @@ class NaviHomeFragment : Fragment() {
                     }
                     override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
                         itemListResponse = response.body()
-                        Log.i("프로젝트",response.code().toString())
                         itemArr = itemListResponse?.item_list ?: ArrayList()
-                        Log.i("프로젝트",itemArr.toString())
                         itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
                         lv.adapter = itemAdapter
                     }

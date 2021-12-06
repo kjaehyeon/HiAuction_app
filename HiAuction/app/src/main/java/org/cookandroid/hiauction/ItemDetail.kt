@@ -85,7 +85,6 @@ class ItemDetail: AppCompatActivity() {
         println("TYPE: $type=================================================================")
 
         if (itemId != -1) {
-            Log.i("프로젝트", itemId.toString())
             var retrofit = Retrofit.Builder()
                 .baseUrl("http://192.168.0.17:4000")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -103,9 +102,7 @@ class ItemDetail: AppCompatActivity() {
 
                 @RequiresApi(Build.VERSION_CODES.M)
                 override fun onResponse(call: Call<ItemDetailData>, response: Response<ItemDetailData>) {
-                    Log.i("프로젝트", response.code().toString())
                     itemDetailData = response.body()
-                    Log.i("프로젝트", itemDetailData!!.seller_id)
                     //var dialog = AlertDialog.Builder(this@MyBids)
                     //dialog.setMessage(bidListResponse?.bid_list?.get(1)?.item_name.toString())
                     var item = itemDetailData
@@ -123,19 +120,13 @@ class ItemDetail: AppCompatActivity() {
                     var itemImg = findViewById<ImageView>(R.id.Itemimage)
                     var userIcon = findViewById<ImageView>(R.id.userIcon)
 
-                    Log.i("프로젝트", "진행1")
                     seller_name.text = item!!.seller_name
-                    Log.i("프로젝트", "진행2")
                     address.text = item.address
-                    Log.i("프로젝트", "진행3")
                     seller_rate.text = item.seller_rate.toString()
                     item_name.text = item.item_name
-                    Log.i("프로젝트", "진행4")
                     item_create_date.text = "시작일 " + item.created_date
                     item_expire_date.text = "만료일 " + item.expired_date
-                    Log.i("프로젝트", "진행5")
                     description.text = item.description
-                    Log.i("프로젝트", type.toString())
                     itemImmediatPrice.text = "즉시구매가 " + item.immediate_price.toString() + "원"
                     itemCurrentPrice.text = "현재입찰가 " + item.current_price.toString() + "원"
                     Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)

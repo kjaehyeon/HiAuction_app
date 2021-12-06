@@ -8,8 +8,6 @@ import retrofit2.http.Query
 interface BidService {
     @GET("/api/my/bids")
     fun getBidItems(
-        //@Header("X-Naver-Client-Id") clientId: String,
-        //@Header("X-Naver-Client-Secret") clientSecret: String,
         @Query("user_id") u_id: String,
     ): Call<BidListResponse>
 }
