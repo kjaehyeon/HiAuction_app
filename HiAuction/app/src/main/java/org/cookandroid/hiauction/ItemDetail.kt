@@ -23,6 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.bid.*
 import kotlinx.android.synthetic.main.rating.view.*
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
@@ -39,11 +40,24 @@ class ItemDetail: AppCompatActivity() {
         finish() //인텐트 종료
         overridePendingTransition(0, 0) //인텐트 효과 없애기
         val intent = getIntent() //인텐트
-        intent.putExtra("type", 2)
+        intent.putExtra("type", 1)
         startActivity(intent) //액티비티 열기
         overridePendingTransition(0, 0
         )
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        finish() //인텐트 종료
+//        overridePendingTransition(0, 0) //인텐트 효과 없애기
+//        val intent = getIntent() //인텐트
+//        intent.putExtra("type", 1)
+//        startActivity(intent) //액티비티 열기
+//        overridePendingTransition(0, 0
+//        )
+//    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_detail)
@@ -126,6 +140,8 @@ class ItemDetail: AppCompatActivity() {
                                 bidintent.putExtra("itemname",item.item_name)
                                 bidintent.putExtra("seller",item!!.seller_name)
                                 bidintent.putExtra("img",item.img_url)
+                                bidintent.putExtra("curPrice", item.current_price)
+                                bidintent.putExtra("minBidUnit", item.min_bid_unit)
                                 startActivity(bidintent)
                             }
 

@@ -75,7 +75,6 @@
 
 
     <ListView
-        android:background="#FFF8F8F8"
         android:layout_below="@id/top"
         android:layout_centerHorizontal="true"
         android:id="@+id/lv"
