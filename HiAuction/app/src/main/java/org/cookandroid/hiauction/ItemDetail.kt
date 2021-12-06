@@ -100,18 +100,17 @@ class ItemDetail: AppCompatActivity() {
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {
-                            var id = intent.getIntExtra("Id",0)
                             var Imbuy = findViewById<Button>(R.id.Imbuy)
                             var Imbid = findViewById<Button>(R.id.Imbid)
 
                             Imbid.setOnClickListener {
                                 Log.i("프로젝트", "listener event")
-                                val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
+                                val bidintent = Intent(this@ItemDetail, EnrollBid::class.java)
                                 Log.i("efef","now2")
-                                bidintent.putExtra("Id",id)
+                                bidintent.putExtra("Id",itemId)
                                 bidintent.putExtra("address",item.address)
                                 bidintent.putExtra("itemname",item.item_name)
-                                bidintent.putExtra("seller",item!!.seller_name)
+                                bidintent.putExtra("seller",item.seller_name)
                                 startActivity(bidintent)
                             }
                         }
