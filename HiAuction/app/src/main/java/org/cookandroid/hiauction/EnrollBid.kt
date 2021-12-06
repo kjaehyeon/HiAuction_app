@@ -11,10 +11,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.gson.JsonObject
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.ResponseData
 import org.cookandroid.hiauction.interfaces.EnrollBidService
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,8 +81,7 @@ class EnrollBid : AppCompatActivity(){
                                 }
                                 400 ->{
                                     val dlg: AlertDialog.Builder = AlertDialog.Builder(this@EnrollBid)
-                                    dlg.setTitle("Message") //제목
-                                    dlg.setMessage("efefef") // 메시지
+                                    var jsonObject : JSONObject = JSONObject(response.errorBody()?.string())
                                     dlg.setPositiveButton("닫기",null)
                                     dlg.show()
                                 }
