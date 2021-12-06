@@ -47,15 +47,13 @@ class NaviHomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*addresses
-        for(address in addresses)*/
-        /*var user_id:String? = LoginActivity.prefs.getString("id", null)*/
-
-
-
         val view = inflater.inflate(R.layout.fragement_navi_home, container, false)
         edtSearch = view.findViewById<EditText>(R.id.edtSearch)//검색창
         var card = view.findViewById<CardView>(R.id.cardview)
+        var spinner = view.findViewById<Spinner>(R.id.Location)
+        var adapter: ArrayAdapter<String>
+        adapter = ArrayAdapter(requireActivity(),  android.R.layout.simple_spinner_item, addresses)
+        spinner.adapter = adapter
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
         var btnWrite = view.findViewById<ImageView>(R.id.btnWrite) //물품 등록 버튼
         var Location = view.findViewById<TextView>(R.id.Location) //사용자 주소
@@ -90,9 +88,35 @@ class NaviHomeFragment : Fragment() {
             intent.putExtra("type",1)
             startActivity(intent)
         }
+        var address = addresses[0]
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
+                address = addresses[arg2]
+                var itemListResponse: ListResponse? = null
+                itemListService.getItemList(category_id!! ,address).enqueue(object: Callback<ListResponse> {
+                    override fun onFailure(call: Call<ListResponse>, t: Throwable) {
+                        t.message?.let { Log.e("BIDREQUSET", it) }
+                        var dialog = activity?.let { AlertDialog.Builder(it) }
+                        dialog!!.setTitle("에러")
+                        dialog.setMessage("호출실패했습니다.")
+                        dialog.show()
+                    }
+                    override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
+                        itemListResponse = response.body()
+                        Log.i("프로젝트",response.code().toString())
+                        itemArr = itemListResponse?.item_list ?: ArrayList()
+                        Log.i("프로젝트",itemArr.toString())
+                        itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
+                        lv.adapter = itemAdapter
+                    }
+                })
+            }
 
+            override fun onNothingSelected(arg0: AdapterView<*>) {
 
-        var address : String = "동인동"
+            }
+
+        }
         var itemListResponse: ListResponse? = null
         itemListService.getItemList(category_id!! ,address).enqueue(object: Callback<ListResponse> {
             override fun onFailure(call: Call<ListResponse>, t: Throwable) {
