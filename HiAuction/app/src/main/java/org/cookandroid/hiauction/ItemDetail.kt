@@ -116,6 +116,7 @@ class ItemDetail: AppCompatActivity() {
                     var itemImmediatPrice = findViewById<TextView>(R.id.Imprice)
                     var itemCurrentPrice = findViewById<TextView>(R.id.Bidprice)
                     var itemImg = findViewById<ImageView>(R.id.Itemimage)
+                    var userIcon = findViewById<ImageView>(R.id.userIcon)
 
                     Log.i("프로젝트", "진행1")
                     seller_name.text = item!!.seller_name
@@ -133,6 +134,7 @@ class ItemDetail: AppCompatActivity() {
                     itemImmediatPrice.text = "즉시구매가 " + item.immediate_price.toString() + "원"
                     itemCurrentPrice.text = "현재입찰가 " + item.current_price.toString() + "원"
                     Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)
+                    Glide.with(this@ItemDetail).load("https://avatars.dicebear.com/api/big-smile/"+item!!.seller_name+".png").into(userIcon)
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {

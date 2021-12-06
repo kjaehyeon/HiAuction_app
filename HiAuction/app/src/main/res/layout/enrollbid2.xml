@@ -109,12 +109,21 @@
                     />
                 <TextView
                     android:width="0dp"
-                    android:id="@+id/min_bid_unit"
+                    android:id="@+id/curprice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="199,000"
                     android:textSize="20sp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="원"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.2"
+                    android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,12 +142,22 @@
                     android:layout_weight="1"
                     />
                 <TextView
-                    android:id="@+id/curprice"
+                    android:id="@+id/min_bid_unit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="199,000"
                     android:textSize="20sp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="원"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_weight="0.2"
+                    android:textAlignment="center"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -176,7 +195,8 @@
                 android:text="원"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_weight="0.5"/>
+                android:layout_weight="0.5"
+                android:textAlignment="center"/>
         </LinearLayout>
 
         <Button
