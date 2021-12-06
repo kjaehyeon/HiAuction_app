@@ -16,13 +16,11 @@ import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.ResponseData
 import org.cookandroid.hiauction.interfaces.EnrollBidService
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import org.json.JSONObject
 import org.cookandroid.hiauction.datas.APIError
 
 import com.google.gson.Gson
