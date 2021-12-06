@@ -278,7 +278,6 @@ class ItemDetail: AppCompatActivity() {
                                             var edtRating = dlgLayout.findViewById<TextView>(R.id.edtRating)
                                             var score = dlgLayout.findViewById<RatingBar>(R.id.ratingScore)
                                             var rating_score = score.rating
-                                            var user_id:String? = LoginActivity.prefs.getString("id", null)
                                             itemDetailService.enrollRating(item.seller_id, user_id!!, rating_score, edtRating.text.toString(), item.item_id)
                                                 .enqueue(object : Callback<ResponseData> {
                                                     override fun onFailure(call: Call<ResponseData>, t: Throwable) {
@@ -351,7 +350,6 @@ class ItemDetail: AppCompatActivity() {
                                                 var dataResponse = response.body()
                                                 when (response.code()) {
                                                     200 -> {
-                                                        var user_id:String? = LoginActivity.prefs.getString("id", null)
                                                         var user_name:String? = LoginActivity.prefs.getString("name", null)
                                                         var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
                                                             putExtra("room_id", dataResponse!!.room_id)

@@ -4,71 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/teal_200"
+    android:background="#F1F1F1"
     tools:context=".MainActivity">
-
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:background="#FFF8F8F8"
-        android:hint="상품명 등"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:padding="10dp"
-        android:singleLine="true" />
-
     <RelativeLayout
-        android:id="@+id/infobar"
+        android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edtSearch"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="27dp"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/location" />
-
-        <Spinner
-            android:id="@+id/Location"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/imageView"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:background="@drawable/spinner"
-            android:padding="8dp" />
-
-        <Button
-            android:id="@+id/btnCategory"
-            android:layout_width="130dp"
+        android:background="@color/white">
+        <EditText
+            android:id="@+id/edtSearch"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:backgroundTint="#FFF8F8F8"
-            android:text="디지털 기기"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="#FFF8F8F8"
+            android:hint="상품명 등"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="10dp"
+            android:singleLine="true" />
+
+        <RelativeLayout
+            android:id="@+id/infobar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtSearch"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="27dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/location" />
+
+
+
+            <Button
+                android:id="@+id/btnCategory"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="#FFF8F8F8"
+                android:text="디지털 기기"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/Location"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imageView"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:background="@drawable/spinner"
+                android:padding="8dp" />
+        </RelativeLayout>
     </RelativeLayout>
+
 
 
 
     <ListView
         android:background="#FFF8F8F8"
-        android:layout_below="@id/infobar"
+        android:layout_below="@id/top"
         android:layout_centerHorizontal="true"
         android:id="@+id/lv"
         android:layout_width="match_parent"
