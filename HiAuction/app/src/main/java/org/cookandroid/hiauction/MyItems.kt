@@ -45,7 +45,7 @@ class MyItems : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         var user_id:String? = LoginActivity.prefs.getString("id", null)
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         var itemService: ItemService = retrofit.create(ItemService::class.java)

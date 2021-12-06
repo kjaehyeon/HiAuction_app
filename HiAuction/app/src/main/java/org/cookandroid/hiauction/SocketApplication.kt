@@ -9,7 +9,7 @@ class SocketApplication {
         private lateinit var socket : Socket
         fun get(): Socket {
             try {
-                socket = IO.socket("http://192.168.22.48:4000/")
+                socket = IO.socket("http://192.168.0.17:4000/")
             } catch (e: URISyntaxException) {
                 e.printStackTrace()
             }

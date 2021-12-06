@@ -29,7 +29,7 @@ class NaviRoomListFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var rv_roomlist : RecyclerView
 
-    val BASE_URL= "http://192.168.22.48:4000/"
+    val BASE_URL= "http://192.168.0.17:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

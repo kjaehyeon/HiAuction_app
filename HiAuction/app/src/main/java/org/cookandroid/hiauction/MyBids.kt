@@ -48,7 +48,7 @@ class MyBids : AppCompatActivity() {
         var user_id:String? = LoginActivity.prefs.getString("id", null)
 
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         var bidService: BidService = retrofit.create(BidService::class.java)
@@ -137,7 +137,6 @@ class MyBids : AppCompatActivity() {
                     }
                 }
                 "1" -> {
-                    //TODO("bid price랑 item currentprice 비교해서 낙찰완료 구현해야함")
                     if (bid.bid_price == bid.item_price){
                         bidState.text = "낙찰완료"
                         var bgShape : GradientDrawable = bidState.background as GradientDrawable
@@ -215,6 +214,7 @@ class MyBids : AppCompatActivity() {
                         var intent = Intent(this@MyBids, ItemDetail::class.java)
                         intent.putExtra("type", 2)
                         intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                        intent.putExtra("item_id", bid.item_id)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                     }

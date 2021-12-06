@@ -26,7 +26,7 @@ class EnrollBid : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.enrollbid2)
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.22.48:4000")
+            .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         Log.i("efef","now2")

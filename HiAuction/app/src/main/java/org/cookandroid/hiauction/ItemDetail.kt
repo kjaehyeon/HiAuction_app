@@ -37,6 +37,7 @@ class ItemDetail: AppCompatActivity() {
     var type :Int = -1
     var bidType : Int = -1
     var itemType : Int = -1
+    var itemId : Int = -1
     override fun onRestart() {
         super.onRestart()
         finish() //인텐트 종료
@@ -49,6 +50,10 @@ class ItemDetail: AppCompatActivity() {
         if (itemType != -1){
             intent.putExtra("item_type", itemType) //버튼 없애고, 낙찰가 표시
         }
+        if (itemId != -1){
+            intent.putExtra("item_id", itemId)
+        }
+
 
         startActivity(intent) //액티비티 열기
         overridePendingTransition(0, 0
@@ -76,13 +81,13 @@ class ItemDetail: AppCompatActivity() {
         var intent = intent
 
         type = intent.getIntExtra("type", 0)
-        var itemId = intent.getIntExtra("item_id", -1)
+        itemId = intent.getIntExtra("item_id", -1)
         println("TYPE: $type=================================================================")
 
         if (itemId != -1) {
             Log.i("프로젝트", itemId.toString())
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://192.168.22.48:4000")
+                .baseUrl("http://192.168.0.17:4000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             var itemDetailService: ItemDetailService = retrofit.create(ItemDetailService::class.java)
