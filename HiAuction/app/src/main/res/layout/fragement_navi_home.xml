@@ -40,17 +40,17 @@
             android:layout_centerVertical="true"
             android:src="@drawable/location" />
 
-        <TextView
+        <Spinner
             android:id="@+id/Location"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/imageView"
             android:gravity="center"
-            android:text="산격동"
             android:textColor="@color/black"
             android:textSize="15dp"
-            android:textStyle="bold" />
+            android:background="@drawable/spinner"
+            android:padding="8dp" />
 
         <Button
             android:id="@+id/btnCategory"

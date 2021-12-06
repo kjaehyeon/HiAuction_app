@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.ResponseData
@@ -22,30 +25,32 @@ class EnrollBid : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.enrollbid)
-
-        Log.i("efef","now1")
         var retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.0.17:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         Log.i("efef","now2")
         var enrollBidService: EnrollBidService = retrofit.create(EnrollBidService::class.java)
-        var btnBid = findViewById<Button>(R.id.Imbid)
+        var btnBid = findViewById<Button>(R.id.btnBid)
         var seller_id = findViewById<TextView>(R.id.seller)
         var address = findViewById<TextView>(R.id.address)
         var item_name = findViewById<TextView>(R.id.itemname)
-        Log.i("efef","now3")
-        var user_id: String? = prefs.getString("id",null)
-        Log.i("efef","now4")
+
+        var user_id : String? = prefs.getString("id",null)
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
+        var img = findViewById<ImageView>(R.id.Itemimage)
 
         var intent = intent
         var item_id : Int = intent.getIntExtra("Id",0)
         address.text = intent.getStringExtra("address")
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
+        var img_url : Int = intent.getIntExtra("img",0)
+        Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
+            Log.i("efef","now5")
             if (user_id != null) {
+
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
                     .enqueue(object : Callback<PriceData> {
@@ -58,13 +63,19 @@ class EnrollBid : AppCompatActivity(){
                         }
                         @RequiresApi(Build.VERSION_CODES.M)
                         override fun onResponse(call: Call<PriceData>, response: Response<PriceData>) {
-                            var responseData = response.body()
                             when(response.code()) {
                                 200 -> {
-                                    finish() //인텐트 종료
-                                    val outintent = getIntent() //인텐트
-                                    outintent.putExtra("price", price)
-                                    startActivityForResult(outintent,0 ) //액티비티 열기 //인텐트 효과 없애기
+                                    Log.i("efef","200")
+                                    //finish() //인텐트 종료
+
+                                //액티비티 열기 //인텐트 효과 없애기
+                                }
+                                400 ->{
+                                    val dlg: AlertDialog.Builder = AlertDialog.Builder(this@EnrollBid)
+                                    dlg.setTitle("Message") //제목
+                                    dlg.setMessage("efefef") // 메시지
+                                    dlg.setPositiveButton("닫기",null)
+                                    dlg.show()
                                 }
                                 500 -> {
                                     var dialog = androidx.appcompat.app.AlertDialog.Builder(this@EnrollBid)

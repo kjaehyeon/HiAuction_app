@@ -24,13 +24,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.rating.view.*
+import org.cookandroid.hiauction.LoginActivity.Companion.prefs
+import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.RoomNumber
+import org.cookandroid.hiauction.interfaces.EnrollBidService
 import java.util.*
 import kotlin.properties.Delegates
 class ItemDetail: AppCompatActivity() {
     var itemDetailData: ItemDetailData? = null
 
     var type :Int = -1
+    override fun onRestart() {
+        super.onRestart()
+        finish() //인텐트 종료
+        overridePendingTransition(0, 0) //인텐트 효과 없애기
+        val intent = getIntent() //인텐트
+        intent.putExtra("type", 1)
+        startActivity(intent) //액티비티 열기
+        overridePendingTransition(0, 0
+        )
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_detail)
@@ -102,19 +115,60 @@ class ItemDetail: AppCompatActivity() {
                         1 -> {
                             var Imbuy = findViewById<Button>(R.id.Imbuy)
                             var Imbid = findViewById<Button>(R.id.Imbid)
-
+                            var enrollBidService: EnrollBidService = retrofit.create(
+                                EnrollBidService::class.java)
                             Imbid.setOnClickListener {
-                                Log.i("프로젝트", "listener event")
-                                val bidintent = Intent(this@ItemDetail, EnrollBid::class.java)
-                                Log.i("efef","now2")
+                                val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
                                 bidintent.putExtra("Id",itemId)
                                 bidintent.putExtra("address",item.address)
                                 bidintent.putExtra("itemname",item.item_name)
-                                bidintent.putExtra("seller",item.seller_name)
+                                bidintent.putExtra("seller",item!!.seller_name)
+                                bidintent.putExtra("img",item.img_url)
                                 startActivity(bidintent)
                             }
-                        }
-                        //마이페이지 내 입찰목록에서 상품 상세페이지 접근
+
+                            Imbuy.setOnClickListener{
+                                val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
+                                dlg.setTitle("즉시 구매 하시겠습니까?") //제목
+                                dlg.setPositiveButton("네",null)
+                                dlg.setNegativeButton("네",null)
+                                dlg.setPositiveButton("네") {dialog, which ->
+                                    enrollBidService.enrollIm(user_id!!, itemId).enqueue(object : Callback<PriceData> {
+                                            override fun onFailure(call: Call<PriceData>, t: Throwable) {
+                                                t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                dialog.setTitle("에러")
+                                                dialog.setMessage("호출실패했습니다.")
+                                                dialog.show()
+                                            }
+                                            @RequiresApi(Build.VERSION_CODES.M)
+                                            override fun onResponse(call: Call<PriceData>, response: Response<PriceData>) {
+                                                when(response.code()) {
+                                                    200 -> {
+                                                        Log.i("efef","200")
+
+                                                    }
+                                                    400 ->{
+                                                        val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
+                                                        dlg.setTitle("Message") //제목
+                                                        dlg.setMessage("내부적으로 오류가 발생하였습니다.\n" +
+                                                                "잠시 후 다시 시도해주세요") // 메시지
+                                                        dlg.setPositiveButton("닫기",null)
+                                                        dlg.show()
+                                                    }
+                                                    500 -> {
+                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                        dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                        dialog.setNegativeButton("확인", null)
+                                                        dialog.show()
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    }
+                                dlg.show()
+                                }
+                            }
                         2 -> {
                             var bidType = intent.getIntExtra("bid_type", 0)
                             println("ITEM_TYPE : $bidType ===========================================================")
