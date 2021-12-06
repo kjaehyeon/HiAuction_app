@@ -39,7 +39,7 @@ class ItemDetail: AppCompatActivity() {
         finish() //인텐트 종료
         overridePendingTransition(0, 0) //인텐트 효과 없애기
         val intent = getIntent() //인텐트
-        intent.putExtra("type", 1)
+        intent.putExtra("type", 2)
         startActivity(intent) //액티비티 열기
         overridePendingTransition(0, 0
         )
@@ -59,7 +59,7 @@ class ItemDetail: AppCompatActivity() {
         if (itemId != -1) {
             Log.i("프로젝트", itemId.toString())
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://192.168.0.17:4000")
+                .baseUrl("http://192.168.22.48:4000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             var itemDetailService: ItemDetailService = retrofit.create(ItemDetailService::class.java)
@@ -113,7 +113,6 @@ class ItemDetail: AppCompatActivity() {
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {
-                            var user_id : String? = prefs.getString("id",null)
                             var Imbuy = findViewById<Button>(R.id.Imbuy)
                             var Imbid = findViewById<Button>(R.id.Imbid)
                             var enrollBidService: EnrollBidService = retrofit.create(
@@ -131,9 +130,8 @@ class ItemDetail: AppCompatActivity() {
                             Imbuy.setOnClickListener{
                                 val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
                                 dlg.setTitle("즉시 구매 하시겠습니까?") //제목
-                                dlg.setPositiveButton("네",null)
-                                dlg.setNegativeButton("네",null)
-                                dlg.setPositiveButton("네") {dialog, which ->
+                                dlg.setNegativeButton("취소",null)
+                                dlg.setPositiveButton("확인") {dialog, which ->
                                     enrollBidService.enrollIm(user_id!!, itemId).enqueue(object : Callback<PriceData> {
                                             override fun onFailure(call: Call<PriceData>, t: Throwable) {
                                                 t.message?.let { Log.e("ITEMREQUSET", it) }
@@ -147,6 +145,14 @@ class ItemDetail: AppCompatActivity() {
                                                 when(response.code()) {
                                                     200 -> {
                                                         Log.i("efef","200")
+                                                        finish() //인텐트 종료
+                                                        overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                        val intent = getIntent() //인텐트
+                                                        intent.putExtra("type", 2)
+                                                        intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                                                        startActivity(intent) //액티비티 열기
+                                                        overridePendingTransition(0, 0
+                                                        ) //인텐트 효과 없애기
 
                                                     }
                                                     400 ->{
@@ -155,6 +161,8 @@ class ItemDetail: AppCompatActivity() {
                                                         dlg.setMessage("내부적으로 오류가 발생하였습니다.\n" +
                                                                 "잠시 후 다시 시도해주세요") // 메시지
                                                         dlg.setPositiveButton("닫기",null)
+                                                        //Log.i("프로젝트", response.body()!!.message)
+
                                                         dlg.show()
                                                     }
                                                     500 -> {

@@ -26,7 +26,7 @@ class EnrollBid : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.enrollbid)
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.17:4000")
+            .baseUrl("http://192.168.22.48:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         Log.i("efef","now2")
@@ -35,6 +35,7 @@ class EnrollBid : AppCompatActivity(){
         var seller_id = findViewById<TextView>(R.id.seller)
         var address = findViewById<TextView>(R.id.address)
         var item_name = findViewById<TextView>(R.id.itemname)
+
         var user_id : String? = prefs.getString("id",null)
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
         var img = findViewById<ImageView>(R.id.Itemimage)
@@ -49,7 +50,7 @@ class EnrollBid : AppCompatActivity(){
         btnBid.setOnClickListener {
             Log.i("efef","now5")
             if (user_id != null) {
-                Log.i("efef","now6")
+
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
                     .enqueue(object : Callback<PriceData> {
@@ -65,6 +66,7 @@ class EnrollBid : AppCompatActivity(){
                             when(response.code()) {
                                 200 -> {
                                     Log.i("efef","200")
+                                    finish()
                                     //finish() //인텐트 종료
 
                                 //액티비티 열기 //인텐트 효과 없애기
