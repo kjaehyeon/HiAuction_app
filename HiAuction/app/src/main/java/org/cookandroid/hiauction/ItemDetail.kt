@@ -1,8 +1,6 @@
 package org.cookandroid.hiauction
 
 import com.bumptech.glide.Glide
-import org.cookandroid.hiauction.datas.ItemDetailData
-import org.cookandroid.hiauction.datas.ResponseData
 import android.app.DatePickerDialog
 import android.content.ClipData
 import android.content.Intent
@@ -22,12 +20,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.bid.*
 import kotlinx.android.synthetic.main.rating.view.*
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
-import org.cookandroid.hiauction.datas.PriceData
-import org.cookandroid.hiauction.datas.RoomNumber
+import org.cookandroid.hiauction.datas.*
 import org.cookandroid.hiauction.interfaces.EnrollBidService
 import java.util.*
 import kotlin.properties.Delegates
@@ -181,8 +179,11 @@ class ItemDetail: AppCompatActivity() {
                                                     400 ->{
                                                         val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
                                                         dlg.setTitle("Message") //제목
-                                                        dlg.setMessage("내부적으로 오류가 발생하였습니다.\n" +
-                                                                "잠시 후 다시 시도해주세요") // 메시지
+                                                        val message = Gson().fromJson(
+                                                            response.errorBody()!!.charStream(),
+                                                            APIError::class.java
+                                                        )
+                                                        dlg.setMessage(message.getMessage()) // 메시지
                                                         dlg.setPositiveButton("닫기",null)
                                                         //Log.i("프로젝트", response.body()!!.message)
 
@@ -318,13 +319,6 @@ class ItemDetail: AppCompatActivity() {
                                                         when(response.code()) {
                                                             200 -> {
                                                                 show.dismiss()
-//                                                                reviewBtn.visibility = View.GONE
-//                                                                var Imprice = findViewById<TextView>(R.id.Imprice)
-//                                                                Imprice.visibility = View.GONE
-//                                                                var divider = findViewById<TextView>(R.id.divider)
-//                                                                divider.visibility = View.GONE
-//                                                                var Bidprice = findViewById<TextView>(R.id.Bidprice)
-//                                                                Bidprice.text = "낙찰가 " + item.current_price
                                                                 finish() //인텐트 종료
                                                                 overridePendingTransition(0, 0) //인텐트 효과 없애기
                                                                 val intent = getIntent() //인텐트
@@ -477,12 +471,6 @@ class ItemDetail: AppCompatActivity() {
                                     )
                                     expandDateBtn.text = "기간 연장"
                                     expandDateBtn.setOnClickListener {
-                                        // 후기등록 띄우기
-                                        //var dlgView = View.inflate(this@ItemDetail, R.layout.expand_date, null)
-//                                        var dlg = AlertDialog.Builder(this@ItemDetail)
-//                                        dlg.setTitle("기간 연장")
-//                                        dlg.setView(dlgView)
-//                                        dlg.setNegativeButton("취소", null)
                                         val today = GregorianCalendar()
                                         val year: Int = today.get(Calendar.YEAR)
                                         val month: Int = today.get(Calendar.MONTH)
@@ -525,21 +513,6 @@ class ItemDetail: AppCompatActivity() {
                                                     })
                                                 }
                                             }, year, month, date).show()
-//                                        dlg.setPositiveButton("연장") {dialog, which->
-//                                            var expandDate = dlgView.findViewById<CalendarView>(R.id.expandDate)
-//                                            var cal:Calendar = Calendar.getInstance()
-//                                            cal.setTime(Date(expandDate.date))
-//                                            val caldate =
-//                                                Integer.toString(cal.get(Calendar.YEAR)) + "-" + Integer.toString(
-//                                                    cal.get(Calendar.MONTH)
-//                                                ) + "-" + Integer.toString(cal.get(Calendar.DATE))
-//                                            lateinit var expand_date :String
-//                                            expandDate.setOnDateChangeListener{ view, year, month ,dayOfMonth ->
-//                                                Log.i("프로젝트", "날짜 변경")
-//                                                var selectYear = year
-//                                                var selectMonth = month + 1
-//                                                var selectDay = dayOfMonth
-//                                                expand_date = "$selectYear-$selectMonth-$selectDay"
 //                                            }
 
                                     }
