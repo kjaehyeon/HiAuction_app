@@ -36,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NaviHomeFragment : Fragment() {
     lateinit var test : TextView
+    lateinit var address : String
     var category_id: Int = 1
     var itemArr : ArrayList<ItemListData>? = null
     lateinit var itemAdapter:ListAdapter
@@ -52,7 +53,8 @@ class NaviHomeFragment : Fragment() {
         var card = view.findViewById<CardView>(R.id.cardview)
         var spinner = view.findViewById<Spinner>(R.id.Location)
         var adapter: ArrayAdapter<String>
-        adapter = ArrayAdapter(requireActivity(),  android.R.layout.simple_spinner_item, addresses)
+        adapter = ArrayAdapter(requireActivity(),  R.layout.spinner_item, addresses)
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         spinner.adapter = adapter
         var btnCategory = view.findViewById<Button>(R.id.btnCategory) //카테고리 설정 버튼
         var btnWrite = view.findViewById<ImageView>(R.id.btnWrite) //물품 등록 버튼
@@ -88,7 +90,7 @@ class NaviHomeFragment : Fragment() {
             intent.putExtra("type",1)
             startActivity(intent)
         }
-        var address = addresses[0]
+        address = addresses[0]
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
                 address = addresses[arg2]
@@ -194,6 +196,25 @@ class NaviHomeFragment : Fragment() {
             if (data != null) {
                 btnCategory.text = data.getStringExtra("category")
                 category_id = data!!.getIntExtra("category_id",0)
+                var itemListResponse: ListResponse? = null
+                Log.i("category",category_id.toString())
+                itemListService.getItemList(category_id!! ,address).enqueue(object: Callback<ListResponse> {
+                    override fun onFailure(call: Call<ListResponse>, t: Throwable) {
+                        t.message?.let { Log.e("BIDREQUSET", it) }
+                        var dialog = activity?.let { AlertDialog.Builder(it) }
+                        dialog!!.setTitle("에러")
+                        dialog.setMessage("호출실패했습니다.")
+                        dialog.show()
+                    }
+                    override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
+                        itemListResponse = response.body()
+                        Log.i("프로젝트트",response.code().toString())
+                        itemArr = itemListResponse?.item_list ?: ArrayList()
+                        Log.i("프로젝트트",itemArr.toString())
+                        itemAdapter = activity?.let { ListAdapter(it, itemArr!!) }!!
+                        lv.adapter = itemAdapter
+                    }
+                })
             }
         }
     }
