@@ -32,7 +32,7 @@ import java.util.*
 import kotlin.properties.Delegates
 class ItemDetail: AppCompatActivity() {
     var itemDetailData: ItemDetailData? = null
-
+    var user_id : String? = prefs.getString("id",null)
     var type :Int = -1
     override fun onRestart() {
         super.onRestart()
