@@ -52,7 +52,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:backgroundTint="#FFF8F8F8"
-                android:text="디지털 기기"
+                android:text="모든 카테고리"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
