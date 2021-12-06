@@ -38,4 +38,4 @@
 2. 상품 등록 및 입찰
 3. 후기 남기기
 
-## **[API Specification](https://www.notion.so/taewon98/API-af3430291615445b843849486f619ddd#97066c29bfc94c098877d2766b5416c8)**
+## **[API Specification](https://taewon98.notion.site/API-af3430291615445b843849486f619ddd)**
