@@ -55,17 +55,26 @@ module.exports = (pool) => {
             let sql = 'SELECT It_id, Name, Quick_price,'
                         + ' Current_price, Create_date, Img'
                         + ' FROM ITEM'
-                        + ' WHERE c_id = ?'
-                        + ' AND Ad_id = (SELECT Ad_id FROM ADDRESS'
+                        + ' WHERE Ad_id = (SELECT Ad_id FROM ADDRESS'
                                         + ' WHERE Name = ?)'
                         + ' AND Expire_date > NOW()'
                         + ` AND Is_end = '0'`;
+
+            if (parseInt(category_id)) {
+                sql += ' AND c_id = ?';
+            }
             if (key) {
                 sql += ` AND LOWER(Name) LIKE '%${key.toLowerCase()}%'`
             }
             sql += ' ORDER BY Create_date DESC'
 
-            const [result2] = await conn.query(sql, [category_id, address]);
+            let result2 = null;
+            if (!parseInt(category_id)) {
+                [result2] = await conn.query(sql, [address]);
+            } else {
+                [result2] = await conn.query(sql, [address, category_id]);
+            }
+
             const item_list = result2.map((item_info) => {
                 return {
                     item_id: item_info.It_id,
@@ -81,6 +90,7 @@ module.exports = (pool) => {
                 item_list
             });
         } catch (err) {
+            console.log(err);
             res.status(500).json({
                 message: err.message
             });
@@ -99,7 +109,7 @@ module.exports = (pool) => {
                                             + ' (SELECT ROUND(AVG(Score), 1) FROM RATING'
                                             + ' WHERE S_id = I.U_id) Score,'
                                             + ' I.It_id, I.Quick_price, I.Current_price,'
-                                            + ' I.Create_date, I.Expire_date,'
+                                            + ' I.Min_bid_unit, I.Create_date, I.Expire_date,'
                                             + ' I.Description, I.Name Item_name, I.Img'
                                             + ' FROM ITEM I, MEMBER M, ADDRESS A'
                                             + ' WHERE I.U_id = M.U_id'
@@ -114,6 +124,7 @@ module.exports = (pool) => {
                 item_name: result[0].Item_name,
                 immediate_price: result[0].Quick_price,
                 current_price: result[0].Current_price,
+                min_bid_unit: result[0].Min_bid_unit,
                 created_date: toStringByFormatting(result[0].Create_date),
                 expired_date: toStringByFormatting(result[0].Expire_date),
                 description: result[0].Description,
@@ -190,7 +201,7 @@ module.exports = (pool) => {
 
         try {
             conn = await pool.getConnection(async conn => conn);
-            const [result] = await conn.query('SELECT Is_end, Quick_price, U_id,'
+            const [result] = await conn.query('SELECT Is_end, Quick_price, U_id'
                                             + ' FROM ITEM'
                                             + ' WHERE It_id = ?', [item_id]);
             const {
