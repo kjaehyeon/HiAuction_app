@@ -62,13 +62,11 @@ class MyItems : AppCompatActivity() {
 
             override fun onResponse(call: Call<ItemListResponse>, response: Response<ItemListResponse>) {
                 itemListResponse = response.body()
-                Log.d("BIDREQUSET","bids : "+itemListResponse?.item_list)
                 //var dialog = AlertDialog.Builder(this@MyBids)
                 //dialog.setMessage(bidListResponse?.bid_list?.get(1)?.item_name.toString())
                 itemsArr = itemListResponse?.item_list ?: ArrayList()
                 //Log.i("BidsArr", bidsArr.toString())
                 //dialog.show()
-                Log.d("is_end", itemsArr!!.get(1).is_end)
                 var myItemList = findViewById<ListView>(R.id.listMyItems)
                 var itemAdapter = MyItemListViewAdapter(this@MyItems, itemsArr!!)
                 myItemList.adapter = itemAdapter
