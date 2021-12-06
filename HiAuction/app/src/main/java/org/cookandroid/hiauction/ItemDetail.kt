@@ -23,24 +23,50 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.bid.*
 import kotlinx.android.synthetic.main.rating.view.*
+import org.cookandroid.hiauction.LoginActivity.Companion.prefs
+import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.RoomNumber
+import org.cookandroid.hiauction.interfaces.EnrollBidService
 import java.util.*
 import kotlin.properties.Delegates
 class ItemDetail: AppCompatActivity() {
     var itemDetailData: ItemDetailData? = null
-
+    var user_id : String? = prefs.getString("id",null)
     var type :Int = -1
+    var bidType : Int = -1
+    var itemType : Int = -1
     override fun onRestart() {
         super.onRestart()
         finish() //인텐트 종료
         overridePendingTransition(0, 0) //인텐트 효과 없애기
         val intent = getIntent() //인텐트
-        intent.putExtra("type", 1)
+        intent.putExtra("type", type)
+        if (bidType != -1){
+            intent.putExtra("bid_type", bidType) //버튼 없애고, 낙찰가 표시
+        }
+        if (itemType != -1){
+            intent.putExtra("item_type", itemType) //버튼 없애고, 낙찰가 표시
+        }
+
         startActivity(intent) //액티비티 열기
         overridePendingTransition(0, 0
         )
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        finish() //인텐트 종료
+//        overridePendingTransition(0, 0) //인텐트 효과 없애기
+//        val intent = getIntent() //인텐트
+//        intent.putExtra("type", 1)
+//        startActivity(intent) //액티비티 열기
+//        overridePendingTransition(0, 0
+//        )
+//    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.item_detail)
@@ -56,7 +82,7 @@ class ItemDetail: AppCompatActivity() {
         if (itemId != -1) {
             Log.i("프로젝트", itemId.toString())
             var retrofit = Retrofit.Builder()
-                .baseUrl("http://192.168.0.17:4000")
+                .baseUrl("http://192.168.22.48:4000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
             var itemDetailService: ItemDetailService = retrofit.create(ItemDetailService::class.java)
@@ -90,6 +116,7 @@ class ItemDetail: AppCompatActivity() {
                     var itemImmediatPrice = findViewById<TextView>(R.id.Imprice)
                     var itemCurrentPrice = findViewById<TextView>(R.id.Bidprice)
                     var itemImg = findViewById<ImageView>(R.id.Itemimage)
+                    var userIcon = findViewById<ImageView>(R.id.userIcon)
 
                     Log.i("프로젝트", "진행1")
                     seller_name.text = item!!.seller_name
@@ -107,26 +134,79 @@ class ItemDetail: AppCompatActivity() {
                     itemImmediatPrice.text = "즉시구매가 " + item.immediate_price.toString() + "원"
                     itemCurrentPrice.text = "현재입찰가 " + item.current_price.toString() + "원"
                     Glide.with(this@ItemDetail).load(item.img_url).into(itemImg)
+                    Glide.with(this@ItemDetail).load("https://avatars.dicebear.com/api/big-smile/"+item!!.seller_name+".png").into(userIcon)
                     when(type) {
                         //메인페이지에서 상품 상세페이지 접근
                         1 -> {
                             var Imbuy = findViewById<Button>(R.id.Imbuy)
                             var Imbid = findViewById<Button>(R.id.Imbid)
-
+                            var enrollBidService: EnrollBidService = retrofit.create(
+                                EnrollBidService::class.java)
                             Imbid.setOnClickListener {
-                                Log.i("프로젝트", "listener event")
                                 val bidintent = Intent(this@ItemDetail,EnrollBid::class.java)
-                                Log.i("efef","now2")
                                 bidintent.putExtra("Id",itemId)
                                 bidintent.putExtra("address",item.address)
                                 bidintent.putExtra("itemname",item.item_name)
                                 bidintent.putExtra("seller",item!!.seller_name)
+                                bidintent.putExtra("img",item.img_url)
+                                bidintent.putExtra("curPrice", item.current_price)
+                                bidintent.putExtra("minBidUnit", item.min_bid_unit)
                                 startActivity(bidintent)
                             }
-                        }
-                        //마이페이지 내 입찰목록에서 상품 상세페이지 접근
+
+                            Imbuy.setOnClickListener{
+                                val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
+                                dlg.setTitle("즉시 구매 하시겠습니까?") //제목
+                                dlg.setNegativeButton("취소",null)
+                                dlg.setPositiveButton("확인") {dialog, which ->
+                                    enrollBidService.enrollIm(user_id!!, itemId).enqueue(object : Callback<PriceData> {
+                                            override fun onFailure(call: Call<PriceData>, t: Throwable) {
+                                                t.message?.let { Log.e("ITEMREQUSET", it) }
+                                                var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                dialog.setTitle("에러")
+                                                dialog.setMessage("호출실패했습니다.")
+                                                dialog.show()
+                                            }
+                                            @RequiresApi(Build.VERSION_CODES.M)
+                                            override fun onResponse(call: Call<PriceData>, response: Response<PriceData>) {
+                                                when(response.code()) {
+                                                    200 -> {
+                                                        Log.i("efef","200")
+                                                        finish() //인텐트 종료
+                                                        overridePendingTransition(0, 0) //인텐트 효과 없애기
+                                                        val intent = getIntent() //인텐트
+                                                        intent.putExtra("type", 2)
+                                                        intent.putExtra("bid_type", 2) //버튼 없애고, 낙찰가 표시
+                                                        startActivity(intent) //액티비티 열기
+                                                        overridePendingTransition(0, 0
+                                                        ) //인텐트 효과 없애기
+
+                                                    }
+                                                    400 ->{
+                                                        val dlg: AlertDialog.Builder = AlertDialog.Builder(this@ItemDetail)
+                                                        dlg.setTitle("Message") //제목
+                                                        dlg.setMessage("내부적으로 오류가 발생하였습니다.\n" +
+                                                                "잠시 후 다시 시도해주세요") // 메시지
+                                                        dlg.setPositiveButton("닫기",null)
+                                                        //Log.i("프로젝트", response.body()!!.message)
+
+                                                        dlg.show()
+                                                    }
+                                                    500 -> {
+                                                        var dialog = AlertDialog.Builder(this@ItemDetail)
+                                                        dialog.setMessage("내부적으로 오류가 발생하였습니다.\n잠시 후 다시 시도해주세요")
+                                                        dialog.setNegativeButton("확인", null)
+                                                        dialog.show()
+                                                    }
+                                                }
+                                            }
+                                        })
+                                    }
+                                dlg.show()
+                                }
+                            }
                         2 -> {
-                            var bidType = intent.getIntExtra("bid_type", 0)
+                            bidType = intent.getIntExtra("bid_type", 0)
                             println("ITEM_TYPE : $bidType ===========================================================")
                             when(bidType){
                                 // 낙찰완료 + 자기자신이 낙찰 (채팅버튼)
@@ -182,7 +262,8 @@ class ItemDetail: AppCompatActivity() {
                                     var Imprice = findViewById<TextView>(R.id.Imprice)
                                     Imprice.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                    Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.text = "낙찰가 " + item.current_price + "원"
+                                    Bidprice.textSize = 17f
                                 }
                                 // 버튼 없애고, 낙찰가만 표시 (된다면 그래프 띄어도 좋을 듯)
                                 2 -> {
@@ -195,7 +276,8 @@ class ItemDetail: AppCompatActivity() {
                                     var divider = findViewById<TextView>(R.id.divider)
                                     divider.visibility = View.GONE
                                     var Bidprice = findViewById<TextView>(R.id.Bidprice)
-                                    Bidprice.text = "낙찰가 " + item.current_price
+                                    Bidprice.text = "낙찰가 " + item.current_price + "원"
+                                    Bidprice.textSize = 17f
                                     Bidprice.setPadding(10, 20, 10, 40)
                                 }
                                 // 후기등록 필요
@@ -225,7 +307,6 @@ class ItemDetail: AppCompatActivity() {
                                             var edtRating = dlgLayout.findViewById<TextView>(R.id.edtRating)
                                             var score = dlgLayout.findViewById<RatingBar>(R.id.ratingScore)
                                             var rating_score = score.rating
-                                            var user_id:String? = LoginActivity.prefs.getString("id", null)
                                             itemDetailService.enrollRating(item.seller_id, user_id!!, rating_score, edtRating.text.toString(), item.item_id)
                                                 .enqueue(object : Callback<ResponseData> {
                                                     override fun onFailure(call: Call<ResponseData>, t: Throwable) {
@@ -275,7 +356,7 @@ class ItemDetail: AppCompatActivity() {
                         }
                         //마이페이지 내가 등록한 상품에서 상품 상세페이지 접근
                         3 -> {
-                            var itemType = intent.getIntExtra("item_type", 0)
+                            itemType = intent.getIntExtra("item_type", 0)
                             Log.i("프로젝트", "itemType: " + itemType.toString())
                             when(itemType){
                                 1->{
@@ -298,7 +379,6 @@ class ItemDetail: AppCompatActivity() {
                                                 var dataResponse = response.body()
                                                 when (response.code()) {
                                                     200 -> {
-                                                        var user_id:String? = LoginActivity.prefs.getString("id", null)
                                                         var user_name:String? = LoginActivity.prefs.getString("name", null)
                                                         var chatIntent = Intent(this@ItemDetail, ChatRoomActivity::class.java).apply {
                                                             putExtra("room_id", dataResponse!!.room_id)

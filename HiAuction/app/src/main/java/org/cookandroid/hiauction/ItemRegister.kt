@@ -41,7 +41,7 @@ class ItemRegister : AppCompatActivity(){
     var categorylist = arrayOf("카테고리 선택","디지털 기기","생활가전","가구/인테리어","유아동","생활/가공식품","유아도서","스포츠/레저",
         "여성잡화","여성의류","남성패션/잡화","게임/취미","뷰티/미용","반려동물","도서/티켓/음반","식물")
 
-    lateinit var imgbtn : ImageButton
+    lateinit var imgbtn : ImageView
     lateinit var categorySpinner: Spinner
     lateinit var addressSpinner: Spinner
     lateinit var title : EditText
@@ -54,7 +54,7 @@ class ItemRegister : AppCompatActivity(){
     lateinit var selected_date : TextView
     val id : String = prefs.getString("id", null).toString()
 
-    val BASE_URL= "http://192.168.0.17:4000/"
+    val BASE_URL= "http://192.168.22.48:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.LoginActivity.Companion.prefs
 import org.cookandroid.hiauction.datas.PriceData
 import org.cookandroid.hiauction.datas.ResponseData
@@ -22,10 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class EnrollBid : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.enrollbid)
-        Log.i("efef","now1")
+        setContentView(R.layout.enrollbid2)
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.17:4000")
+            .baseUrl("http://192.168.22.48:4000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         Log.i("efef","now2")
@@ -34,20 +35,28 @@ class EnrollBid : AppCompatActivity(){
         var seller_id = findViewById<TextView>(R.id.seller)
         var address = findViewById<TextView>(R.id.address)
         var item_name = findViewById<TextView>(R.id.itemname)
-        Log.i("efef","now3")
+        var s_profile : ImageView = findViewById(R.id.S_profile)
         var user_id : String? = prefs.getString("id",null)
-        Log.i("efef","now4")
         var edtPrice = findViewById<EditText>(R.id.Bidprice)
+        var img = findViewById<ImageView>(R.id.Itemimage)
+        var curprice = findViewById<TextView>(R.id.curprice)
+        var minbidunit = findViewById<TextView>(R.id.min_bid_unit)
 
         var intent = intent
         var item_id : Int = intent.getIntExtra("Id",0)
         address.text = intent.getStringExtra("address")
         item_name.text = intent.getStringExtra("itemname")
         seller_id.text = intent.getStringExtra("seller")
+        var img_url : String? = intent.getStringExtra("img")
+        curprice.text = intent.getIntExtra("curPrice", 0).toString()
+        minbidunit.text = intent.getIntExtra("minBidUnit",0).toString()
+
+
+        Glide.with(this@EnrollBid).load("https://avatars.dicebear.com/api/big-smile/"+seller_id.text+".png").into(s_profile)
+        Glide.with(this@EnrollBid).load(img_url).into(img)
         btnBid.setOnClickListener {
             Log.i("efef","now5")
             if (user_id != null) {
-                Log.i("efef","now6")
                 var price : Int = Integer.parseInt(edtPrice.text.toString())
                 enrollBidService.enrollBid(user_id, price, item_id)
                     .enqueue(object : Callback<PriceData> {
@@ -63,6 +72,7 @@ class EnrollBid : AppCompatActivity(){
                             when(response.code()) {
                                 200 -> {
                                     Log.i("efef","200")
+                                    finish()
                                     //finish() //인텐트 종료
 
                                 //액티비티 열기 //인텐트 효과 없애기

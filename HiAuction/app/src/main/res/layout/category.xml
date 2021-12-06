@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="상품 등록"
+                android:text="카테고리"
                 android:textColor="@color/toolbar"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -26,6 +26,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
+    <Button
+        android:id="@+id/btnCategory0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="18dp"
+        android:text="모든 카테고리"/>
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
         lateinit var addresses : List<String>
     }
 
-    val BASE_URL= "http://192.168.0.17:4000/"
+    val BASE_URL= "http://192.168.22.48:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())

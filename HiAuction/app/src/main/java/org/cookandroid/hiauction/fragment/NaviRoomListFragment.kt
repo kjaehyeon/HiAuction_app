@@ -29,7 +29,7 @@ class NaviRoomListFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var rv_roomlist : RecyclerView
 
-    val BASE_URL= "http://192.168.0.17:4000/"
+    val BASE_URL= "http://192.168.22.48:4000/"
     val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -122,7 +122,6 @@ class ChatRoomAdapter(private val context: Context): RecyclerView.Adapter<ChatRo
             content.text = item.content
             Glide.with(itemView).load("https://avatars.dicebear.com/api/big-smile/"+item.other_name+".png").into(profile)
             Glide.with(itemView).load(item.img_url).into(itemimg)
-            //Glide.with(itemView).load("https://placeimg.com/128/128/any").into(itemimg)
 
             itemView.setOnClickListener {
                 Intent(context, ChatRoomActivity::class.java).apply {

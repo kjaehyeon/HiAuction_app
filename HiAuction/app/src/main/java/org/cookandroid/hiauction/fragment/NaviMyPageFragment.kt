@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.bumptech.glide.Glide
 import org.cookandroid.hiauction.*
 import org.cookandroid.hiauction.LoginActivity.Companion.addresses
 import org.cookandroid.hiauction.datas.DeleteUserResponse
@@ -34,6 +36,7 @@ class NaviMyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        mainActivity = context as MainActivity
         var view = inflater.inflate(R.layout.mypage_main, container, false)
         setHasOptionsMenu(true)
         var user_id:String? = LoginActivity.prefs.getString("id", null)
@@ -58,6 +61,8 @@ class NaviMyPageFragment : Fragment() {
             intent!!.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
+        var imguser = view.findViewById<ImageView>(R.id.imgUser)
+        Glide.with(mainActivity).load("https://avatars.dicebear.com/api/big-smile/"+user_name.toString()+".png").into(imguser)
 
         var btnMyBids = view.findViewById<RelativeLayout>(R.id.btnMyBids)
         btnMyBids.setOnClickListener {
@@ -90,7 +95,6 @@ class NaviMyPageFragment : Fragment() {
                     var editor = LoginActivity.prefs.edit()
                     editor.clear()
                     editor.commit()
-                    mainActivity = context as MainActivity
                     mainActivity.finish()
                 } catch (e:Exception){
                     var dialog = activity?.let { it1 -> AlertDialog.Builder(it1) }
@@ -117,7 +121,7 @@ class NaviMyPageFragment : Fragment() {
             dlg.setPositiveButton("확인") { dialog, which ->
                 var deleteUserResponse: DeleteUserResponse? = null
                 var retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.0.17:4000")
+                    .baseUrl("http://192.168.22.48:4000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 var modifyUserService: ModifyUserService = retrofit.create(ModifyUserService::class.java)
@@ -151,7 +155,6 @@ class NaviMyPageFragment : Fragment() {
                                 var editor = LoginActivity.prefs.edit()
                                 editor.clear()
                                 editor.commit()
-                                mainActivity = context as MainActivity
                                 mainActivity.finish()
                             }
                             dialog.show()
