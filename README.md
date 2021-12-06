@@ -5,6 +5,10 @@
 - **DEMO** 
 
 
+
+### **Tech Stack**
+<img src="http://img.shields.io/badge/languge-node.js-green"> <img src="https://img.shields.io/badge/languate-kotlin-blue"> <img src="https://img.shields.io/badge/platform-android-brightgreenen"> <img src="https://img.shields.io/badge/framework-express-orange">
+
 - **주제**<br>
    가치 있는 물건들을 간단하게 경매에 등록하고 쉽게 직거래 할 수 있는 서비스 입니다.
    
@@ -33,13 +37,5 @@
 1. 실시간 채팅
 2. 상품 등록 및 입찰
 3. 후기 남기기
-
-
-## **Tech Stack**
-<img src="http://img.shields.io/badge/languge-node.js-green">
-<img src="https://img.shields.io/badge/languate-kotlin-blue">
-<img src="https://img.shields.io/badge/platform-android-brightgreenen">
-<img src="https://img.shields.io/badge/framework-express-orange">
-
 
 ## **[API Specification](https://www.notion.so/taewon98/API-af3430291615445b843849486f619ddd#97066c29bfc94c098877d2766b5416c8)**
