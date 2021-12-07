@@ -7,7 +7,7 @@
 
 
 ### **Tech Stack**
-<img src="http://img.shields.io/badge/languge-node.js-green"> <img src="https://img.shields.io/badge/languate-kotlin-blue"> <img src="https://img.shields.io/badge/platform-android-brightgreenen"> <img src="https://img.shields.io/badge/framework-express-orange">
+<img src="http://img.shields.io/badge/language-node.js-green"> <img src="https://img.shields.io/badge/language-kotlin-blue"> <img src="https://img.shields.io/badge/platform-android-brightgreenen"> <img src="https://img.shields.io/badge/framework-express-orange">
 
 - **주제**<br>
    가치 있는 물건들을 간단하게 경매에 등록하고 쉽게 직거래 할 수 있는 서비스 입니다.
